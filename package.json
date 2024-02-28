@@ -11,6 +11,12 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
-        "@inertiajs/react": "^1.0.15"
+        "@chakra-ui/react": "^2.8.2",
+        "@emotion/react": "^11.11.4",
+        "@emotion/styled": "^11.11.0",
+        "@inertiajs/react": "^1.0.15",
+        "@vitejs/plugin-react": "^4.2.1",
+        "framer-motion": "^11.0.6",
+        "react": "^18.2.0"
     }
 }
