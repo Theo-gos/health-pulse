@@ -98,13 +98,13 @@ export default function Login() {
                                 checked={data.remember}
                                 onChange={e => setData('remember', e.target.checked)}
                             >
-                                Remember me
+                                <Text fontSize={'14'}>Remember me</Text>
                             </Checkbox>
                         </FormControl>
 
                         <Link
                             width={'50%'}
-                            alignSelf={'center'}
+                            alignSelf={'flex-start'}
                             fontSize={'13'}
                             textAlign={'right'}
                             href='/'
