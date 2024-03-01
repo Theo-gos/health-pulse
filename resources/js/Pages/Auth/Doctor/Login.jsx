@@ -129,22 +129,6 @@ export default function Login() {
                     </Button>
                 </VStack>
             </form>
-            
-            <Text
-                mt={'15'}
-                fontWeight={'600'}
-            >
-                Don't have account yet? <Link
-                    color={'blue.400'}
-                    style={{ textDecoration: 'none' }}
-                    _hover={{
-                        color: 'blue.600',
-                    }}
-                    href='/auth/doctor/register'
-                >
-                    Register
-                </Link>
-            </Text>
         </AuthLayout>    
 
     )
