@@ -4,10 +4,10 @@ import {
     Image,
     Container,
     Text,
-    Link,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import Logo from '../Shared/Logo'
+import { Link } from '@inertiajs/react';
 
 
 export default function AuthLayout({ children }) {
@@ -48,16 +48,17 @@ export default function AuthLayout({ children }) {
                         justifyContent={'center'}
                         p={'24px'}
                     >
-                        <Box
-                            display={'flex'}
-                            alignItems={'center'}
-                            position={'absolute'}
-                            top={'6%'}
-                            left={'2%'}
-                        >
-                            <Logo />
-                            <Text ml={'1'} fontWeight={'500'} color={'blue.500'}>Health pulse</Text>
-                        </Box>
+                        <Link href='/'>
+                            <Flex
+                                alignItems={'center'}
+                                position={'absolute'}
+                                top={'6%'}
+                                left={'2%'}
+                            >
+                                    <Logo />
+                                    <Text ml={'1'} fontWeight={'500'} color={'blue.500'}>Health pulse</Text>
+                            </Flex>
+                        </Link>
                             
                         {children}
                         
@@ -87,15 +88,17 @@ export default function AuthLayout({ children }) {
                         alignItems={'center'}
                         p={'24px'}
                     >
-                        <Flex
-                            alignItems={'center'}
-                            position={'absolute'}
-                            top={'6%'}
-                            left={'2%'}
-                        >
-                            <Logo />
-                            <Text ml={'1'} fontWeight={'500'} color={'blue.500'}>Health pulse</Text>
-                        </Flex>
+                        <Link href='/'>
+                            <Flex
+                                alignItems={'center'}
+                                position={'absolute'}
+                                top={'6%'}
+                                left={'2%'}
+                            >
+                                    <Logo />
+                                    <Text ml={'1'} fontWeight={'500'} color={'blue.500'}>Health pulse</Text>
+                            </Flex>
+                        </Link>
                             
                         {children}
 

@@ -1,7 +1,6 @@
 import {
     Box,
     Flex,
-    Link,
     UnorderedList,
     ListItem,
     Text,
@@ -17,6 +16,7 @@ import {
     Button,
     FormControl,
     FormLabel,
+    Link as ChakraLink,
     InputGroup,
     InputLeftAddon,
     Menu,
@@ -28,11 +28,11 @@ import {
 } from "@chakra-ui/react"
 import { useEffect, useRef, useState } from "react"
 import Logo from "./Shared/Logo"
-import { useForm } from "@inertiajs/react"
+import { useForm, Link } from "@inertiajs/react"
 import dialCode from '../Assets/data/dial-code.json'
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons"
 
-export default function Home() {
+export default function Home({ validated }) {
     
     const [windowSize, setWindowSize] = useState(window.innerWidth)
     const [isSelOpen, setIsSelOpen] = useState(false)
@@ -86,62 +86,72 @@ export default function Home() {
                             </Link>
                         </Box>
                         <UnorderedList listStyleType={'none'}>
-                            <ListItem
-                                float={'left'}
-                                >
+                            <ListItem float={'left'}>
                                 <Link
-                                    _hover={{color: 'gray.700'}}
-                                    style={{ textDecoration: 'none' }}
-                                    display={'block'}
-                                    padding={'20px 2px'}
-                                    mr={'9px'}
-                                    color={'gray.500'}
-                                    fontSize={'16px'} 
+                                    style={{
+                                        textDecoration: 'none',
+                                        display: 'block',
+                                        padding: '20px 2px',
+                                        mr: '9px',
+                                        color: 'gray.500',
+                                        fontSize: '16px',
+                                    }}
                                     href="/"
                                 >
-                                    Menu Item 1
+                                    <Text _hover={{color: 'gray.700'}} >
+                                        Menu Item 1
+                                    </Text>
                                 </Link>
                             </ListItem>
                             <ListItem float={'left'}>
                                 <Link
-                                    _hover={{color: 'gray.700'}}
-                                    style={{ textDecoration: 'none' }}
-                                    display={'block'}
-                                    padding={'20px 2px'}
-                                    mr={'9px'}
-                                    color={'gray.500'}
-                                    fontSize={'16px'} 
+                                    style={{
+                                        textDecoration: 'none',
+                                        display: 'block',
+                                        padding: '20px 2px',
+                                        mr: '9px',
+                                        color: 'gray.500',
+                                        fontSize: '16px',
+                                    }}
                                     href="/"
                                 >
-                                    Menu Item 2
+                                    <Text _hover={{color: 'gray.700'}} >
+                                        Menu Item 1
+                                    </Text>
                                 </Link>
                             </ListItem>
                             <ListItem float={'left'}>
                                 <Link
-                                    _hover={{color: 'gray.700'}}
-                                    style={{ textDecoration: 'none' }}
-                                    display={'block'}
-                                    padding={'20px 2px'}
-                                    mr={'9px'}
-                                    color={'gray.500'}
-                                    fontSize={'16px'} 
+                                    style={{
+                                        textDecoration: 'none',
+                                        display: 'block',
+                                        padding: '20px 2px',
+                                        mr: '9px',
+                                        color: 'gray.500',
+                                        fontSize: '16px',
+                                    }}
                                     href="/"
                                 >
-                                    Menu Item 3
+                                    <Text _hover={{color: 'gray.700'}} >
+                                        Menu Item 1
+                                    </Text>
                                 </Link>
                             </ListItem>
                             <ListItem float={'left'}>
                                 <Link
-                                    _hover={{color: 'gray.700'}}
-                                    style={{ textDecoration: 'none' }}
-                                    display={'block'}
-                                    padding={'20px 2px'}
-                                    mr={'9px'}
-                                    color={'gray.500'}
-                                    fontSize={'16px'} 
+                                    style={{
+                                        textDecoration: 'none',
+                                        display: 'block',
+                                        padding: '20px 2px',
+                                        mr: '9px',
+                                        color: 'gray.500',
+                                        fontSize: '16px',
+                                    }}
                                     href="/"
                                 >
-                                    Menu Item 4
+                                    <Text _hover={{color: 'gray.700'}} >
+                                        Menu Item 1
+                                    </Text>
                                 </Link>
                             </ListItem>
                         </UnorderedList>
@@ -170,7 +180,7 @@ export default function Home() {
                                 />
                             </ListItem>
                             <ListItem>
-                                <Link
+                                <ChakraLink
                                     _hover={{color: 'gray.700'}}
                                     style={{ textDecoration: 'none' }}
                                     display={'block'}
@@ -180,10 +190,10 @@ export default function Home() {
                                     onClick={onOpen}
                                 >
                                     Login
-                                </Link>
+                                </ChakraLink>
                             </ListItem>
                             <ListItem p={'0'}>
-                                <Link
+                                <ChakraLink
                                     _hover={{color: 'gray.700'}}
                                     style={{ textDecoration: 'none' }}
                                     display={'block'}
@@ -192,13 +202,17 @@ export default function Home() {
                                     color={'gray.500'}
                                 >
                                     Sign up
-                                </Link>
+                                </ChakraLink>
                             </ListItem>
                         </UnorderedList>
                     </Flex>
                 </Box>
-
             </Box>
+            
+            <Box>
+                <Text>{ validated ? validated.email : '' }</Text>
+            </Box>
+
             <Modal
                 initialFocusRef={initialRef}
                 blockScrollOnMount={false}
