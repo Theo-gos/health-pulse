@@ -98,13 +98,13 @@ export default function Login() {
                                 checked={data.remember}
                                 onChange={e => setData('remember', e.target.checked)}
                             >
-                                Remember me
+                                <Text fontSize={'14'}>Remember me</Text>
                             </Checkbox>
                         </FormControl>
 
                         <Link
                             width={'50%'}
-                            alignSelf={'center'}
+                            alignSelf={'flex-start'}
                             fontSize={'13'}
                             textAlign={'right'}
                             href='/'
@@ -129,22 +129,6 @@ export default function Login() {
                     </Button>
                 </VStack>
             </form>
-            
-            <Text
-                mt={'15'}
-                fontWeight={'600'}
-            >
-                Don't have account yet? <Link
-                    color={'blue.400'}
-                    style={{ textDecoration: 'none' }}
-                    _hover={{
-                        color: 'blue.600',
-                    }}
-                    href='/auth/doctor/register'
-                >
-                    Register
-                </Link>
-            </Text>
         </AuthLayout>    
 
     )

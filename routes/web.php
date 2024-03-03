@@ -15,9 +15,5 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Auth/Doctor/Login');
-})->name('auth.doctor.login');
-
-Route::get('/auth/doctor/register', function () {
-    return Inertia::render('Auth/Doctor/Register');
-})->name('auth.doctor.register');
+    return Inertia::render('Home');
+})->name('home');
