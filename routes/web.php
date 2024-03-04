@@ -21,10 +21,11 @@ use Inertia\Inertia;
 // Patient
 Route::get('/', function () {
     return Inertia::render('Home');
-});
+})->name('home');
 
 Route::get('/patient/redirect', [PatientLogInController::class, 'redirect'])->name('patient.google.redirect');
 Route::get('/patient/callback', [PatientLogInController::class, 'callback'])->name('patient.google.callback');
+Route::get('/patient/logout', [PatientLogInController::class, 'destroy'])->name('patient.logout');
 
 // Doctor
 Route::get('/doctor/dashboard', function () {
@@ -43,10 +44,6 @@ require __DIR__ . '/auth.php';
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
-
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth'])->name('dashboard');
 
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

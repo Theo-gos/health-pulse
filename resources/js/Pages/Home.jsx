@@ -29,35 +29,30 @@ import {
 } from "@chakra-ui/react"
 import { useEffect, useRef, useState } from "react"
 import Logo from "./Shared/Logo"
-import { useForm, Link } from "@inertiajs/react"
+import { useForm, Link, usePage } from "@inertiajs/react"
 import dialCode from '../Assets/data/dial-code.json'
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons"
 import PatientLayout from '@/Layouts/PatientLayout'
 
-export default function Home({ data, auth }) {
+export default function Home() {
     
     // const initialRef = useRef(null)
-    const [windowSize, setWindowSize] = useState(window.innerWidth)
     // const { isOpen, onOpen, onClose } = useDisclosure()
     // const { data, setData, errors, setError, post } = useForm({
     //     email: '',
     // });
-
-    window.addEventListener('resize', () => { 
-        setWindowSize(window.innerWidth)
-    })
-
-    // const submit = (e) => {
-    //     e.preventDefault()
-    //     post(route('patient.login', data.email))
-    // }
+    const [windowSize, setWindowSize] = useState(window.innerWidth)
+    const { data } = usePage().props
 
     return (
-        <PatientLayout>
+        <PatientLayout
+            auth={data ? true : false}
+            name={data ? data.name : ''}
+        >
 
             <Box>
                 {data ? <Text>{data.name}</Text> : ''}
-                {auth ? <Text>{auth}</Text> : ''}
+                Hello World
             </Box>
 
             {/* <Modal

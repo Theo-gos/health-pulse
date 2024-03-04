@@ -33,7 +33,7 @@ import { useForm, Link } from "@inertiajs/react"
 import dialCode from '../Assets/data/dial-code.json'
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons"
 
-export default function PatientLayout({ children }) {
+export default function PatientLayout({ children, auth, name }) {
     
     const [windowSize, setWindowSize] = useState(window.innerWidth)
 
@@ -42,157 +42,166 @@ export default function PatientLayout({ children }) {
     })
 
     return (
-        <Box
-            boxShadow= '0 0 #0000, 0 0 #0000, 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)'
-            position= 'fixed'
-            top= '0'
-            left= '0'
-            right= '0'
-            bg= 'gray.200'
-            zIndex= '10'
-        >
+        <Box>
             <Box
-                mx={'auto'}
-                w={'100%'}
+                boxShadow= '0 0 #0000, 0 0 #0000, 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)'
+                position= 'fixed'
+                top= '0'
+                left= '0'
+                right= '0'
+                bg= 'gray.200'
+                zIndex= '10'
             >
                 <Box
-                    display={windowSize >= 1100 ? 'flex' : 'none'}
-                    justifyContent={'space-between'}
-                    px={windowSize >= 1536 ? '28px' : '0'}
+                    mx={'auto'}
+                    w={'100%'}
                 >
-                    <Flex
-                        alignItems={'center'}
-                        marginRight= {'0'}
-                        marginLeft= {'20px'}
+                    <Box
+                        display={windowSize >= 1100 ? 'flex' : 'none'}
+                        justifyContent={'space-between'}
+                        px={windowSize >= 1536 ? '28px' : '0'}
                     >
-                        <Box>
-                            <Link
-                                style={{ textDecoration: 'none' }}
-                                href="/"
-                            >
-                                <Box
-                                    display={'flex'}
-                                    alignItems={'center'}
-                                >
-                                    <Logo />
-                                    <Text ml={'1'} fontWeight={'500'} color={'blue.500'}>Health pulse</Text>
-                                </Box>
-                            </Link>
-                        </Box>
-                        <UnorderedList listStyleType={'none'}>
-                            <ListItem float={'left'}>
-                                <Link
-                                    style={{
-                                        textDecoration: 'none',
-                                        display: 'block',
-                                        padding: '20px 2px',
-                                        mr: '9px',
-                                        color: 'gray.500',
-                                        fontSize: '16px',
-                                    }}
-                                    href="/"
-                                >
-                                    <Text _hover={{color: 'gray.700'}} >
-                                        Menu Item 1
-                                    </Text>
-                                </Link>
-                            </ListItem>
-                            <ListItem float={'left'}>
-                                <Link
-                                    style={{
-                                        textDecoration: 'none',
-                                        display: 'block',
-                                        padding: '20px 2px',
-                                        mr: '9px',
-                                        color: 'gray.500',
-                                        fontSize: '16px',
-                                    }}
-                                    href="/"
-                                >
-                                    <Text _hover={{color: 'gray.700'}} >
-                                        Menu Item 1
-                                    </Text>
-                                </Link>
-                            </ListItem>
-                            <ListItem float={'left'}>
-                                <Link
-                                    style={{
-                                        textDecoration: 'none',
-                                        display: 'block',
-                                        padding: '20px 2px',
-                                        mr: '9px',
-                                        color: 'gray.500',
-                                        fontSize: '16px',
-                                    }}
-                                    href="/"
-                                >
-                                    <Text _hover={{color: 'gray.700'}} >
-                                        Menu Item 1
-                                    </Text>
-                                </Link>
-                            </ListItem>
-                            <ListItem float={'left'}>
-                                <Link
-                                    style={{
-                                        textDecoration: 'none',
-                                        display: 'block',
-                                        padding: '20px 2px',
-                                        mr: '9px',
-                                        color: 'gray.500',
-                                        fontSize: '16px',
-                                    }}
-                                    href="/"
-                                >
-                                    <Text _hover={{color: 'gray.700'}} >
-                                        Menu Item 1
-                                    </Text>
-                                </Link>
-                            </ListItem>
-                        </UnorderedList>
-                    </Flex>
-                    <Flex
-                        marginRight= {'0'}
-                        marginLeft= {'20px'}
-                        flexWrap={'wrap'}
-                    >
-                        <UnorderedList
-                            display={'flex'}
+                        <Flex
                             alignItems={'center'}
-                            listStyleType={'none'}
+                            marginRight= {'0'}
+                            marginLeft= {'20px'}
                         >
-                            <ListItem id="search" mr={'10px'}>
-                                <Input
-                                    borderColor={'gray.300'}
-                                    borderRadius={'lg'}
-                                    color={'gray.500'}
-                                    bg={'white'}
-                                    w={`calc(${windowSize}px * 25 / 100)`}
-                                    size={'md'}
-                                    name="search-bar"
-                                    id="search-bar"
-                                    placeholder="Search Bar..."
-                                />
-                            </ListItem>
-                            <ListItem>
-                                <a
-                                    // _hover={{color: 'gray.700'}}
-                                    // style={{ textDecoration: 'none' }}
-                                    // display={'block'}
-                                    // padding={'20px 2px'}
-                                    // mr={'9px'}
-                                    // color={'gray.500'}
-                                    href={route('patient.google.redirect')}
+                            <Box>
+                                <Link
+                                    style={{ textDecoration: 'none' }}
+                                    href="/"
                                 >
-                                    Login Using Google
-                                </a>
-                            </ListItem>
-                        </UnorderedList>
-                    </Flex>
+                                    <Box
+                                        display={'flex'}
+                                        alignItems={'center'}
+                                    >
+                                        <Logo />
+                                        <Text ml={'1'} fontWeight={'500'} color={'blue.500'}>Health pulse</Text>
+                                    </Box>
+                                </Link>
+                            </Box>
+                            <UnorderedList listStyleType={'none'}>
+                                <ListItem float={'left'}>
+                                    <Link
+                                        style={{
+                                            textDecoration: 'none',
+                                            display: 'block',
+                                            padding: '20px 2px',
+                                            mr: '9px',
+                                            color: 'gray.500',
+                                            fontSize: '16px',
+                                        }}
+                                        href="/"
+                                    >
+                                        <Text _hover={{color: 'gray.700'}} >
+                                            Menu Item 1
+                                        </Text>
+                                    </Link>
+                                </ListItem>
+                                <ListItem float={'left'}>
+                                    <Link
+                                        style={{
+                                            textDecoration: 'none',
+                                            display: 'block',
+                                            padding: '20px 2px',
+                                            mr: '9px',
+                                            color: 'gray.500',
+                                            fontSize: '16px',
+                                        }}
+                                        href="/"
+                                    >
+                                        <Text _hover={{color: 'gray.700'}} >
+                                            Menu Item 1
+                                        </Text>
+                                    </Link>
+                                </ListItem>
+                                <ListItem float={'left'}>
+                                    <Link
+                                        style={{
+                                            textDecoration: 'none',
+                                            display: 'block',
+                                            padding: '20px 2px',
+                                            mr: '9px',
+                                            color: 'gray.500',
+                                            fontSize: '16px',
+                                        }}
+                                        href="/"
+                                    >
+                                        <Text _hover={{color: 'gray.700'}} >
+                                            Menu Item 1
+                                        </Text>
+                                    </Link>
+                                </ListItem>
+                                <ListItem float={'left'}>
+                                    <Link
+                                        style={{
+                                            textDecoration: 'none',
+                                            display: 'block',
+                                            padding: '20px 2px',
+                                            mr: '9px',
+                                            color: 'gray.500',
+                                            fontSize: '16px',
+                                        }}
+                                        href="/"
+                                    >
+                                        <Text _hover={{color: 'gray.700'}} >
+                                            Menu Item 1
+                                        </Text>
+                                    </Link>
+                                </ListItem>
+                            </UnorderedList>
+                        </Flex>
+                        <Flex
+                            marginRight= {'0'}
+                            marginLeft= {'20px'}
+                            flexWrap={'wrap'}
+                        >
+                            <UnorderedList
+                                display={'flex'}
+                                alignItems={'center'}
+                                listStyleType={'none'}
+                            >
+                                <ListItem id="search" mr={'10px'}>
+                                    <Input
+                                        borderColor={'gray.300'}
+                                        borderRadius={'lg'}
+                                        color={'gray.500'}
+                                        bg={'white'}
+                                        w={`calc(${windowSize}px * 25 / 100)`}
+                                        size={'md'}
+                                        name="search-bar"
+                                        id="search-bar"
+                                        placeholder="Search Bar..."
+                                    />
+                                </ListItem>
+                                {!auth ? 
+                                    <ListItem>
+                                        <a
+                                            href={route('patient.google.redirect')}
+                                        >
+                                            Login Using Google
+                                        </a>
+                                    </ListItem>
+                                    :
+                                    <>
+                                        <ListItem mr={'10px'}>
+                                            <Text>Welcome, {name}</Text>
+                                        </ListItem>
+                                        <ListItem>
+                                                <Link href={route('patient.logout')}>Log Out</Link>
+                                        </ListItem>
+                                    </>
+                                }
+                            </UnorderedList>
+                        </Flex>
+                    </Box>
                 </Box>
-            </Box>
-            
-            <Box>
                 
+            </Box>
+            <Box
+                mt={75}
+            >
+                {children}
             </Box>
         </Box>
     )

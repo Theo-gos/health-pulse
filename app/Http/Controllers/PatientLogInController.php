@@ -9,6 +9,8 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 // use App\Providers\RouteServiceProvider;
 // use Exception;
 // use Illuminate\Auth\Events\Registered;
@@ -23,12 +25,9 @@ class PatientLogInController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-    public function callback(Request $request): Response
+    public function callback(): RedirectResponse
     {
-        // $state = $request->input('state');
-        // parse_str($state, $result);
         $googleUser = Socialite::driver('google')->user();
-        dd($googleUser);
 
         $user = Patient::firstOrCreate([
             'email' => $googleUser->email
@@ -38,9 +37,23 @@ class PatientLogInController extends Controller
             'google_id' => $googleUser->id
         ]);
 
-        return Inertia::render('Home', [
-            'data' => $user,
-            'auth' => true
+        return redirect()->route('home')->with('data', [
+            'name' => $user->name,
+            'email' => $user->email,
+            'patient_id' => $user->id,
+            'google_id' => $user->google
         ]);
+    }
+
+    public function destroy(Request $request): RedirectResponse
+    {
+
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }
