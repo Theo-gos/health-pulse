@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PatientLogInController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -17,13 +18,23 @@ use Inertia\Inertia;
 |
 */
 
+// Patient
 Route::get('/', function () {
     return Inertia::render('Home');
 });
 
-Route::get('doctor/login/create', [DoctorController::class, 'create'])->name('doctor.login.create');
-Route::get('doctor/register', [DoctorController::class, 'register'])->name('doctor.register');
+Route::get('/patient/redirect', [PatientLogInController::class, 'redirect'])->name('patient.google.redirect');
+Route::get('/patient/callback', [PatientLogInController::class, 'callback'])->name('patient.google.callback');
 
+// Doctor
+Route::get('/doctor/dashboard', function () {
+    return Inertia::render('Auth/Doctor/Dashboard');
+})->middleware(['auth'])->name('doctor.dashboard');
+
+Route::get('doctor/login', [DoctorController::class, 'create'])->name('doctor.login.create');
+
+
+require __DIR__ . '/auth.php';
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
 //         'canLogin' => Route::has('login'),
@@ -35,12 +46,10 @@ Route::get('doctor/register', [DoctorController::class, 'register'])->name('doct
 
 // Route::get('/dashboard', function () {
 //     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+// })->middleware(['auth'])->name('dashboard');
 
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 //     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
-
-require __DIR__ . '/auth.php';

@@ -13,10 +13,4 @@ class DoctorController extends Controller
     {
         return Inertia::render('Auth/Doctor/Login');
     }
-
-    // Show register page
-    public function register(): InertiaResponse
-    {
-        return Inertia::render('Auth/Doctor/Register');
-    }
 }

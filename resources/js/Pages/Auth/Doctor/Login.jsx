@@ -23,7 +23,6 @@ export default function Login() {
     const { data, setData, errors, setError , post, processing } = useForm({
         email: 'johndoe@example.com',
         password: 'secret',
-        remember: false
     });
     
     const handleClick = () => setShow(!show)
@@ -92,7 +91,7 @@ export default function Login() {
                         </InputGroup>
                         <FormErrorMessage>{errors.password}</FormErrorMessage>
                     </FormControl>
-                    <Flex
+                    {/* <Flex
                         width={'100%'}
                     >
                         <FormControl>
@@ -119,7 +118,7 @@ export default function Login() {
                         >
                             <Text _hover={{color: 'blue.600'}}>Forgot password?</Text>
                         </Link>
-                    </Flex>
+                    </Flex> */}
                     <Button
                         type='submit'
                         disabled={processing}

@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,5 +20,18 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        \App\Models\Doctor::factory()
+            ->count(10)
+            ->state(new Sequence(
+                [
+                    'sex' => 'M',
+                    'name' => fake()->name('male'),
+                ],
+                [
+                    'sex' => 'F',
+                    'name' => fake()->firstName('female'),
+                ],
+            ))
+            ->create();
     }
 }

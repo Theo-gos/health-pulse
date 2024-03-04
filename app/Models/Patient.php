@@ -3,11 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class Doctor extends Authenticatable
+class Patient extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -18,14 +19,14 @@ class Doctor extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'avatar',
+        'google_id',
+        'address',
         'phone',
         'email',
-        'password',
+        'date_of_birth',
         'sex',
         'age',
-        'type',
-        'remember_token',
+        'last_visit',
     ];
 
     /**
@@ -33,17 +34,12 @@ class Doctor extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'password' => 'hashed',
-    ];
+    protected $casts = [];
 }
