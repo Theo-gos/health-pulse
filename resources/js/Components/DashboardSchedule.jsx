@@ -59,8 +59,8 @@ export default function DashboardSchedule() {
             borderRadius={'xl'}
             bg={'white'}
 
-            w={'60vw'}
-            h={'46vh'}
+            w={'55vw'}
+            h={'40vh'}
         >
             <Box
                 w={'50%'}

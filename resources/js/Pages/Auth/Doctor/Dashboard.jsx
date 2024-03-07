@@ -1,6 +1,8 @@
 import { Grid, GridItem } from '@chakra-ui/react'
 import DashboardSidebar from '@/Components/DashboardSidebar'
 import DashboardSchedule from '@/Components/DashboardSchedule'
+import DashboardAppointments from '@/Components/DashboardAppointments'
+import DashboardAside from '@/Components/DashboardAside'
 
 export default function Dashboard() {
   return (
@@ -8,28 +10,28 @@ export default function Dashboard() {
       templateAreas={`"nav header aside"
                       "nav schedule aside"
                       "nav appointment aside"`}
-      gridTemplateRows={'50px 1fr 1fr'}
-      gridTemplateColumns={'200px 2fr 1fr'}
+      gridTemplateRows={'auto 8fr 11fr'}
+      gridTemplateColumns={'200px 11fr 9fr'}
       h='100vh'
       gap='1'
       color='blackAlpha.700'
       bg={'#F6F7FA'}
       fontWeight='bold'
     >
-      <GridItem bg='#F6F7FA' area={'nav'}>
+      <GridItem area={'nav'}>
         <DashboardSidebar />
       </GridItem>
       <GridItem bg='orange.300' area={'header'}>
         Header
       </GridItem>
-      <GridItem bg='#F6F7FA' area={'schedule'}>
+      <GridItem area={'schedule'}>
         <DashboardSchedule />
       </GridItem>
-      <GridItem bg='blue.300' area={'appointment'}>
-        Appointment
+      <GridItem area={'appointment'}>
+        <DashboardAppointments />
       </GridItem>
-      <GridItem bg='red.300' area={'aside'}>
-        Aside
+      <GridItem area={'aside'}>
+        <DashboardAside />
       </GridItem>
     </Grid>
   )

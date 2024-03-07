@@ -4,6 +4,7 @@ import {
 } from "@chakra-ui/react"
 import DashboardSidebar from "@/Components/DashboardSidebar"
 import DashboardSchedule from "@/Components/DashboardSchedule"
+import DashboardPiechart from "@/Components/DashboardPiechart"
 
 
 export default function Component() {
@@ -17,7 +18,7 @@ export default function Component() {
             h={'100vh'}
             w={'100vw'}
         >
-            <DashboardSchedule />
+            <DashboardPiechart />
         </Flex>
     )
 }
