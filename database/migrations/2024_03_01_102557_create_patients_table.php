@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('address');
-            $table->string('phone');
-            $table->mail('email');
-            $table->date('date_of_birth');
-            $table->char('sex');
-            $table->integer('age');
-            $table->date('last_visit');
+            $table->string('name');
+            $table->string('google_id')->nullable();
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->unique();
+            $table->date('date_of_birth')->nullable();
+            $table->char('sex')->nullable();
+            $table->integer('age')->nullable();
+            $table->date('last_visit')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('patientss');
+        Schema::dropIfExists('patients');
     }
 };

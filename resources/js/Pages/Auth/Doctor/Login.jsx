@@ -10,28 +10,26 @@ import {
     VStack,
     InputLeftElement,
     FormErrorMessage,
-    Link,
     Flex,
     Heading,
     Text,
 } from '@chakra-ui/react';
 import { EmailIcon, LockIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import { useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import AuthLayout from '../../Layouts/AuthLayout';
 
 export default function Login() {
     const [show, setShow] = useState(false)
-    const { data, setData, errors, get } = useForm({
+    const { data, setData, errors, setError , post, processing } = useForm({
         email: 'johndoe@example.com',
         password: 'secret',
-        remember: false
     });
     
     const handleClick = () => setShow(!show)
 
     function handleSubmit(e) {
-        // e.preventDefault()
-        get(route('/'))
+        e.preventDefault()
+        post(route('login'))
     }
 
     return (
@@ -58,7 +56,10 @@ export default function Login() {
                                 borderColor='gray.400'
                                 placeholder='Email'
                                 value={data.email}
-                                onChange={e => setData('email', e.target.value)}
+                                onChange={e => {
+                                    setData('email', e.target.value)
+                                    setError('email', '')
+                                }}
                             />
                         </InputGroup>
                         <FormErrorMessage>{errors.email}</FormErrorMessage>
@@ -77,7 +78,10 @@ export default function Login() {
                                 placeholder='Enter password'
                                 borderColor='gray.400'
                                 value={data.password}
-                                onChange={e => setData('password', e.target.value)}
+                                onChange={e => {
+                                    setData('password', e.target.value)
+                                    setError('password', '')
+                                }}
                             />
                             <InputRightElement>
                                 <Button h='1.75rem' size='sm' onClick={handleClick}>
@@ -87,7 +91,7 @@ export default function Login() {
                         </InputGroup>
                         <FormErrorMessage>{errors.password}</FormErrorMessage>
                     </FormControl>
-                    <Flex
+                    {/* <Flex
                         width={'100%'}
                     >
                         <FormControl>
@@ -103,21 +107,21 @@ export default function Login() {
                         </FormControl>
 
                         <Link
-                            width={'50%'}
-                            alignSelf={'flex-start'}
-                            fontSize={'13'}
-                            textAlign={'right'}
-                            href='/'
-                            style={{ textDecoration: 'none' }}
-                            _hover={{
-                                color: 'blue.600',
+                            href={route('doctor.register')}
+                            style={{
+                                textDecoration: 'none',
+                                width: '50%',
+                                alignSelf: 'flex-start',
+                                textAlign: 'right',
+                                fontSize: '12px',
                             }}
                         >
-                            Forgot password?
+                            <Text _hover={{color: 'blue.600'}}>Forgot password?</Text>
                         </Link>
-                    </Flex>
+                    </Flex> */}
                     <Button
                         type='submit'
+                        disabled={processing}
                         bg={'blue.400'}
                         color={'white'}
                         w={'25%'}

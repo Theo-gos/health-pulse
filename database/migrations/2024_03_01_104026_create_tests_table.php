@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('doctor_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('patient_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->file('file');
+            $table->string('file');
             $table->string('result');
             $table->date('date');
             $table->timestamps();

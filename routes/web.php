@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\PatientLogInController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -9,11 +13,40 @@ use Inertia\Inertia;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
 |
 */
 
+// Patient
 Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
+
+Route::get('/patient/redirect', [PatientLogInController::class, 'redirect'])->name('patient.google.redirect');
+Route::get('/patient/callback', [PatientLogInController::class, 'callback'])->name('patient.google.callback');
+Route::get('/patient/logout', [PatientLogInController::class, 'destroy'])->name('patient.logout');
+
+// Doctor
+Route::get('/doctor/dashboard', function () {
+    return Inertia::render('Auth/Doctor/Dashboard');
+})->middleware(['auth'])->name('doctor.dashboard');
+
+Route::get('doctor/login', [DoctorController::class, 'create'])->name('doctor.login.create');
+
+
+require __DIR__ . '/auth.php';
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
+
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
