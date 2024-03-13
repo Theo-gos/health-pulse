@@ -1,7 +1,7 @@
 import logo from '../../Assets/imgs/logo.svg'
 
-export default function Logo() {
+export default function Logo({ width = '50px'}) {
     return (
-        <img src={logo} />
+        <img src={logo} width={width} />
     )
 }

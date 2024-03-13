@@ -1,32 +1,37 @@
 import { Grid, GridItem } from '@chakra-ui/react'
+import DashboardSidebar from '@/Components/DashboardSidebar'
+import DashboardSchedule from '@/Components/DashboardSchedule'
+import DashboardAppointments from '@/Components/DashboardAppointments'
+import DashboardAside from '@/Components/DashboardAside'
 
-export default function Welcome() {
+export default function Dashboard() {
   return (
     <Grid
       templateAreas={`"nav header aside"
                       "nav schedule aside"
                       "nav appointment aside"`}
-      gridTemplateRows={'50px 1fr 1fr'}
-      gridTemplateColumns={'200px 2fr 1fr'}
-      h='1000px'
+      gridTemplateRows={'auto 8fr 11fr'}
+      gridTemplateColumns={'200px 11fr 9fr'}
+      h='100vh'
       gap='1'
       color='blackAlpha.700'
+      bg={'#F6F7FA'}
       fontWeight='bold'
     >
-      <GridItem pl='2' bg='pink.300' area={'nav'}>
-        Nav
+      <GridItem area={'nav'}>
+        <DashboardSidebar />
       </GridItem>
-      <GridItem pl='2' bg='orange.300' area={'header'}>
+      <GridItem bg='orange.300' area={'header'}>
         Header
       </GridItem>
-      <GridItem pl='2' bg='green.300' area={'schedule'}>
-        Schedule
+      <GridItem area={'schedule'}>
+        <DashboardSchedule />
       </GridItem>
-      <GridItem pl='2' bg='blue.300' area={'appointment'}>
-        Appointment
+      <GridItem area={'appointment'}>
+        <DashboardAppointments />
       </GridItem>
-      <GridItem pl='2' bg='red.300' area={'aside'}>
-        Aside
+      <GridItem area={'aside'}>
+        <DashboardAside />
       </GridItem>
     </Grid>
   )

@@ -1,0 +1,76 @@
+import { Flex, Text } from "@chakra-ui/react";
+// Change to Grid
+export default function Timeline({...props}) {
+    return (
+        <Flex
+            {...props}
+            direction={'column'}
+
+            align={'center'}
+
+            fontSize={'10px'}
+        >
+            <Text>8:00</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>9:00</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>10:00</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>11:00</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>12:00</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>13:00</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>14:00</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>15:00</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>16:00</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>17:00</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>18:00</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>19:00</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>20:00</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>21:00</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>22:00</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>|</Text>
+            <Text>23:00</Text>
+        </Flex>
+    )
+}
