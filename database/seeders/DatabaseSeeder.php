@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
                     'name' => fake()->firstName('female'),
                 ],
             ))
+            ->hasAppointments(10)
             ->create();
     }
 }

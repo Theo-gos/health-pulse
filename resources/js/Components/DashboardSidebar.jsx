@@ -26,7 +26,7 @@ import {
 } from "react-icons/bs";
 
 import SideBarItem from "./SideBarItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "@/Pages/Shared/Logo";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 
@@ -43,8 +43,13 @@ const icons = {
     'notification': BsBellFill,
 }
 
-export default function DashboardSidebar() {
+export default function DashboardSidebar({state}) {
     const [selected, setSelected] = useState('dashboard')
+
+    useEffect(() => {
+        if (state)
+            setSelected(state)
+    }, [])
 
     return (
         <Box
@@ -105,7 +110,8 @@ export default function DashboardSidebar() {
                                     key={option}
                                     icon={icons[option]}
                                     title={option.charAt(0).toUpperCase() + option.slice(1)}
-                                    onClick={() => setSelected(option)}
+                                    onClick={() => { setSelected(option) }}
+                                    href={route(`doctor.appointments`)}
                                     selected={selected === option ? true : false}
                                 />
                             ))}
@@ -128,6 +134,7 @@ export default function DashboardSidebar() {
                                     icon={icons[option]}
                                     title={option.charAt(0).toUpperCase() + option.slice(1)}
                                     onClick={() => setSelected(option)}
+                                    href={route(`doctor.appointments`)}
                                     selected={selected === option ? true : false}
                                 />
                             ))}

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PatientLogInController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\ProfileController;
@@ -23,6 +24,10 @@ Route::get('/component', function () {
     return Inertia::render('Component');
 })->name('component');
 
+// Route::get('/{date}', function ($date) {
+//     return $date;
+// });
+
 // Patient
 Route::get('/', function () {
     return Inertia::render('Home');
@@ -32,26 +37,18 @@ Route::get('/patient/redirect', [PatientLogInController::class, 'redirect'])->na
 Route::get('/patient/callback', [PatientLogInController::class, 'callback'])->name('patient.google.callback');
 Route::get('/patient/logout', [PatientLogInController::class, 'destroy'])->name('patient.logout');
 
+Route::get('appointment/{date_start}/{date_end}', [AppointmentController::class, 'show'])->name('appointment.show');
+
 // Doctor
 Route::get('/doctor/dashboard', function () {
     return Inertia::render('Auth/Doctor/Dashboard');
 })->middleware(['auth'])->name('doctor.dashboard');
 
+Route::get('/doctor/appointments', function () {
+    return Inertia::render('Auth/Doctor/Appointments');
+})->middleware(['auth'])->name('doctor.appointments');
+
 Route::get('doctor/login', [DoctorController::class, 'create'])->name('doctor.login.create');
 
 
 require __DIR__ . '/auth.php';
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
