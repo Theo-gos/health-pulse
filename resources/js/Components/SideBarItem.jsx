@@ -5,7 +5,6 @@ import {
 import { Link } from "@inertiajs/react";
 
 export default function SideBarItem({ color = '#637185', bg = 'transparent', href, icon, title = 'title', selected, ...props }) {
-    console.log(href)
     return (
         <ListItem
             {...props}

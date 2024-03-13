@@ -9,11 +9,9 @@ use Inertia\Inertia;
 
 class AppointmentController extends Controller
 {
-    //
-    public function show(string $date_start, string $date_end)
+    public function getAllBetweenDates(string $date_start, string $date_end)
     {
         $user = Auth::user();
-        // $id = Auth::id();
 
         $appointments = Appointment::where('doctor_id', $user->id)
             ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
@@ -29,5 +27,31 @@ class AppointmentController extends Controller
         };
 
         return $return;
+    }
+
+    public function getAllByDate(string $date)
+    {
+        $user = Auth::user();
+
+        $appointments = Appointment::where('doctor_id', $user->id)
+            ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
+            ->where('date', $date)
+            ->orderBy('start_time', 'asc')
+            ->get();
+
+        return $appointments;
+    }
+
+    public function getByHour(string $hour)
+    {
+        $user = Auth::user();
+
+        $appointment = Appointment::where('doctor_id', $user->id)
+            ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
+            ->where('start_time', '<',  $hour)
+            ->where('end_time', '>',  $hour)
+            ->get();
+
+        return $appointment;
     }
 }

@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
                 ],
             ))
             ->hasAppointments(10)
+            ->hasSchedules(10)
             ->create();
     }
 }

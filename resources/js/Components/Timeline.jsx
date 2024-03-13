@@ -8,7 +8,7 @@ export default function Timeline({...props}) {
 
             align={'center'}
 
-            fontSize={'10px'}
+            fontSize={'10.75px'}
         >
             <Text>8:00</Text>
             <Text>|</Text>

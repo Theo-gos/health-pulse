@@ -37,17 +37,30 @@ Route::get('/patient/redirect', [PatientLogInController::class, 'redirect'])->na
 Route::get('/patient/callback', [PatientLogInController::class, 'callback'])->name('patient.google.callback');
 Route::get('/patient/logout', [PatientLogInController::class, 'destroy'])->name('patient.logout');
 
-Route::get('appointment/{date_start}/{date_end}', [AppointmentController::class, 'show'])->name('appointment.show');
 
-// Doctor
+
+//Doctor
+// Dashboard
 Route::get('/doctor/dashboard', function () {
     return Inertia::render('Auth/Doctor/Dashboard');
 })->middleware(['auth'])->name('doctor.dashboard');
 
+//Appointments
 Route::get('/doctor/appointments', function () {
     return Inertia::render('Auth/Doctor/Appointments');
 })->middleware(['auth'])->name('doctor.appointments');
 
+Route::get('appointment/hour/{hour}', [AppointmentController::class, 'getByHour'])->name('appointment.hour');
+Route::get('appointment/date/{date}', [AppointmentController::class, 'getAllByDate'])->name('appointment.date');
+Route::get('appointment/{date_start}/{date_end}', [AppointmentController::class, 'getAllBetweenDates'])->name('appointment.show');
+
+//Schedules
+Route::get('schedule/id/{id}', [AppointmentController::class, 'getById'])->name('schedule.id');
+Route::get('schedule/date/{date}', [AppointmentController::class, 'getAllByDate'])->name('schedule.date');
+Route::get('schedule/{date_start}/{date_end}', [AppointmentController::class, 'getAllBetweenDates'])->name('schedule.show');
+
+
+//Auth
 Route::get('doctor/login', [DoctorController::class, 'create'])->name('doctor.login.create');
 
 

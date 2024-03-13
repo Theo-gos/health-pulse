@@ -43,7 +43,7 @@ const icons = {
     'notification': BsBellFill,
 }
 
-export default function DashboardSidebar({state}) {
+export default function DashboardSidebar({state, user}) {
     const [selected, setSelected] = useState('dashboard')
 
     useEffect(() => {
@@ -199,10 +199,10 @@ export default function DashboardSidebar({state}) {
                         pt={'12px'}
                         pl={'5px'}
                     >
-                        <Avatar bg='blue.500' color={'white'} size={'sm'} name={'Samantha Smith'} />
+                        <Avatar src={user.avatar} bg='blue.500' color={'white'} size={'sm'} name={user.name} />
                         <Box ml={'4px'}>
-                            <Text fontSize={'11px'} fontWeight={'bold'} color={'black'}>Dr. Samantha Smith</Text>
-                            <Text fontSize={'10px'} color={"#637185"}>Cardiologist</Text>
+                            <Text fontSize={'11px'} fontWeight={'bold'} color={'black'}>{`Dr ${user.name.charAt(0).toUpperCase()}. ${user.name.split(' ')[1]}`}</Text>
+                            <Text fontSize={'10px'} color={"#637185"}>{user.type}</Text>
                         </Box>
                         <Menu placement={'top'} offset={[-65, 10]}>
                             {({ isOpen }) => (

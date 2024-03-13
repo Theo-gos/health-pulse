@@ -7,6 +7,8 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
+const today = dayjs()
+
 const rowSpanExchange = (number) => {
     let result = 0
     if (number > 10 && number <= 20)
@@ -31,8 +33,6 @@ const getSpan = (start, end) => {
     return hours * 3 + rowSpanExchange(minutes)
 }
 
-const today = dayjs()
-
 const renderItem = (data, initialTime = '8:00') => {
     let anchor = initialTime
 
@@ -44,7 +44,6 @@ const renderItem = (data, initialTime = '8:00') => {
         const endTime = item.end_time.split(':')
 
         const name = item.patient_name.split(' ')
-        console.log(name[0])
 
         anchor = item.end_time
 
