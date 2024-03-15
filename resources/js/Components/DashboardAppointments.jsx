@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { BsArrowUpRight, BsCalendar2Event } from "react-icons/bs";
 import Timeline from "./Timeline";
-import { Link } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import dayjs from "dayjs"
 import { useEffect, useState } from "react";
 import _ from 'lodash';
@@ -121,41 +121,33 @@ const renderItem = (data, initialTime = '8:00:00') => {
 }
 
 
-export default function DashboardAppointments() {
+export default function DashboardAppointments({ appointments, current_appointment }) {
     const [date, setDate] = useState(dayjs())
-    const [state, setState] = useState('')
-    const [data, setData] = useState({})
+    const [data, setData] = useState([])
     const [curData, setCurData] = useState({})
+    const { get, processing } = useForm()
+
 
     useEffect(() => {
-        setState('loading')
-        const curDate = date.format('YYYY-MM-DD')
-        const curTime = dayjs().format('HH:mm:ss')
+        if (typeof appointments !== 'undefined') {
+            if (appointments.length !== 0) {
+                setData(appointments)
+                setDate(dayjs(appointments[0].date))
+            }
+        }
 
-        fetch(`http://localhost:8000/appointment/date/${curDate}`)
-            .then(res => {
-                return res.json()
-            })
-            .then(items => {
-                setData(items)
-                setState('loaded')
-            })
-        
-        fetch(`http://localhost:8000/appointment/hour/${curTime}`)
-            .then(res => {
-                return res.json()
-            })
-            .then(items => {
-                setCurData(items[0])
-            })
-    }, [date])
+        if (typeof current_appointment !== 'undefined') {
+            if (current_appointment.length !== 0)
+                setCurData(current_appointment[0])
+        }
+    }, [appointments, current_appointment])
         
     const handlePrev = () => {
-        setDate(date.subtract(1, 'day'))
+        get(route('doctor.dashboard.appointment', date.subtract(1, 'day').format('YYYY-MM-DD')))
     }
 
     const handleNext = () => {
-        setDate(date.add(1, 'day'))
+        get(route('doctor.dashboard.appointment', date.add(1, 'day').format('YYYY-MM-DD')))
     }
 
     return (
@@ -176,7 +168,9 @@ export default function DashboardAppointments() {
                 align={'center'}
             >
                 <Text fontWeight={'bold'}>Appointments</Text>
-                <BsCalendar2Event />
+                <Link href={route(`doctor.appointments`)}>
+                    <BsCalendar2Event />
+                </Link>
             </Flex>
 
             <Flex w={'100%'} h={'85.5%'}>
@@ -204,7 +198,7 @@ export default function DashboardAppointments() {
                     >
                         <Timeline pt={'8px'} />
 
-                        {state === 'loaded' && data ?
+                        {!processing && data ?
                             <Grid
                                 templateRows={'repeat(60, 1fr)'}
                                 gap={0.5}

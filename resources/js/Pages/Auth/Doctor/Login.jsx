@@ -21,8 +21,8 @@ import AuthLayout from '../../Layouts/AuthLayout';
 export default function Login() {
     const [show, setShow] = useState(false)
     const { data, setData, errors, setError , post, processing } = useForm({
-        email: 'johndoe@example.com',
-        password: 'secret',
+        email: '',
+        password: '',
     });
     
     const handleClick = () => setShow(!show)

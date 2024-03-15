@@ -18,7 +18,7 @@ export default function Component() {
             h={'100vh'}
             w={'100vw'}
         >
-            <DashboardPiechart />
+            <DashboardSchedule />
         </Flex>
     )
 }

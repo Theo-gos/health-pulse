@@ -111,7 +111,7 @@ export default function DashboardSidebar({state, user}) {
                                     icon={icons[option]}
                                     title={option.charAt(0).toUpperCase() + option.slice(1)}
                                     onClick={() => { setSelected(option) }}
-                                    href={route(`doctor.appointments`)}
+                                    href={route(`doctor.${option}`)}
                                     selected={selected === option ? true : false}
                                 />
                             ))}

@@ -2,54 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Schedule;
+use App\Services\ScheduleService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ScheduleController extends Controller
 {
-    public function getAllBetweenDates(string $date_start, string $date_end)
+    public function __construct(private ScheduleService $scheduleService)
     {
-        $user = Auth::user();
-
-        $schedules = Schedule::where('doctor_id', $user->id)
-            ->select('doctor_id', 'id', 'task', 'location', 'date', 'start_time', 'end_time')
-            ->havingBetween('date', [$date_start, $date_end])
-            ->orderBy('date', 'asc')
-            ->orderBy('start_time', 'asc')
-            ->get();
-
-        $return = array();
-
-        foreach ($schedules as $schedule) {
-            $return[$schedule['date']][] = $schedule;
-        };
-
-        return $return;
     }
 
-    public function getAllByDate(string $date)
+    public function store(Request $request)
     {
-        $user = Auth::user();
-
-        $schedules = Schedule::where('doctor_id', $user->id)
-            ->select('doctor_id', 'id', 'task', 'location', 'date', 'start_time', 'end_time')
-            ->where('date', $date)
-            ->orderBy('start_time', 'asc')
-            ->get();
-
-        return $schedules;
+        return $this->scheduleService->store($request);
     }
 
-    public function getById(string $id)
+    public function edit(string $id)
     {
-        $user = Auth::user();
+        return $this->scheduleService->edit($id);
+    }
 
-        $schedule = Schedule::where('doctor_id', $user->id)
-            ->select('doctor_id', 'id', 'task', 'location', 'date', 'start_time', 'end_time')
-            ->where('id', $id)
-            ->get();
+    public function update(Request $request, int $id)
+    {
+        return $this->scheduleService->update($request, $id);
+    }
 
-        return $schedule;
+    public function delete(int $id)
+    {
+        return $this->scheduleService->delete($id);
+    }
+
+    public function index()
+    {
+        return $this->scheduleService->index();
     }
 }
