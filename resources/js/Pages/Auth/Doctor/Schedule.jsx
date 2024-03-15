@@ -49,8 +49,6 @@ export default function Schedule({calendar, aside}) {
 
     return (
         <Box
-            bg={'gray.200'}
-
             w={'100vw'}
             h={'100vh'}
         >
@@ -66,8 +64,6 @@ export default function Schedule({calendar, aside}) {
                     <Box
                         w={'100%'}
                         h={'5%'}
-
-                        bg={'yellow.100'}
                     >
                         Header
                     </Box>
@@ -77,7 +73,6 @@ export default function Schedule({calendar, aside}) {
                         p={'4px 8px'}
 
                         fontSize={'14px'}
-                        bg={'blue.100'}
                     >
                         <Box
                             w={'100%'}
@@ -97,8 +92,6 @@ export default function Schedule({calendar, aside}) {
                 <Box
                     w={'32%'}
                     h={'100%'}
-
-                    bg={'green.100'}
                 >
                     <ScheduleAside idManager={taskIdManager} message={message} asideData={asideData} />
                 </Box>

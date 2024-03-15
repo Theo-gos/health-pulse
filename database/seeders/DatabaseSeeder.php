@@ -29,11 +29,25 @@ class DatabaseSeeder extends Seeder
                 ],
                 [
                     'sex' => 'F',
-                    'name' => fake()->firstName('female'),
+                    'name' => fake()->name('female'),
                 ],
             ))
             ->hasAppointments(10)
             ->hasSchedules(10)
+            ->create();
+
+        \App\Models\Patient::factory()
+            ->count(10)
+            ->state(new Sequence(
+                [
+                    'sex' => 'M',
+                    'name' => fake()->name('male'),
+                ],
+                [
+                    'sex' => 'F',
+                    'name' => fake()->name('female'),
+                ],
+            ))
             ->create();
     }
 }

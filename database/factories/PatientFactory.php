@@ -27,7 +27,6 @@ class PatientFactory extends Factory
             'address' => fake()->address(),
             'phone' => fake()->phoneNumber(),
             'email' => fake()->unique()->safeEmail(),
-            'password' => static::$password ??= Hash::make('password'),
             'date_of_birth' => fake()->dateTimeInInterval('-50 years', '-20 years'),
             'age' => fake()->numberBetween(25, 50),
             'last_visit' =>  fake()->dateTimeInInterval('-3 months', '-1 weeks'),

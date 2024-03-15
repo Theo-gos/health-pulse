@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\DashboardService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -13,16 +14,22 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return $this->dashboardService->index();
+        $data = $this->dashboardService->index();
+
+        return Inertia::render('Auth/Doctor/Dashboard', $data);
     }
 
     public function getAppointmentsByDate(string $date)
     {
-        return $this->dashboardService->getAppointmentsByDate($date);
+        $appointment = $this->dashboardService->getAppointmentsByDate($date);
+
+        return redirect()->back()->with('appointment', $appointment);
     }
 
     public function getScheduleByDates(string $start_date, string $end_date)
     {
-        return $this->dashboardService->getScheduleByDates($start_date, $end_date);
+        $schedule = $this->dashboardService->getScheduleByDates($start_date, $end_date);
+
+        return redirect()->back()->with('schedule', $schedule);
     }
 }

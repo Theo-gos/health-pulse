@@ -153,6 +153,8 @@ export default function ScheduleAside({ idManager, asideData }) {
             w={'100%'}
             h={'100%'}
             fontSize={'12px'}
+            
+            pl={'4px'}
         >
             <Flex
                 align={'center'}
@@ -168,7 +170,6 @@ export default function ScheduleAside({ idManager, asideData }) {
             </Flex>
 
             <Flex
-                border={'1px solid #F0F0F1'}
                 borderRadius={'xl'}
 
                 w={'100%'}

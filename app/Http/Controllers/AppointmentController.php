@@ -16,11 +16,19 @@ class AppointmentController extends Controller
 
     public function show(string $date_start, string $date_end)
     {
-        return $this->appointmentService->show($date_start, $date_end);
+        $appointments = $this->appointmentService->getAllBetweenDates($date_start, $date_end);
+
+        return redirect()->back()->with('appointment', [
+            'list' => $appointments,
+        ]);
     }
 
     public function index()
     {
-        return $this->appointmentService->index();
+        $appointments = $this->appointmentService->index();
+
+        return Inertia::render('Auth/Doctor/Appointments', [
+            'appointments' => $appointments,
+        ]);
     }
 }

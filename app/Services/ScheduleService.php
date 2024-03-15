@@ -50,7 +50,7 @@ class ScheduleService
         return $schedules;
     }
 
-    public function getById(string $id)
+    public function getItemById(string $id)
     {
         $user = Auth::user();
 
@@ -62,7 +62,7 @@ class ScheduleService
         return $schedule;
     }
 
-    public function store(Request $request)
+    public function storeItemToDatabase(Request $request)
     {
         $user = Auth::user();
 
@@ -90,20 +90,20 @@ class ScheduleService
                 'end_time' => $validated['time_end'] . ':00',
             ]);
 
-            return redirect()->back()->with('message', [
+            return [
                 'message' => 'Stored to database',
                 'data' => $schedule,
                 'type' => 'success',
-            ]);
+            ];
         } else {
-            return redirect()->back()->with('message', [
+            return [
                 'message' => 'Overlapped schedule',
                 'type' => 'error',
-            ]);
+            ];
         }
     }
 
-    public function update(Request $request, int $id)
+    public function updateItemById(Request $request, int $id)
     {
         $user = Auth::user();
 
@@ -133,37 +133,28 @@ class ScheduleService
 
             $item->save();
 
-            return redirect()->back()->with('message', [
+            return [
                 'message' => 'Item updated successfully',
                 'type' => 'success',
-            ]);
+            ];
         } else {
-            return redirect()->back()->with('message', [
+            return [
                 'message' => 'Overlapped schedule',
                 'type' => 'error',
-            ]);
+            ];
         }
     }
 
-    public function edit(string $id)
-    {
-        $item = $this->getById($id);
-
-        return redirect()->back()->with('schedule', [
-            'edit' => $item
-        ]);
-    }
-
-    public function delete(int $id)
+    public function deleteItemById(int $id)
     {
         $item = Schedule::where('id', $id)->firstOrFail();
 
         $item->delete();
 
-        return redirect()->back()->with('message', [
+        return [
             'message' => 'Item deleted successfully',
             'type' => 'success',
-        ]);
+        ];
     }
 
     public function index()
@@ -176,9 +167,9 @@ class ScheduleService
             return strtotime($k) >= strtotime(date('Y-m-d')) && strtotime($k) <= strtotime(date('Y-m-d', strtotime('tomorrow + 1 day')));
         }, ARRAY_FILTER_USE_KEY);
 
-        return Inertia::render('Auth/Doctor/Schedule', [
+        return [
             'calendar' => $calendar,
             'aside' => $aside,
-        ]);
+        ];
     }
 }

@@ -14,26 +14,38 @@ class ScheduleController extends Controller
 
     public function store(Request $request)
     {
-        return $this->scheduleService->store($request);
+        $message = $this->scheduleService->storeItemToDatabase($request);
+
+        return redirect()->back()->with('message', $message);
     }
 
     public function edit(string $id)
     {
-        return $this->scheduleService->edit($id);
+        $item = $this->scheduleService->getItemById($id);
+
+        return redirect()->back()->with('schedule', [
+            'edit' => $item
+        ]);
     }
 
     public function update(Request $request, int $id)
     {
-        return $this->scheduleService->update($request, $id);
+        $message = $this->scheduleService->updateItemById($request, $id);
+
+        return redirect()->back()->with('message', $message);
     }
 
     public function delete(int $id)
     {
-        return $this->scheduleService->delete($id);
+        $message = $this->scheduleService->deleteItemById($id);
+
+        return redirect()->back()->with('message', $message);
     }
 
     public function index()
     {
-        return $this->scheduleService->index();
+        $data = $this->scheduleService->index();
+
+        return Inertia::render('Auth/Doctor/Schedule', $data);
     }
 }

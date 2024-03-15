@@ -45,7 +45,7 @@ export default function ScheduleForm({ modeManager, idManager, editData }) {
     
     if (message) {
         console.log(message)
-        changeId(0)
+        // changeId(0)
     }
 
     useEffect(() => {
@@ -159,7 +159,7 @@ export default function ScheduleForm({ modeManager, idManager, editData }) {
                                         task: '',
                                         office: 'north office',
                                         floor: 'floor 1',
-                                        room: 'C206',
+                                        room: 'room C206',
                                         date: '',
                                         time_start: '08:00',
                                         time_end: '09:00',
@@ -485,7 +485,7 @@ export default function ScheduleForm({ modeManager, idManager, editData }) {
                     </Box>
                 </Flex>
             </form>
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
                 <ModalContent>
                     <ModalCloseButton />

@@ -55,24 +55,11 @@ class AppointmentService
         return $appointment;
     }
 
-    public function show(string $date_start, string $date_end)
-    {
-        $appointments = $this->getAllBetweenDates($date_start, $date_end);
-
-        return redirect()->back()->with('appointment', [
-            'list' => $appointments,
-        ]);
-    }
-
     public function index()
     {
         $first_day_this_week = date("Y-m-d", strtotime('monday this week'));
         $last_day_this_week  = date("Y-m-d", strtotime('sunday this week'));
 
-        $appointments = $this->getAllBetweenDates($first_day_this_week, $last_day_this_week);
-
-        return Inertia::render('Auth/Doctor/Appointments', [
-            'appointments' => $appointments,
-        ]);
+        return $appointments = $this->getAllBetweenDates($first_day_this_week, $last_day_this_week);
     }
 }
