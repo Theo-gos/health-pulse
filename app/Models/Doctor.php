@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -56,5 +57,20 @@ class Doctor extends Authenticatable
     public function schedules(): HasMany
     {
         return $this->hasMany(Schedule::class);
+    }
+
+    public function diagnosed_patients(): BelongsToMany
+    {
+        return $this->belongsToMany(Patient::class)->using(Diagnosis::class);
+    }
+
+    public function prescribed_patients(): BelongsToMany
+    {
+        return $this->belongsToMany(Patient::class)->using(Prescription::class);
+    }
+
+    public function tested_patients(): BelongsToMany
+    {
+        return $this->belongsToMany(Patient::class)->using(Test::class);
     }
 }

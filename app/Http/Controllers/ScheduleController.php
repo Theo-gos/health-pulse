@@ -8,8 +8,11 @@ use Inertia\Inertia;
 
 class ScheduleController extends Controller
 {
-    public function __construct(private ScheduleService $scheduleService)
+    private $scheduleService;
+
+    public function __construct(ScheduleService $scheduleService)
     {
+        $this->scheduleService = $scheduleService;
     }
 
     public function store(Request $request)
@@ -44,7 +47,7 @@ class ScheduleController extends Controller
 
     public function index()
     {
-        $data = $this->scheduleService->index();
+        $data = $this->scheduleService->showSchedulePage();
 
         return Inertia::render('Auth/Doctor/Schedule', $data);
     }

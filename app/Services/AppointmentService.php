@@ -19,13 +19,13 @@ class AppointmentService
             ->orderBy('start_time', 'asc')
             ->get();
 
-        $return = array();
+        $appointmentList = array();
 
         foreach ($appointments as $appointment) {
-            $return[date('l', strtotime($appointment['date']))][] = $appointment;
+            $appointmentList[date('l', strtotime($appointment['date']))][] = $appointment;
         };
 
-        return $return;
+        return $appointmentList;
     }
 
     public function getAllByDate(string $date)
@@ -55,11 +55,11 @@ class AppointmentService
         return $appointment;
     }
 
-    public function index()
+    public function showAppointmentPage()
     {
         $first_day_this_week = date("Y-m-d", strtotime('monday this week'));
         $last_day_this_week  = date("Y-m-d", strtotime('sunday this week'));
 
-        return $appointments = $this->getAllBetweenDates($first_day_this_week, $last_day_this_week);
+        return $this->getAllBetweenDates($first_day_this_week, $last_day_this_week);
     }
 }

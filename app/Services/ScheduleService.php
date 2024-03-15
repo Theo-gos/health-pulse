@@ -6,6 +6,7 @@ use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Carbon;
 
 class ScheduleService
 {
@@ -28,13 +29,13 @@ class ScheduleService
             ->orderBy('start_time', 'asc')
             ->get();
 
-        $return = array();
+        $scheduleList = array();
 
         foreach ($schedules as $schedule) {
-            $return[$schedule['date']][] = $schedule;
+            $scheduleList[$schedule['date']][] = $schedule;
         };
 
-        return $return;
+        return $scheduleList;
     }
 
     public function getAllByDate(string $date)
@@ -157,7 +158,7 @@ class ScheduleService
         ];
     }
 
-    public function index()
+    public function showSchedulePage()
     {
         $first_day_this_month = date('Y-m-01');
         $last_day_this_month  = date('Y-m-t');

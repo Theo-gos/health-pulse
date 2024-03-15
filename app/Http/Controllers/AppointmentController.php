@@ -10,8 +10,11 @@ use Inertia\Inertia;
 
 class AppointmentController extends Controller
 {
-    public function __construct(private AppointmentService $appointmentService)
+    private $appointmentService;
+
+    public function __construct(AppointmentService $appointmentService)
     {
+        $this->appointmentService = $appointmentService;
     }
 
     public function show(string $date_start, string $date_end)
@@ -25,7 +28,7 @@ class AppointmentController extends Controller
 
     public function index()
     {
-        $appointments = $this->appointmentService->index();
+        $appointments = $this->appointmentService->showAppointmentPage();
 
         return Inertia::render('Auth/Doctor/Appointments', [
             'appointments' => $appointments,
