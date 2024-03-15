@@ -2,8 +2,9 @@ import {
     ListIcon,
     ListItem,
 } from "@chakra-ui/react";
+import { Link } from "@inertiajs/react";
 
-export default function SideBarItem({color = '#637185', bg = 'transparent' , icon, title = 'title', selected, ...props}) {
+export default function SideBarItem({ color = '#637185', bg = 'transparent', href, icon, title = 'title', selected, ...props }) {
     return (
         <ListItem
             {...props}
@@ -24,7 +25,7 @@ export default function SideBarItem({color = '#637185', bg = 'transparent' , ico
             fontSize={'12px'}
         >
             <ListIcon mb={'1px'} as={icon} />
-            {title}
+            <Link href={href}>{title}</Link>
         </ListItem>
     )
 }

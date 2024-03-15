@@ -3,8 +3,11 @@ import DashboardSidebar from '@/Components/DashboardSidebar'
 import DashboardSchedule from '@/Components/DashboardSchedule'
 import DashboardAppointments from '@/Components/DashboardAppointments'
 import DashboardAside from '@/Components/DashboardAside'
+import { usePage } from '@inertiajs/react'
 
 export default function Dashboard() {
+  const { auth } = usePage().props
+
   return (
     <Grid
       templateAreas={`"nav header aside"
@@ -19,7 +22,7 @@ export default function Dashboard() {
       fontWeight='bold'
     >
       <GridItem area={'nav'}>
-        <DashboardSidebar />
+        <DashboardSidebar state={'dashboard'} user={auth.user} />
       </GridItem>
       <GridItem bg='orange.300' area={'header'}>
         Header

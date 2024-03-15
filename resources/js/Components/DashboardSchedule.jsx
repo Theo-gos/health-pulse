@@ -1,4 +1,4 @@
-import { ChevronRightIcon } from "@chakra-ui/icons"
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons"
 import {
     Box,
     Circle,
@@ -15,7 +15,7 @@ import { useEffect, useMemo, useState } from "react"
 import { BsBluetooth, BsStopCircleFill } from "react-icons/bs"
 
 const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-const today = dayjs().date()
+const today = dayjs()
 
 let currentYear
 let currentMonth
@@ -27,6 +27,8 @@ let dateOfLast
 
 export default function DashboardSchedule() {
     const [dayObj, setDayObj] = useState(dayjs())
+    const [selected, setSelected] = useState(today)
+    const [data, setData] = useState({})
 
     useMemo(() => {
         currentYear = dayObj.year()
@@ -40,6 +42,21 @@ export default function DashboardSchedule() {
         dateOfLast = dayObjOfLast.day()
     }, [dayObj])
 
+    // useEffect(() => {
+    //     const firstDayOfMonth = dayObjOfFirst.format('YYYY-MM-DD')
+    //     const lastDayOfMonth = dayObjOfLast.format('YYYY-MM-DD')
+
+    //     fetch(`http://localhost:8000/schedule/${firstDayOfMonth}/${lastDayOfMonth}`)
+    //     .then(res => {
+    //         return res.json()
+    //     })
+    //     .then(items => {
+    //         setData(items)
+    //     })
+
+
+    //     console.log('First Day: ', dayObjOfFirst.format('YYYY-MM-DD'), 'Last Day: ', dayObjOfLast.format('YYYY-MM-DD'))
+    // }, [dayObj])
 
     const CircleIcon = (props) => (
         <Icon viewBox='0 0 200 200' {...props}>
@@ -50,6 +67,15 @@ export default function DashboardSchedule() {
         </Icon>
     )
 
+    const handlePrev = () => { 
+        setDayObj(dayObj.subtract(1, 'month'))
+    }
+
+    const handleNext = () => { 
+        setDayObj(dayObj.add(1, 'month'))
+    }
+
+    console.log(selected.format('YYYY-MM-DD'))
     return (
         <Flex
             border={'2px solid #F0F0F1'}
@@ -71,7 +97,30 @@ export default function DashboardSchedule() {
 
                 bg={'transparent'}
             >
-                <Text color={'black'} fontWeight={'bold'} mb={'24px'}>Schedule</Text>
+                <Flex color={'black'} fontWeight={'bold'} mb={'24px'} justify={'space-between'}  fontSize={'12px'}>
+                    <Box>Schedule</Box>
+                    <Flex align={'center'} justify={'space-evenly'} w={'40%'}>
+                        <Box
+                            style={{
+                                cursor: 'pointer'
+                            }}
+
+                            onClick={handlePrev}
+                        >
+                            <ChevronLeftIcon />
+                        </Box>
+                        <Box fontWeight={'bold'} mr={'4px'}>{dayObj.format('MMMM YYYY')}</Box>
+                        <Box
+                            style={{
+                                cursor: 'pointer'
+                            }}
+    
+                            onClick={handleNext}
+                        >
+                            <ChevronRightIcon />
+                        </Box>
+                    </Flex>
+                </Flex>
                 <Grid
                     templateColumns='repeat(7, 1fr)'
                     gap={0}
@@ -98,25 +147,31 @@ export default function DashboardSchedule() {
                     {range(daysInCurrentMonth).map(i => (
                         <Flex key={i} justify={'center'}>
                             <Circle
-                                style={i + 1 >= today ? {
-                                    cursor: 'pointer',
-                                } : {
+                                style={(i + 1 < today.date() && today.month() == currentMonth) || today.month() > currentMonth ?
+                                {
                                     opacity: 0.4,
+                                } : {
+                                    cursor: 'pointer',
                                 }}
 
-                                _hover={i + 1 >= today ?{
+                                _hover={(i + 1 < today.date() && today.month() == currentMonth) || today.month() > currentMonth ?
+                                    {}
+                                    :
+                                    {
                                     backgroundColor: 'blue.100',
                                     color: 'white',
-                                } : {}}
+                                    }
+                                }
 
                                 size={'27px'}
 
-                                bg={dayObj.date() === i + 1 ? 'blue.100' : 'transparent'}
-                                color={dayObj.date() === i + 1 ? 'white' : 'black'}
+                                bg={selected.date() === i + 1 && selected.month() == currentMonth ? 'blue.100' : 'transparent'}
+                                color={selected.date() === i + 1 && selected.month() == currentMonth ? 'white' : 'black'}
 
                                 onClick={() => {
-                                    if (i + 1 >= today) {
-                                        setDayObj(dayjs(dayjs(`${currentYear}-${currentMonth + 1}-${i + 1}`)))
+                                    if (!(i + 1 < today.date() && today.month() == currentMonth)) {
+                                        // setDayObj(dayjs(dayjs(`${currentYear}-${currentMonth + 1}-${i + 1}`)))
+                                        setSelected(dayjs(dayjs(`${currentYear}-${currentMonth + 1}-${i + 1}`)))
                                     }
                                 }}
                             > 
@@ -163,7 +218,7 @@ export default function DashboardSchedule() {
                     align={'flex-start'}
                     justify={'space-between'}
                 >
-                    <Text color={'black'} fontWeight={'bold'} mb={'24px'}>Today's Timeline</Text>
+                    <Text color={'black'} fontWeight={'bold'} mb={'24px'}>Timeline</Text>
                     <Square
                         border={'1px solid #BEE3F8'}
                         borderRadius={'sm'}

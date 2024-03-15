@@ -26,7 +26,7 @@ import {
 } from "react-icons/bs";
 
 import SideBarItem from "./SideBarItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "@/Pages/Shared/Logo";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 
@@ -43,8 +43,13 @@ const icons = {
     'notification': BsBellFill,
 }
 
-export default function DashboardSidebar() {
+export default function DashboardSidebar({state, user}) {
     const [selected, setSelected] = useState('dashboard')
+
+    useEffect(() => {
+        if (state)
+            setSelected(state)
+    }, [])
 
     return (
         <Box
@@ -105,7 +110,8 @@ export default function DashboardSidebar() {
                                     key={option}
                                     icon={icons[option]}
                                     title={option.charAt(0).toUpperCase() + option.slice(1)}
-                                    onClick={() => setSelected(option)}
+                                    onClick={() => { setSelected(option) }}
+                                    href={route(`doctor.appointments`)}
                                     selected={selected === option ? true : false}
                                 />
                             ))}
@@ -128,6 +134,7 @@ export default function DashboardSidebar() {
                                     icon={icons[option]}
                                     title={option.charAt(0).toUpperCase() + option.slice(1)}
                                     onClick={() => setSelected(option)}
+                                    href={route(`doctor.appointments`)}
                                     selected={selected === option ? true : false}
                                 />
                             ))}
@@ -192,10 +199,10 @@ export default function DashboardSidebar() {
                         pt={'12px'}
                         pl={'5px'}
                     >
-                        <Avatar bg='blue.500' color={'white'} size={'sm'} name={'Samantha Smith'} />
+                        <Avatar src={user.avatar} bg='blue.500' color={'white'} size={'sm'} name={user.name} />
                         <Box ml={'4px'}>
-                            <Text fontSize={'11px'} fontWeight={'bold'} color={'black'}>Dr. Samantha Smith</Text>
-                            <Text fontSize={'10px'} color={"#637185"}>Cardiologist</Text>
+                            <Text fontSize={'11px'} fontWeight={'bold'} color={'black'}>{`Dr ${user.name.charAt(0).toUpperCase()}. ${user.name.split(' ')[1]}`}</Text>
+                            <Text fontSize={'10px'} color={"#637185"}>{user.type}</Text>
                         </Box>
                         <Menu placement={'top'} offset={[-65, 10]}>
                             {({ isOpen }) => (
