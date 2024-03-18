@@ -18,6 +18,10 @@ class Appointment extends Model
         'end_time',
     ];
 
+    protected $attributes = [
+        'doctor_id' => '2',
+    ];
+
     public function doctor(): BelongsTo
     {
         return $this->belongsTo(Doctor::class);

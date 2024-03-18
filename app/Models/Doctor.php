@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -26,8 +27,7 @@ class Doctor extends Authenticatable
         'password',
         'sex',
         'age',
-        'type',
-        'remember_token',
+        'service_id',
     ];
 
     /**
@@ -48,6 +48,11 @@ class Doctor extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
+
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(Service::class);
+    }
 
     public function appointments(): HasMany
     {

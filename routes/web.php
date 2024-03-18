@@ -4,6 +4,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PatientLogInController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScheduleController;
 use Illuminate\Foundation\Application;
@@ -34,6 +35,8 @@ Route::get('/', function () {
 Route::get('/patient/redirect', [PatientLogInController::class, 'redirect'])->name('patient.google.redirect');
 Route::get('/patient/callback', [PatientLogInController::class, 'callback'])->name('patient.google.callback');
 Route::get('/patient/logout', [PatientLogInController::class, 'destroy'])->name('patient.logout');
+Route::get('/patient/booking', [PatientController::class, 'booking'])->name('patient.booking');
+
 
 //Doctor
 // Dashboard

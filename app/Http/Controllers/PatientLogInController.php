@@ -41,7 +41,10 @@ class PatientLogInController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'patient_id' => $user->id,
-            'google_id' => $user->google
+            'google_id' => $googleUser->id,
+            'token' => $googleUser->token,
+            'refresh_token' => $googleUser->refreshToken,
+            'expire_in' => $googleUser->expiresIn,
         ]);
     }
 

@@ -10,9 +10,15 @@ class DashboardService
 {
     protected $timezone = 'Asia/Ho_Chi_Minh';
 
-    public function __construct(private AppointmentService $appointmentService, private ScheduleService $scheduleService)
+    private $appointmentService;
+    private $scheduleService;
+
+    public function __construct(AppointmentService $appointmentService, ScheduleService $scheduleService)
     {
         date_default_timezone_set($this->timezone);
+
+        $this->appointmentService = $appointmentService;
+        $this->scheduleService = $scheduleService;
     }
 
     public function index()
