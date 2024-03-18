@@ -2,6 +2,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons"
 import {
     Box,
     Circle,
+    CircularProgress,
     Flex,
     Grid,
     Icon,
@@ -13,6 +14,8 @@ import dayjs from "dayjs"
 import range from "lodash-es/range"
 import { useEffect, useMemo, useState } from "react"
 import { BsBluetooth, BsStopCircleFill } from "react-icons/bs"
+import _ from 'lodash'
+import { Link, useForm } from "@inertiajs/react"
 
 const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 const today = dayjs()
@@ -24,11 +27,15 @@ let dayObjOfFirst
 let dateOfFirst
 let dayObjOfLast
 let dateOfLast
+let firstDayOfMonth
+let lastDayOfMonth
 
-export default function DashboardSchedule() {
+export default function DashboardSchedule({width, height, schedule}) {
     const [dayObj, setDayObj] = useState(dayjs())
     const [selected, setSelected] = useState(today)
     const [data, setData] = useState({})
+    const [timeline, setTimeline] = useState([])
+    const { get, processing } = useForm()
 
     useMemo(() => {
         currentYear = dayObj.year()
@@ -40,23 +47,20 @@ export default function DashboardSchedule() {
     
         dayObjOfLast = dayjs(`${currentYear}-${currentMonth + 1}-${daysInCurrentMonth}`)
         dateOfLast = dayObjOfLast.day()
+
+        firstDayOfMonth = dayObjOfFirst.format('YYYY-MM-DD')
+        lastDayOfMonth = dayObjOfLast.format('YYYY-MM-DD')
     }, [dayObj])
 
-    // useEffect(() => {
-    //     const firstDayOfMonth = dayObjOfFirst.format('YYYY-MM-DD')
-    //     const lastDayOfMonth = dayObjOfLast.format('YYYY-MM-DD')
 
-    //     fetch(`http://localhost:8000/schedule/${firstDayOfMonth}/${lastDayOfMonth}`)
-    //     .then(res => {
-    //         return res.json()
-    //     })
-    //     .then(items => {
-    //         setData(items)
-    //     })
-
-
-    //     console.log('First Day: ', dayObjOfFirst.format('YYYY-MM-DD'), 'Last Day: ', dayObjOfLast.format('YYYY-MM-DD'))
-    // }, [dayObj])
+    useEffect(() => {
+        if (typeof schedule !== 'undefined')
+            setData(schedule)
+    }, [schedule])
+    
+    useEffect(() => {
+        setTimeline(data[selected.format('YYYY-MM-DD')])
+    }, [data, selected])
 
     const CircleIcon = (props) => (
         <Icon viewBox='0 0 200 200' {...props}>
@@ -69,13 +73,18 @@ export default function DashboardSchedule() {
 
     const handlePrev = () => { 
         setDayObj(dayObj.subtract(1, 'month'))
+        get(route('doctor.dashboard.schedule', { start_date: firstDayOfMonth, end_date: lastDayOfMonth }), {
+            preserveState: true,
+        })
     }
 
     const handleNext = () => { 
         setDayObj(dayObj.add(1, 'month'))
+        get(route('doctor.dashboard.schedule', { start_date: firstDayOfMonth, end_date: lastDayOfMonth }), {
+            preserveState: true,
+        })
     }
 
-    console.log(selected.format('YYYY-MM-DD'))
     return (
         <Flex
             border={'2px solid #F0F0F1'}
@@ -85,8 +94,8 @@ export default function DashboardSchedule() {
             borderRadius={'xl'}
             bg={'white'}
 
-            w={'55vw'}
-            h={'40vh'}
+            w={width}
+            h={height}
         >
             <Box
                 w={'50%'}
@@ -235,7 +244,9 @@ export default function DashboardSchedule() {
                         size={'16px'}
                         mt={'3px'}
                     >
-                        <ChevronRightIcon />
+                        <Link href={route(`doctor.schedule`)}>
+                            <ChevronRightIcon />
+                        </Link>
                     </Square>
                 </Flex>
                 <Box
@@ -243,41 +254,49 @@ export default function DashboardSchedule() {
                     h={'80%'}
                     overflow={'scroll'}
                 >
-                    <Flex
-                        border={'1px solid #BEE3F8'}
-                        borderRadius={'xl'}
-                        
-                        w={'100%'}
-                        h={'auto'}
-                        mb={'6px'}
-
-                        fontSize={'10px'}
-                    >
-                        <Flex
-                            bg={'#BEE3F8'}
-                            borderLeftRadius={'xl'}
-
-                            w={'45px'}
-                            py={'3px'}
-
-                            color={'#1366DE'}
-                            direction={'column'}
-                            align={'center'}
-                            justify={'center'}
-                        >
-                            <Text>7:00</Text>
-                            <Text>-</Text>
-                            <Text>8:00</Text>
-                        </Flex>
-                        <Box
-                            overflow={'hidden'}
-                            p={'13px 15px'}
-                            w={'97%'}
-                        >
-                            <Text color={'black'} fontWeight={'bold'}>Consultation</Text>
-                            <Box fontSize={'9px'} whiteSpace={'nowrap'} overflow={'hidden'} textOverflow={'ellipsis'}>West Office, floor 2, room C206</Box>
-                        </Box>
-                    </Flex>
+                    {typeof data[selected.format('YYYY-MM-DD')] !== 'undefined' && typeof timeline !== 'undefined' ? 
+                        timeline.map(item => (
+                            <Flex
+                                key={item.id}
+                                border={'1px solid #BEE3F8'}
+                                borderRadius={'xl'}
+                                
+                                w={'100%'}
+                                h={'auto'}
+                                mb={'6px'}
+        
+                                fontSize={'10px'}
+                            >
+                                <Flex
+                                    bg={'#BEE3F8'}
+                                    borderLeftRadius={'xl'}
+        
+                                    w={'45px'}
+                                    py={'3px'}
+        
+                                    color={'#1366DE'}
+                                    direction={'column'}
+                                    align={'center'}
+                                    justify={'center'}
+                                >
+                                    <Text>{`${item.start_time.split(':')[0]}:${item.start_time.split(':')[1]}`}</Text>
+                                    <Text>-</Text>
+                                    <Text>{`${item.end_time.split(':')[0]}:${item.end_time.split(':')[1]}`}</Text>
+                                </Flex>
+                                <Box
+                                    overflow={'hidden'}
+                                    p={'13px 15px'}
+                                    w={'97%'}
+                                >
+                                    <Text color={'black'} fontWeight={'bold'}>{item.task}</Text>
+                                    <Box fontSize={'9px'} whiteSpace={'nowrap'} overflow={'hidden'} textOverflow={'ellipsis'}>{item.location}</Box>
+                                </Box>
+                            </Flex>
+                            
+                        ))
+                        :
+                        <Box w={'100%'} h={'100%'} p={'16px'}>No schedule</Box>
+                    }
                 </Box>
             </Box>
         </Flex>

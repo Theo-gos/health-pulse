@@ -15,12 +15,12 @@ import {
     GridItem,
     useDisclosure,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekday from  "dayjs/plugin/weekday";
 import { BsCalendar2Event } from "react-icons/bs";
-import { usePage } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import AppointmentContent from "@/Components/AppointmentContent";
 import DashboardSidebar from "@/Components/DashboardSidebar";
 
@@ -40,28 +40,29 @@ const getDayName = (dateStr, locale) => {
     return date.toLocaleDateString(locale, { weekday: 'short' });        
 }
 
-export default function Appointments() {
+export default function Appointments({appointments}) {
     const [dayObj, setDayObj] = useState(today.weekday(1))
-    const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const [data, setData] = useState({})
-    const [state, setState] = useState('')
-    const { auth } = usePage().props
+    const [data, setData] = useState(appointments)
+    const { get, processing } = useForm()
+    const { auth, flash } = usePage().props
 
     useEffect(() => {
-        setState('loading')
         const firstDayOfWeek = dayObj.format('YYYY-MM-DD')
         const lastDayOfWeek = dayObj.add(6, 'day').format('YYYY-MM-DD')
-
-        fetch(`http://localhost:8000/appointment/${firstDayOfWeek}/${lastDayOfWeek}`)
-            .then(res => {
-                return res.json()
-            })
-            .then(items => {
-                setData(items)
-                setState('loaded')
-            })
+        
+        get(route('appointment.show', { date_start: firstDayOfWeek, date_end: lastDayOfWeek }), {
+            preserveState: true,
+        })
     }, [dayObj])
+    
+    useMemo(() => {
+        if (flash) {
+            if (flash.appointment) {
+                setData(flash.appointment.list)
+            }
+        }
+    }, [flash])
     
     const handlePrev = () => { 
         setDayObj(dayObj.subtract(1, 'week'))
@@ -83,7 +84,7 @@ export default function Appointments() {
                 w={'100%'}
                 h={'95vh'}
             >
-                <DashboardSidebar state={'appointments'} />
+                <DashboardSidebar state={'appointments'} user={auth.user}/>
                 <Box>
                     <Box
                         w={'87vw'}
@@ -257,7 +258,7 @@ export default function Appointments() {
                                     w={'100%'}
                                     h={'1225px'}
                                 >
-                                    {state === 'loaded' && data ?
+                                    {!processing && data ?
                                         <AppointmentContent data={data} date={dayObj} />
                                         :
                                         <CircularProgress mx={'auto'} mt={'45vh'} isIndeterminate color='blue.300' />

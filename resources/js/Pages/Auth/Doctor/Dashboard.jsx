@@ -4,9 +4,30 @@ import DashboardSchedule from '@/Components/DashboardSchedule'
 import DashboardAppointments from '@/Components/DashboardAppointments'
 import DashboardAside from '@/Components/DashboardAside'
 import { usePage } from '@inertiajs/react'
+import { useEffect, useState } from 'react'
 
-export default function Dashboard() {
-  const { auth } = usePage().props
+export default function Dashboard({appointments, current_appointment, schedules}) {
+  const { auth, flash } = usePage().props
+  const [dashboardAppointments, setDashboardAppointments] = useState({
+    list: appointments,
+    current: current_appointment,
+  })
+  const [dashboardSchedule, setDashboardSchedule] = useState(schedules)
+
+  useEffect(() => {
+    if (flash) {
+      if (flash.appointment) {
+        setDashboardAppointments({
+          list: flash.appointment.list,
+          current: flash.appointment.current,
+        })
+      }
+  
+      if (flash.schedule) { 
+        setDashboardSchedule(flash.schedule.list)
+      }
+    }
+  }, [flash])
 
   return (
     <Grid
@@ -28,10 +49,10 @@ export default function Dashboard() {
         Header
       </GridItem>
       <GridItem area={'schedule'}>
-        <DashboardSchedule />
+        <DashboardSchedule width={'55vw'} height={'40vh'} schedule={dashboardSchedule} />
       </GridItem>
       <GridItem area={'appointment'}>
-        <DashboardAppointments />
+        <DashboardAppointments appointments={dashboardAppointments.list} current_appointment={dashboardAppointments.current} />
       </GridItem>
       <GridItem area={'aside'}>
         <DashboardAside />

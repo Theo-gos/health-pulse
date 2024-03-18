@@ -2,54 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Schedule;
+use App\Services\ScheduleService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ScheduleController extends Controller
 {
-    public function getAllBetweenDates(string $date_start, string $date_end)
+    private $scheduleService;
+
+    public function __construct(ScheduleService $scheduleService)
     {
-        $user = Auth::user();
-
-        $schedules = Schedule::where('doctor_id', $user->id)
-            ->select('doctor_id', 'id', 'task', 'location', 'date', 'start_time', 'end_time')
-            ->havingBetween('date', [$date_start, $date_end])
-            ->orderBy('date', 'asc')
-            ->orderBy('start_time', 'asc')
-            ->get();
-
-        $return = array();
-
-        foreach ($schedules as $schedule) {
-            $return[$schedule['date']][] = $schedule;
-        };
-
-        return $return;
+        $this->scheduleService = $scheduleService;
     }
 
-    public function getAllByDate(string $date)
+    public function store(Request $request)
     {
-        $user = Auth::user();
+        $message = $this->scheduleService->storeItemToDatabase($request);
 
-        $schedules = Schedule::where('doctor_id', $user->id)
-            ->select('doctor_id', 'id', 'task', 'location', 'date', 'start_time', 'end_time')
-            ->where('date', $date)
-            ->orderBy('start_time', 'asc')
-            ->get();
-
-        return $schedules;
+        return redirect()->back()->with('message', $message);
     }
 
-    public function getById(string $id)
+    public function edit(string $id)
     {
-        $user = Auth::user();
+        $item = $this->scheduleService->getItemById($id);
 
-        $schedule = Schedule::where('doctor_id', $user->id)
-            ->select('doctor_id', 'id', 'task', 'location', 'date', 'start_time', 'end_time')
-            ->where('id', $id)
-            ->get();
+        return redirect()->back()->with('schedule', [
+            'edit' => $item
+        ]);
+    }
 
-        return $schedule;
+    public function update(Request $request, int $id)
+    {
+        $message = $this->scheduleService->updateItemById($request, $id);
+
+        return redirect()->back()->with('message', $message);
+    }
+
+    public function delete(int $id)
+    {
+        $message = $this->scheduleService->deleteItemById($id);
+
+        return redirect()->back()->with('message', $message);
+    }
+
+    public function index()
+    {
+        $data = $this->scheduleService->showSchedulePage();
+
+        return Inertia::render('Auth/Doctor/Schedule', $data);
     }
 }

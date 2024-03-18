@@ -3,55 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
-use Illuminate\Http\Request;
+use App\Services\AppointmentService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class AppointmentController extends Controller
 {
-    public function getAllBetweenDates(string $date_start, string $date_end)
+    private $appointmentService;
+
+    public function __construct(AppointmentService $appointmentService)
     {
-        $user = Auth::user();
-
-        $appointments = Appointment::where('doctor_id', $user->id)
-            ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
-            ->havingBetween('date', [$date_start, $date_end])
-            ->orderBy('date', 'asc')
-            ->orderBy('start_time', 'asc')
-            ->get();
-
-        $return = array();
-
-        foreach ($appointments as $appointment) {
-            $return[date('l', strtotime($appointment['date']))][] = $appointment;
-        };
-
-        return $return;
+        $this->appointmentService = $appointmentService;
     }
 
-    public function getAllByDate(string $date)
+    public function show(string $date_start, string $date_end)
     {
-        $user = Auth::user();
+        $appointments = $this->appointmentService->getAllBetweenDates($date_start, $date_end);
 
-        $appointments = Appointment::where('doctor_id', $user->id)
-            ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
-            ->where('date', $date)
-            ->orderBy('start_time', 'asc')
-            ->get();
-
-        return $appointments;
+        return redirect()->back()->with('appointment', [
+            'list' => $appointments,
+        ]);
     }
 
-    public function getByHour(string $hour)
+    public function index()
     {
-        $user = Auth::user();
+        $appointments = $this->appointmentService->showAppointmentPage();
 
-        $appointment = Appointment::where('doctor_id', $user->id)
-            ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
-            ->where('start_time', '<',  $hour)
-            ->where('end_time', '>',  $hour)
-            ->get();
-
-        return $appointment;
+        return Inertia::render('Auth/Doctor/Appointments', [
+            'appointments' => $appointments,
+        ]);
     }
 }

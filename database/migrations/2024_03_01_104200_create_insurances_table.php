@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('insurances', function (Blueprint $table) {
             $table->foreignId('patient_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('code');
+            $table->string('code')->unique();
             $table->string('provider');
             $table->date('expiry_date');
             $table->timestamps();
