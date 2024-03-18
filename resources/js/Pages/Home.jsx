@@ -26,23 +26,54 @@ import {
     IconButton,
     Select,
     FormErrorMessage,
+    Container,
+    Circle,
+    Card,
+    CardBody,
+    CardFooter,
+    ButtonGroup,
+    Image,
 } from "@chakra-ui/react"
 import { useEffect, useRef, useState } from "react"
 import Logo from "./Shared/Logo"
 import { useForm, Link, usePage } from "@inertiajs/react"
 import dialCode from '../Assets/data/dial-code.json'
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons"
+import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpIcon } from "@chakra-ui/icons"
+import React from "react"
 import PatientLayout from '@/Layouts/PatientLayout'
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import ClinicCard from "@/Components/ClinicCard"
+
+const clinics = [
+    {
+        name: 'M Plaza',
+        location: '1st Floor, M Plaza - 39 Le Duan, Ben Nghe, District 1, HCMC',
+        time: 'Everyday, 08:00 - 20:00',
+        timeAvailable: '10:45'
+    },
+    {
+        name: 'Republic Plaza',
+        location: 'Ground floor, 18E Cong Hoa, Ward 4, Tan Binh, HCMC',
+        time: 'Everyday, 08:00 - 20:00',
+        timeAvailable: '10:15'
+    },
+    {
+        name: 'Q2 Thao Dien',
+        location: '21 Vo Truong Toan (Street 10 Gate), Thao Dien, District 2, HCMC',
+        time: 'Everyday, 08:00 - 20:00',
+        timeAvailable: '11:00'
+    }
+]
 
 export default function Home() {
-    
-    // const initialRef = useRef(null)
-    // const { isOpen, onOpen, onClose } = useDisclosure()
-    // const { data, setData, errors, setError, post } = useForm({
-    //     email: '',
-    // });
     const [windowSize, setWindowSize] = useState(window.innerWidth)
+    const { get } = useForm()
     const { data } = usePage().props
+
+    const bookingHandler = () => {
+        get(route('patient.booking'))
+    }
 
     return (
         <PatientLayout
@@ -50,9 +81,250 @@ export default function Home() {
             name={data ? data.name : ''}
         >
 
-            <Box>
-                {data ? <Text>{data.name}</Text> : ''}
-                Hello World
+            <Box
+                w={'100vw'}
+            >
+                <Box
+                    position={'relative'}
+
+                    w={'100%'}
+
+                    pb={'10px'}
+                >
+                    <Carousel
+                        width={'100%'}
+                        
+                        autoPlay
+                        showThumbs={false}
+                        showStatus={false}
+                        showIndicators={false}
+                        infiniteLoop={true}
+                        stopOnHover={true}
+
+                        renderArrowNext={(clickHandler, hasNext) => {
+                            return (
+                              hasNext && (
+                                    <Circle
+                                        onClick={clickHandler}
+                                        bg={'white'}
+
+                                        position={'absolute'}
+                                        top={'50%'}
+                                        right={'5%'}
+                                        zIndex={4}
+                                    
+                                        transform={'translateY(-50%)'}
+                                        
+                                        size={'40px'}
+
+                                        color={'gray.500'}
+
+                                        style={{
+                                            cursor: 'pointer',
+                                            boxShadow: '1px 1px 5px 1px gray',
+                                        }}
+
+                                        _hover={{
+                                            opacity: '0.7',
+                                        }}
+                                    >
+                                        <ChevronRightIcon />
+                                    </Circle>
+                              )
+                            );
+                        }}
+                        
+                        renderArrowPrev={(clickHandler, hasPrev) => {
+                            return (
+                                hasPrev && (
+                                    <Circle
+                                        onClick={clickHandler}
+                                        bg={'white'}
+
+                                        position={'absolute'}
+                                        top={'50%'}
+                                        left={'5%'}
+                                        zIndex={4}
+                                    
+                                        transform={'translateY(-50%)'}
+                                        
+                                        size={'40px'}
+
+                                        color={'gray.500'}
+
+                                        style={{
+                                            cursor: 'pointer',
+                                            boxShadow: '1px 1px 5px 1px gray',
+                                        }}
+
+                                        _hover={{
+                                            opacity: '0.7',
+                                        }}
+                                    >
+                                        <ChevronLeftIcon />
+                                    </Circle>
+                                )
+                            );
+                        }}
+                    >
+                        <Box
+                            width={'80%'}
+                            mx={'auto'}
+                            mt={'40px'}
+                        >
+                            <img
+                                style={{
+                                    borderRadius: '50px',
+                                }}
+                                width={'50%'}
+                                alt=""
+                                src="https://nursesgroup.co.uk/assets/images/blog/healthcare-technology.jpg"
+                            />
+                        </Box>
+                        <Box
+                            width={'80%'}
+                            mx={'auto'}
+                            mt={'40px'}
+                        >
+                            <img
+                                style={{
+                                    borderRadius: '50px',
+                                }}
+                                width={'50%'}
+                                alt=""
+                                src="https://nursesgroup.co.uk/assets/images/blog/healthcare-technology.jpg"
+                            />
+                        </Box>
+                        <Box
+                            width={'80%'}
+                            mx={'auto'}
+                            mt={'40px'}
+                        >
+                            <img
+                                style={{
+                                    borderRadius: '50px',
+                                }}
+                                width={'50%'}
+                                alt=""
+                                src="https://nursesgroup.co.uk/assets/images/blog/healthcare-technology.jpg"
+                            />
+                        </Box>
+                        <Box
+                            width={'80%'}
+                            mx={'auto'}
+                            mt={'40px'}
+                        >
+                            <img
+                                style={{
+                                    borderRadius: '50px',
+                                }}
+                                width={'50%'}
+                                alt=""
+                                src="https://nursesgroup.co.uk/assets/images/blog/healthcare-technology.jpg"
+                            />
+                        </Box>
+                    </Carousel>
+
+                    <Flex
+                        direction={'column'}
+                        justify={'center'}
+
+                        position={'absolute'}
+                        left={40}
+                        bottom={20}
+
+                        borderRadius={'xl'}
+
+                        w={'25%'}
+                        h={'30%'}
+                        py={'8px'}
+                        px={'8px'}
+
+                        bg={'white'}
+                        opacity={'0.9'}
+
+                        zIndex={'5'}
+                    >
+                        <Box
+                            fontSize={'25px'}
+
+                            h={'60%'}
+                            w={'85%'}
+
+                            py={'10px'}
+
+                            color={'#1366DE'}
+                        >
+                            Let us help look after your health
+                        </Box>
+                        <Button
+                            onClick={bookingHandler}
+                            w={'60%'}
+                            mt={'8px'}
+
+                            borderRadius={'30px'}
+
+                            colorScheme={'blue'}
+
+                            fontSize={'12px'}
+                        >
+                            Book Appointment
+                        </Button>
+                    </Flex>
+                </Box>
+
+                {/* <Box
+                    w={'100%'}
+                    h={'83vh'}
+
+                    bg={'#E8F0FC'}
+
+                    px={'15%'}
+                    pt={'32px'}
+                >
+                    <Box fontSize={'42px'} color={'#1366DE'}>Explore our clinics</Box>
+                    <Flex
+                        justify={'space-between'}
+
+                        mt={'20px'}
+                    >
+                        
+                        {clinics.map((clinic, index) => (
+                            <ClinicCard
+                                key={index}
+                                name={clinic.name}
+                                location={clinic.location}
+                                time={clinic.time}
+                                nextAvailableTime={clinic.timeAvailable}
+                            />
+                        ))}
+                    </Flex>
+                </Box> */}
+
+                <Flex
+                    justify={'center'}
+                    w={'100%'}
+                    h={'75vh'}
+                    pt={'3%'}
+                >
+                    <Card
+                        style={{ 
+                            backgroundImage: `url('https://cdn.jiohealth.com/jio-website/home-page/jio-website-v2.2/assets/images/homepage/find-doctor-bg.png?v=1')`,
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: 'cover',
+                            width:'20%' 
+                        }}
+
+                        bg={'blue.100'}
+
+                        borderRadius={'25px'}
+                        w={'20%'}
+                        h={'90%'}
+                        p={'36px 24px'}
+                    >
+                        <Box fontSize={'28px'} color={'#1366DE'}>Find a doctor</Box>
+                    </Card>
+                </Flex>
             </Box>
 
             {/* <Modal

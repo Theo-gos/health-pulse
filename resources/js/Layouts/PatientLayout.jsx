@@ -34,12 +34,17 @@ import dialCode from '../Assets/data/dial-code.json'
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons"
 
 export default function PatientLayout({ children, auth, name }) {
-    
     const [windowSize, setWindowSize] = useState(window.innerWidth)
+
+    const { get } = useForm()
 
     window.addEventListener('resize', () => { 
         setWindowSize(window.innerWidth)
     })
+
+    const bookingHandler = () => {
+        get(route('patient.booking'))
+    }
 
     return (
         <Box>
@@ -80,76 +85,89 @@ export default function PatientLayout({ children, auth, name }) {
                                     </Box>
                                 </Link>
                             </Box>
-                            <UnorderedList listStyleType={'none'}>
-                                <ListItem float={'left'}>
-                                    <Link
-                                        style={{
-                                            textDecoration: 'none',
-                                            display: 'block',
-                                            padding: '20px 2px',
-                                            mr: '9px',
-                                            color: 'gray.500',
-                                            fontSize: '16px',
+                            {auth ? 
+                                <UnorderedList listStyleType={'none'}>
+                                    <ListItem
+                                        float={'left'}
+                                        _hover={{
+                                            backgroundColor: '#EDF2F7',
+                                            color: 'gray',
                                         }}
-                                        href="/"
+                                        borderRadius={'md'}
+                                        mr={'12px'}
+                                        p={'0 4px'}
                                     >
-                                        <Text _hover={{color: 'gray.700'}} >
-                                            Menu Item 1
-                                        </Text>
-                                    </Link>
-                                </ListItem>
-                                <ListItem float={'left'}>
-                                    <Link
-                                        style={{
-                                            textDecoration: 'none',
-                                            display: 'block',
-                                            padding: '20px 2px',
-                                            mr: '9px',
-                                            color: 'gray.500',
-                                            fontSize: '16px',
+                                        <Link
+                                            style={{
+                                                textDecoration: 'none',
+                                                display: 'block',
+                                                padding: '20px 2px',
+                                                mr: '12px',
+                                                color: 'gray.500',
+                                                fontSize: '16px',
+                                            }}
+                                            href="/"
+                                        >
+                                            <Text>
+                                                Appointments
+                                            </Text>
+                                        </Link>
+                                    </ListItem>
+                                    <ListItem
+                                        float={'left'}
+                                        _hover={{
+                                            backgroundColor: '#EDF2F7',
+                                            color: 'gray',
                                         }}
-                                        href="/"
+                                        borderRadius={'md'}
+                                        mr={'12px'}
+                                        p={'0 4px'}
                                     >
-                                        <Text _hover={{color: 'gray.700'}} >
-                                            Menu Item 1
-                                        </Text>
-                                    </Link>
-                                </ListItem>
-                                <ListItem float={'left'}>
-                                    <Link
-                                        style={{
-                                            textDecoration: 'none',
-                                            display: 'block',
-                                            padding: '20px 2px',
-                                            mr: '9px',
-                                            color: 'gray.500',
-                                            fontSize: '16px',
+                                        <Link
+                                            style={{
+                                                textDecoration: 'none',
+                                                display: 'block',
+                                                padding: '20px 2px',
+                                                mr: '12px',
+                                                color: 'gray.500',
+                                                fontSize: '16px',
+                                            }}
+                                            href="/"
+                                        >
+                                            <Text>
+                                                Prescriptions
+                                            </Text>
+                                        </Link>
+                                    </ListItem>
+                                    <ListItem
+                                        float={'left'}
+                                        _hover={{
+                                            backgroundColor: '#EDF2F7',
+                                            color: 'gray',
                                         }}
-                                        href="/"
+                                        borderRadius={'md'} 
+                                        p={'0 4px'}
                                     >
-                                        <Text _hover={{color: 'gray.700'}} >
-                                            Menu Item 1
-                                        </Text>
-                                    </Link>
-                                </ListItem>
-                                <ListItem float={'left'}>
-                                    <Link
-                                        style={{
-                                            textDecoration: 'none',
-                                            display: 'block',
-                                            padding: '20px 2px',
-                                            mr: '9px',
-                                            color: 'gray.500',
-                                            fontSize: '16px',
-                                        }}
-                                        href="/"
-                                    >
-                                        <Text _hover={{color: 'gray.700'}} >
-                                            Menu Item 1
-                                        </Text>
-                                    </Link>
-                                </ListItem>
-                            </UnorderedList>
+                                        <Link
+                                            style={{
+                                                textDecoration: 'none',
+                                                display: 'block',
+                                                padding: '20px 2px',
+                                                mr: '12px',
+                                                color: 'gray.500',
+                                                fontSize: '16px',
+                                            }}
+                                            href="/"
+                                        >
+                                            <Text>
+                                                Medical Record
+                                            </Text>
+                                        </Link>
+                                    </ListItem>
+                                </UnorderedList>
+                                :
+                                ''
+                            }
                         </Flex>
                         <Flex
                             marginRight= {'0'}
@@ -161,7 +179,7 @@ export default function PatientLayout({ children, auth, name }) {
                                 alignItems={'center'}
                                 listStyleType={'none'}
                             >
-                                <ListItem id="search" mr={'10px'}>
+                                {/* <ListItem id="search" mr={'10px'}>
                                     <Input
                                         borderColor={'gray.300'}
                                         borderRadius={'lg'}
@@ -173,9 +191,22 @@ export default function PatientLayout({ children, auth, name }) {
                                         id="search-bar"
                                         placeholder="Search Bar..."
                                     />
-                                </ListItem>
+                                </ListItem> */}
                                 {!auth ? 
-                                    <ListItem>
+                                    <ListItem
+                                        _hover={{
+                                            backgroundColor: '#EDF2F7',
+                                            color: 'gray',
+                                        }}
+                                        style={{
+                                            cursor: 'pointer'
+                                        }}
+                                        h={'100%'}
+                                        display={'flex'}
+                                        alignItems={'center'}
+                                        borderRadius={'md'}
+                                        p={'0 4px'}
+                                    >
                                         <a
                                             href={route('patient.google.redirect')}
                                         >
@@ -184,11 +215,43 @@ export default function PatientLayout({ children, auth, name }) {
                                     </ListItem>
                                     :
                                     <>
+                                        <ListItem
+                                            onClick={bookingHandler}
+                                            _hover={{
+                                                backgroundColor: '#EDF2F7',
+                                                color: 'gray',
+                                            }}
+                                            style={{
+                                                cursor: 'pointer'
+                                            }}
+                                            h={'100%'}
+                                            display={'flex'}
+                                            alignItems={'center'}
+                                            borderRadius={'md'}
+                                            mr={'10px'}
+                                            p={'0 4px'}
+                                        >
+                                            <Text>Book an appointment</Text>
+                                        </ListItem>
                                         <ListItem mr={'10px'}>
                                             <Text>Welcome, {name}</Text>
                                         </ListItem>
-                                        <ListItem>
-                                                <Link href={route('patient.logout')}>Log Out</Link>
+                                        <ListItem
+                                            _hover={{
+                                                backgroundColor: '#EDF2F7',
+                                                color: 'gray',
+                                            }}
+                                            style={{
+                                                cursor: 'pointer'
+                                            }}
+                                            h={'100%'}
+                                            display={'flex'}
+                                            alignItems={'center'}
+                                            borderRadius={'md'}
+                                            mr={'10px'}
+                                            p={'0 4px'}
+                                        >
+                                            <Link href={route('patient.logout')}>Log Out</Link>
                                         </ListItem>
                                     </>
                                 }
@@ -199,9 +262,17 @@ export default function PatientLayout({ children, auth, name }) {
                 
             </Box>
             <Box
-                mt={75}
+                mt={'9vh'}
             >
                 {children}
+            </Box>
+            <Box
+                    w={'100%'}
+                    h={'75vh'}
+
+                    bg={'purple.100'}
+                >
+                    Footer
             </Box>
         </Box>
     )
