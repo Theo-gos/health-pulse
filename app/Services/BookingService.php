@@ -9,15 +9,13 @@ use Inertia\Inertia;
 class BookingService
 {
     private $doctorService;
-    private $patientService;
 
-    public function __construct(DoctorService $doctorService, PatientService $patientService)
+    public function __construct(DoctorService $doctorService)
     {
         $this->doctorService = $doctorService;
-        $this->patientService = $patientService;
     }
 
-    public function showBookingPage()
+    public function getBookingData()
     {
         $services = Service::all();
         $doctors = $this->doctorService->getAllDoctors();

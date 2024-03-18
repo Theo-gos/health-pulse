@@ -26,7 +26,7 @@ class PatientController extends Controller
 
     public function booking()
     {
-        $data = $this->bookingService->showBookingPage();
+        $data = $this->bookingService->getBookingData();
 
         return Inertia::render('Auth/Patient/AppointmentBooking', [
             'bookingData' => $data,
