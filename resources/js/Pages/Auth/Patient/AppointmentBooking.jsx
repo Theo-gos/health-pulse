@@ -9,20 +9,24 @@ import {
     SimpleGrid,
     Stack,
 } from "@chakra-ui/react";
-import { useForm } from "@inertiajs/react";
-import { useState } from "react";
+import { useForm, usePage } from "@inertiajs/react";
+import { useMemo, useState } from "react";
 import ServiceCard from "../../../Components/ServiceCard";
 import AppointmentBookingContent from "@/Components/AppointmentBookingContent";
 
 export default function AppointmentBooking({bookingData}) {
-    const { post, data, setData } = useForm({
+    const { post, data, setData, errors, setError } = useForm({
         service: 0,
         doctor: 0,
-        time: '',
+        date: '',
+        time: {},
     })
     const dataManager = {
         data: data,
         changeData: setData,
+        errors: errors,
+        setError: setError,
+        post: post,
     }
 
     const [view, setView] = useState('Service')
@@ -31,7 +35,7 @@ export default function AppointmentBooking({bookingData}) {
         changeView: setView,
     }
 
-    console.log(bookingData)
+    const { message } = usePage().props
 
     return (
         <PatientLayout>
@@ -66,7 +70,14 @@ export default function AppointmentBooking({bookingData}) {
 
                         bg={'white'}
                     >
-                        <AppointmentBookingContent data={view == 'Service' && bookingData ? bookingData.services : bookingData.doctors} viewManager={viewManager} dataManager={dataManager} />
+                        <AppointmentBookingContent
+                            data={view == 'Service' && bookingData ? bookingData.services : bookingData.doctors}
+                            bookedAppointments={bookingData ? bookingData.bookedAppointments : {}}
+                            duration={view == 'Doctor' ? bookingData.services[dataManager.data.service - 1].duration : ''}
+                            
+                            viewManager={viewManager}
+                            dataManager={dataManager}
+                        />
                     </Box>
                 </Box>
             </Box>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AppointmentBooked;
 use App\Models\Patient;
 use App\Services\BookingService;
 use App\Services\PatientService;
@@ -12,8 +13,9 @@ use Inertia\Response;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
-class PatientController extends Controller
+class PatientBookingController extends Controller
 {
     private $patientService;
     private $bookingService;
@@ -31,5 +33,15 @@ class PatientController extends Controller
         return Inertia::render('Auth/Patient/AppointmentBooking', [
             'bookingData' => $data,
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        $patient = Patient::find(1);
+        $message = $this->bookingService->storeNewAppointment($request);
+
+        Mail::to($patient->email)->send(new AppointmentBooked);
+
+        return redirect()->route('patient.booking')->with('message', $message);
     }
 }

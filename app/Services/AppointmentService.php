@@ -62,4 +62,22 @@ class AppointmentService
 
         return $this->getAllBetweenDates($first_day_this_week, $last_day_this_week);
     }
+
+    public function storeToDatabase($data)
+    {
+        $appointment = Appointment::create($data);
+
+        if ($appointment) {
+            return [
+                'message' => 'Stored to database',
+                'type' => 'success',
+                'appointment' => $appointment->only('date', 'doctor_id', 'end_time', 'patient_name', 'start_time', 'id'),
+            ];
+        } else {
+            return [
+                'message' => 'Fail to store',
+                'type' => 'error',
+            ];
+        }
+    }
 }
