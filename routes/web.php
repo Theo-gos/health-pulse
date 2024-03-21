@@ -21,11 +21,6 @@ use Inertia\Inertia;
 |
 */
 
-// Components developing
-Route::get('/component', function () {
-    return Inertia::render('Component');
-})->name('component');
-
 // Patient
 Route::get('/', function () {
     return Inertia::render('Home');
