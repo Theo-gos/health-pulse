@@ -54,10 +54,6 @@ class DashboardService
 
     public function getScheduleByDates(string $start_date, string $end_date)
     {
-        $schedule = $this->scheduleService->getAllBetweenDates($start_date, $end_date);
-
-        return [
-            'list' => $schedule,
-        ];
+        return $this->scheduleService->getAllBetweenDates($start_date, $end_date);
     }
 }

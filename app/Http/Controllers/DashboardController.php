@@ -33,6 +33,8 @@ class DashboardController extends Controller
     {
         $schedule = $this->dashboardService->getScheduleByDates($start_date, $end_date);
 
-        return redirect()->back()->with('schedule', $schedule);
+        return redirect()->back()->with('schedule', [
+            'list' => $schedule,
+        ]);
     }
 }

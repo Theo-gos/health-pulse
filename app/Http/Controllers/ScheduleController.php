@@ -18,9 +18,7 @@ class ScheduleController extends Controller
 
     public function store(ScheduleRequest $request)
     {
-        $validated = $request->validated();
-
-        $schedule = $this->scheduleService->store($validated);
+        $schedule = $this->scheduleService->store($request->all());
         $message = array();
 
         if ($schedule) {

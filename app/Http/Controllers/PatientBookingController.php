@@ -38,9 +38,7 @@ class PatientBookingController extends Controller
 
     public function store(AppointmentBookingRequest $request)
     {
-        $validated = $request->validated();
-
-        $appointment = $this->bookingService->store($validated);
+        $appointment = $this->bookingService->store($request->all());
         $message = array();
 
         if ($appointment) {
@@ -49,6 +47,9 @@ class PatientBookingController extends Controller
                 'type' => 'success',
                 'appointment' => $appointment->only('date', 'doctor_id', 'end_time', 'patient_name', 'start_time', 'id'),
             ];
+
+            $patient = Patient::find(1);
+            Mail::to($patient->email)->send(new AppointmentBooked);
         } else {
             $message = [
                 'message' => 'Failed to store',
@@ -56,8 +57,6 @@ class PatientBookingController extends Controller
             ];
         }
 
-        $patient = Patient::find(1);
-        Mail::to($patient->email)->send(new AppointmentBooked);
 
         return redirect()->back()->with('message', $message);
     }
