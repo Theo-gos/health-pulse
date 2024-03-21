@@ -30,13 +30,13 @@ import { useEffect, useState } from "react";
 import Logo from "@/Pages/Shared/Logo";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 
-const topOptions = ['dashboard', 'appointments', 'patients', 'schedule']
+const topOptions = ['dashboard', 'appointments', 'records', 'schedule']
 const botOptions = ['prescriptions', 'test_results']
 const otherOptions = ['notification']
 const icons = {
     'dashboard': BsFillGridFill,
     'appointments': BsCalendar2EventFill,
-    'patients': BsPersonFill,
+    'records': BsPersonFill,
     'schedule': BsFillClockFill,
     'prescriptions': BsCapsule,
     'test_results': BsFillFolderFill,

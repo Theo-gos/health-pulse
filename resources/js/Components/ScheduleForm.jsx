@@ -82,6 +82,7 @@ export default function ScheduleForm({ modeManager, idManager, editData }) {
             patch(route('schedule.update', {id: id}), {
                 onSuccess: () => {
                     changeMode('add')
+                    reset()
                 }
             })
         }
@@ -89,7 +90,12 @@ export default function ScheduleForm({ modeManager, idManager, editData }) {
     }
 
     const handleDelete = (id) => {
-        destroy(route('schedule.delete', {id: id}))
+        destroy(route('schedule.delete', { id: id }), {
+            onSuccess: () => {
+                changeMode('add')
+                reset()
+            }
+        })
     }
 
     return (

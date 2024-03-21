@@ -9,10 +9,11 @@ import {
 import { usePage } from "@inertiajs/react";
 import { useEffect, useMemo, useState } from "react";
 
-export default function Schedule({calendar, aside}) {
+export default function Schedule({calendars, aside}) {
     const { auth, message, flash } = usePage().props
-    let calendarData = calendar
+    let calendarData = calendars
     let asideData = aside
+    
     const [editData, setEditData] = useState({})
 
     const [mode, setMode] = useState('add')

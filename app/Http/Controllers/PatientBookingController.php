@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AppointmentBookingRequest;
 use App\Mail\AppointmentBooked;
 use App\Models\Patient;
 use App\Services\BookingService;
@@ -35,13 +36,29 @@ class PatientBookingController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(AppointmentBookingRequest $request)
     {
-        $patient = Patient::find(1);
-        $message = $this->bookingService->storeNewAppointment($request);
+        $validated = $request->validated();
 
+        $appointment = $this->bookingService->store($validated);
+        $message = array();
+
+        if ($appointment) {
+            $message = [
+                'message' => 'Stored to database',
+                'type' => 'success',
+                'appointment' => $appointment->only('date', 'doctor_id', 'end_time', 'patient_name', 'start_time', 'id'),
+            ];
+        } else {
+            $message = [
+                'message' => 'Failed to store',
+                'type' => 'error',
+            ];
+        }
+
+        $patient = Patient::find(1);
         Mail::to($patient->email)->send(new AppointmentBooked);
 
-        return redirect()->route('patient.booking')->with('message', $message);
+        return redirect()->back()->with('message', $message);
     }
 }
