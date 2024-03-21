@@ -6,17 +6,24 @@ use App\Models\Doctor;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
-class DoctorService
+class DoctorService extends BaseService
 {
-    public function getAllDoctors()
+    public function getModel()
     {
-        return Doctor::select('doctors.id', 'service_id', 'doctors.name', 'avatar', 'services.type')
+        return Doctor::class;
+    }
+
+    public function getAll()
+    {
+        return $this->model->select('doctors.id', 'service_id', 'doctors.name', 'avatar', 'services.type')
             ->join('services', 'doctors.service_id', '=', 'services.id')
             ->get();
     }
 
-    public function getDoctorById(string $id)
+    public function getAllWithAppointments()
     {
-        return Doctor::findOrFail($id);
+        return $this->model
+            ->with(['appointments', 'service'])
+            ->get();
     }
 }

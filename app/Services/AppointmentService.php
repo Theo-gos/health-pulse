@@ -6,13 +6,34 @@ use App\Models\Appointment;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
-class AppointmentService
+class AppointmentService extends BaseService
 {
-    public function getAllBetweenDates(string $date_start, string $date_end)
+    public function getModel()
     {
-        $user = Auth::user();
+        return Appointment::class;
+    }
 
-        $appointments = Appointment::where('doctor_id', $user->id)
+    protected function roleCheck(?int $doctor_id, ?int $patient_id)
+    {
+        $query_string = 'doctor_id';
+        $query_param = $doctor_id;
+        if ($patient_id) {
+            $query_string = 'patient_id';
+            $query_param = $patient_id;
+        }
+
+        return [
+            'query_string' => $query_string,
+            'query_param' => $query_param,
+        ];
+    }
+
+    // Get all appointments between two given dates
+    public function getAllBetweenDates(string $date_start, string $date_end, ?int $doctor_id, ?int $patient_id)
+    {
+        $query_info = $this->roleCheck($doctor_id, $patient_id);
+
+        $appointments = $this->model->where($query_info['query_string'], $query_info['query_param'])
             ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
             ->havingBetween('date', [$date_start, $date_end])
             ->orderBy('date', 'asc')
@@ -28,11 +49,12 @@ class AppointmentService
         return $appointmentList;
     }
 
-    public function getAllByDate(string $date)
+    // Get all appointments of a single day
+    public function getAllByDate(string $date, ?int $doctor_id, ?int $patient_id)
     {
-        $user = Auth::user();
+        $query_info = $this->roleCheck($doctor_id, $patient_id);
 
-        $appointments = Appointment::where('doctor_id', $user->id)
+        $appointments = $this->model->where($query_info['query_string'], $query_info['query_param'])
             ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
             ->where('date', $date)
             ->orderBy('start_time', 'asc')
@@ -41,11 +63,12 @@ class AppointmentService
         return $appointments;
     }
 
-    public function getByHourAndDate(string $hour, string $date)
+    // Get the current ongoing appointment of the day
+    public function getByHourAndDate(string $hour, string $date, ?int $doctor_id, ?int $patient_id)
     {
-        $user = Auth::user();
+        $query_info = $this->roleCheck($doctor_id, $patient_id);
 
-        $appointment = Appointment::where('doctor_id', $user->id)
+        $appointment = $this->model->where($query_info['query_string'], $query_info['query_param'])
             ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
             ->where('date', $date)
             ->where('start_time', '<',  $hour)
@@ -55,11 +78,13 @@ class AppointmentService
         return $appointment;
     }
 
-    public function showAppointmentPage()
+    // Get all appointments of this week
+    public function getAllOfThisWeek()
     {
+        $doctor_id = Auth::user()->id;
         $first_day_this_week = date("Y-m-d", strtotime('monday this week'));
         $last_day_this_week  = date("Y-m-d", strtotime('sunday this week'));
 
-        return $this->getAllBetweenDates($first_day_this_week, $last_day_this_week);
+        return $this->getAllBetweenDates($first_day_this_week, $last_day_this_week, $doctor_id, null);
     }
 }
