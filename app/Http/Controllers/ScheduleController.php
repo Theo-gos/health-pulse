@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ScheduleRequest;
 use App\Services\ScheduleService;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ScheduleController extends Controller
@@ -19,7 +18,7 @@ class ScheduleController extends Controller
     public function store(ScheduleRequest $request)
     {
         $schedule = $this->scheduleService->store($request->all());
-        $message = array();
+        $message = [];
 
         if ($schedule) {
             $message = [
@@ -42,7 +41,7 @@ class ScheduleController extends Controller
         $schedule = $this->scheduleService->getById($id);
 
         return redirect()->back()->with('schedule', [
-            'edit' => $schedule
+            'edit' => $schedule,
         ]);
     }
 
@@ -50,7 +49,7 @@ class ScheduleController extends Controller
     {
         $validated = $request->validated();
         $status = $this->scheduleService->updateById($validated, $id);
-        $message = array();
+        $message = [];
 
         if ($status) {
             $message = [
@@ -70,7 +69,7 @@ class ScheduleController extends Controller
     public function delete(int $id)
     {
         $status = $this->scheduleService->deleteById($id);
-        $message = array();
+        $message = [];
 
         if ($status) {
             $message = [

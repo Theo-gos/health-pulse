@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use Illuminate\Http\RedirectResponse;
-use Inertia\Inertia;
-use Inertia\Response;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
 
 // use App\Providers\RouteServiceProvider;
 // use Exception;
@@ -30,11 +27,11 @@ class PatientLogInController extends Controller
         $googleUser = Socialite::driver('google')->user();
 
         $user = Patient::firstOrCreate([
-            'email' => $googleUser->email
+            'email' => $googleUser->email,
         ], [
             'name' => $googleUser->name,
             'email' => $googleUser->email,
-            'google_id' => $googleUser->id
+            'google_id' => $googleUser->id,
         ]);
 
         return redirect()->route('home')->with('data', [

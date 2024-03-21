@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 
 class AppointmentService extends BaseService
 {
@@ -40,11 +39,11 @@ class AppointmentService extends BaseService
             ->orderBy('start_time', 'asc')
             ->get();
 
-        $appointmentList = array();
+        $appointmentList = [];
 
         foreach ($appointments as $appointment) {
             $appointmentList[date('l', strtotime($appointment['date']))][] = $appointment;
-        };
+        }
 
         return $appointmentList;
     }
@@ -71,8 +70,8 @@ class AppointmentService extends BaseService
         $appointment = $this->model->where($query_info['query_string'], $query_info['query_param'])
             ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
             ->where('date', $date)
-            ->where('start_time', '<',  $hour)
-            ->where('end_time', '>',  $hour)
+            ->where('start_time', '<', $hour)
+            ->where('end_time', '>', $hour)
             ->get();
 
         return $appointment;
@@ -82,8 +81,8 @@ class AppointmentService extends BaseService
     public function getAllOfThisWeek()
     {
         $doctor_id = Auth::user()->id;
-        $first_day_this_week = date("Y-m-d", strtotime('monday this week'));
-        $last_day_this_week  = date("Y-m-d", strtotime('sunday this week'));
+        $first_day_this_week = date('Y-m-d', strtotime('monday this week'));
+        $last_day_this_week = date('Y-m-d', strtotime('sunday this week'));
 
         return $this->getAllBetweenDates($first_day_this_week, $last_day_this_week, $doctor_id, null);
     }

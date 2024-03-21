@@ -2,9 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
-
 abstract class BaseService
 {
     protected $model;

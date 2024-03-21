@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\Models\Doctor;
-use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 
 class DoctorService extends BaseService
 {

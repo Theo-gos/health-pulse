@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Schedule;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Carbon;
 
 class ScheduleService extends BaseService
 {
@@ -34,11 +33,11 @@ class ScheduleService extends BaseService
             ->orderBy('start_time', 'asc')
             ->get();
 
-        $schedulesList = array();
+        $schedulesList = [];
 
         foreach ($schedules as $schedule) {
             $schedulesList[$schedule['date']][] = $schedule;
-        };
+        }
 
         return $schedulesList;
     }
@@ -56,7 +55,6 @@ class ScheduleService extends BaseService
 
         return $schedules;
     }
-
 
     public function getById(string $id)
     {
@@ -83,9 +81,9 @@ class ScheduleService extends BaseService
                 'doctor_id' => $user->id,
                 'task' => $data['task'],
                 'date' => $data['date'],
-                'location' => $data['office'] . ', ' . $data['floor'] . ', ' . $data['room'],
-                'start_time' => $data['time_start'] . ':00',
-                'end_time' => $data['time_end'] . ':00',
+                'location' => $data['office'].', '.$data['floor'].', '.$data['room'],
+                'start_time' => $data['time_start'].':00',
+                'end_time' => $data['time_end'].':00',
             ]);
 
             return $schedule;
@@ -108,7 +106,7 @@ class ScheduleService extends BaseService
 
             $item->task = $data['task'];
             $item->date = $data['date'];
-            $item->location = $data['office'] . ', ' . $data['floor'] . ', ' . $data['room'];
+            $item->location = $data['office'].', '.$data['floor'].', '.$data['room'];
             $item->start_time = $data['time_start'];
             $item->end_time = $data['time_end'];
 
@@ -123,7 +121,7 @@ class ScheduleService extends BaseService
     public function getScheduleAndAside()
     {
         $first_day_this_month = date('Y-m-01');
-        $last_day_this_month  = date('Y-m-t');
+        $last_day_this_month = date('Y-m-t');
 
         $calendars = $this->getAllBetweenDates($first_day_this_month, $last_day_this_month);
         $aside = array_filter($calendars, function ($k) {

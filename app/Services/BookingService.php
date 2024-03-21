@@ -3,13 +3,11 @@
 namespace App\Services;
 
 use App\Models\Service;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 
 class BookingService extends BaseService
 {
     private $doctorService;
+
     private $appointmentService;
 
     public function __construct(DoctorService $doctorService, AppointmentService $appointmentService)
@@ -26,7 +24,7 @@ class BookingService extends BaseService
 
     public function getBookingData()
     {
-        $today = date("Y-m-d", strtotime('today'));
+        $today = date('Y-m-d', strtotime('today'));
 
         $services = $this->model->all();
         $doctors = $this->doctorService->getAllWithAppointments();
@@ -34,15 +32,16 @@ class BookingService extends BaseService
             $doctor['type'] = $doctor->service->type;
         }
 
-        $appointments = array();
+        $appointments = [];
         foreach ($doctors as $doctor) {
             $appointments[$doctor['id']] = $doctor->appointments->sortBy('start_time');
         }
 
-        $bookedAppointments = array();
+        $bookedAppointments = [];
         foreach ($appointments as $key => $appointment) {
-            foreach ($appointment as $val)
+            foreach ($appointment as $val) {
                 $bookedAppointments[$key][$val['date']][] = $val;
+            }
         }
 
         return [

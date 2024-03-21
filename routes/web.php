@@ -2,10 +2,9 @@
 
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PatientLogInController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientBookingController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PatientLogInController;
 use App\Http\Controllers\ScheduleController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -37,7 +36,6 @@ Route::get('/patient/callback', [PatientLogInController::class, 'callback'])->na
 Route::get('/patient/logout', [PatientLogInController::class, 'destroy'])->name('patient.logout');
 Route::get('/patient/booking', [PatientBookingController::class, 'booking'])->name('patient.booking');
 Route::post('/patient/booking', [PatientBookingController::class, 'store'])->name('patient.booking.store');
-
 
 //Doctor
 // Dashboard
@@ -72,5 +70,4 @@ Route::middleware(['auth'])->group(function () {
 //Auth
 Route::get('doctor/login', [DoctorController::class, 'create'])->name('doctor.login.create');
 
-
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

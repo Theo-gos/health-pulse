@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\AppointmentBookingRequest;
 use App\Mail\AppointmentBooked;
 use App\Models\Patient;
 use App\Services\BookingService;
 use App\Services\PatientService;
-use Illuminate\Http\RedirectResponse;
-use Inertia\Inertia;
-use Inertia\Response;
-use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Inertia\Inertia;
 
 class PatientBookingController extends Controller
 {
     private $patientService;
+
     private $bookingService;
 
     public function __construct(PatientService $patientService, BookingService $bookingService)
@@ -39,7 +34,7 @@ class PatientBookingController extends Controller
     public function store(AppointmentBookingRequest $request)
     {
         $appointment = $this->bookingService->store($request->all());
-        $message = array();
+        $message = [];
 
         if ($appointment) {
             $message = [
@@ -56,7 +51,6 @@ class PatientBookingController extends Controller
                 'type' => 'error',
             ];
         }
-
 
         return redirect()->back()->with('message', $message);
     }

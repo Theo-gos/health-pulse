@@ -2,9 +2,6 @@
 
 namespace App\Services;
 
-use Inertia\Inertia;
-use Inertia\Response;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardService
@@ -12,6 +9,7 @@ class DashboardService
     protected $timezone = 'Asia/Ho_Chi_Minh';
 
     private $appointmentService;
+
     private $scheduleService;
 
     public function __construct(AppointmentService $appointmentService, ScheduleService $scheduleService)
@@ -26,10 +24,10 @@ class DashboardService
     {
         $user = Auth::user();
         $first_day_this_month = date('Y-m-01');
-        $last_day_this_month  = date('Y-m-t');
+        $last_day_this_month = date('Y-m-t');
 
-        $appointments = $this->appointmentService->getAllByDate(date("Y-m-d"), $user->id, null)->toArray();
-        $current_appointment = $this->appointmentService->getByHourAndDate(date("H:i:s"), date("Y-m-d"), $user->id, null);
+        $appointments = $this->appointmentService->getAllByDate(date('Y-m-d'), $user->id, null)->toArray();
+        $current_appointment = $this->appointmentService->getByHourAndDate(date('H:i:s'), date('Y-m-d'), $user->id, null);
 
         $schedule = $this->scheduleService->getAllBetweenDates($first_day_this_month, $last_day_this_month);
 
@@ -44,7 +42,7 @@ class DashboardService
     {
         $user = Auth::user();
         $appointments = $this->appointmentService->getAllByDate($date, $user->id, null)->toArray();
-        $current_appointment = $this->appointmentService->getByHourAndDate(date("h:i:s"), date("Y-m-d"), $user->id, null);
+        $current_appointment = $this->appointmentService->getByHourAndDate(date('h:i:s'), date('Y-m-d'), $user->id, null);
 
         return [
             'list' => $appointments,
