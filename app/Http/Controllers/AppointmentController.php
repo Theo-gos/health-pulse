@@ -12,12 +12,12 @@ class AppointmentController extends Controller
 
     public function __construct(AppointmentService $appointmentService)
     {
-        $this->appointmentService = $appointmentService
+        $this->appointmentService = $appointmentService;
     }
 
     public function show(string $date_start, string $date_end)
     {
-        $user = Auth::user();
+        $user = Auth::user()
         $appointments = $this->appointmentService->getAllBetweenDates($date_start, $date_end, $user->id, null);
 
         return redirect()->back()->with('appointment', [
