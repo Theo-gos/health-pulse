@@ -18,9 +18,12 @@ class PatientService extends BaseService
             ->get()
             ->all();
 
+        // dd($patients[0]->appointed_doctors[0]->service->type);
+
         $patientMedicalInfos = [];
 
         foreach ($patients as $patient) {
+            $patientMedicalInfos[$patient->id]['patient'] = $patient;
             if ($patient->allergies->count() > 0) {
                 foreach ($patient->allergies->all() as $allergy) {
                     $patientMedicalInfos[$patient->id]['allergies'][$allergy->type][] = $allergy;
@@ -30,8 +33,12 @@ class PatientService extends BaseService
             }
 
             if ($patient->appointed_doctors->count() > 0) {
+                $index = 0;
                 foreach ($patient->appointed_doctors->all() as $ap_doctor) {
-                    $patientMedicalInfos[$patient->id]['appointments'][] = $ap_doctor->appointments;
+                    $ap_doctor['type'] = $ap_doctor->service->type;
+                    $patientMedicalInfos[$patient->id]['appointments'][$index]['booked_doctor'] = $ap_doctor;
+                    $patientMedicalInfos[$patient->id]['appointments'][$index]['detail'] = $ap_doctor->appointments;
+                    $index++;
                 }
             } else {
                 $patientMedicalInfos[$patient->id]['appointments'] = [];

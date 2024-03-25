@@ -32,6 +32,8 @@ class RecordController extends Controller
         $patients = $this->doctorService->getAllAppointedPatientsIdByDoctorId($doctor_id);
         $medicalInfos = $this->patientService->getMedicalInformationById($patients);
 
-        return Inertia::render('Auth/Doctor/Records');
+        return Inertia::render('Auth/Doctor/Records', [
+            'medical_info' => $medicalInfos,
+        ]);
     }
 }

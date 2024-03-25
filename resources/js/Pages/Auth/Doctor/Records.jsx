@@ -8,7 +8,7 @@ import {
 import { usePage } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Records() {
+export default function Records({medical_info}) {
     const { auth, message, flash } = usePage().props
     const [selected, setSelected] = useState(0)
     const selectManager = {
@@ -42,7 +42,9 @@ export default function Records() {
                         h={'95%'}
                         p={'4px 8px'}
                     >
-                        {selected === 0 ? <PatientList selectManager={selectManager} /> : <PatientMedicalRecord />}
+                        {selected === 0 ? <PatientList selectManager={selectManager} medicalInfo={medical_info ? medical_info : []} />
+                            :
+                            <PatientMedicalRecord selectManager={selectManager} medicalInfo={medical_info ? medical_info : []} />}
                     </Box>
                 </Box>
 
@@ -51,7 +53,7 @@ export default function Records() {
                     h={'100%'}
                     p={'4px'}
                 >
-                    {selected === 0 ? '' : <PatientList selectManager={selectManager} />}
+                    {selected === 0 ? '' : <PatientList selectManager={selectManager} medicalInfo={medical_info ? medical_info : []} />}
                 </Box>
             </Flex>
         </Box>
