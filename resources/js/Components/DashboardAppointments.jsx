@@ -56,7 +56,7 @@ const renderItem = (data, initialTime = '8:00:00') => {
         const startHour = new Date(item.date).setHours(startTime[0], startTime[1], startTime[2])
         const endHour = new Date(item.date).setHours(endTime[0], endTime[1], endTime[2])
         const currentHour = new Date().getTime()
-        const name = item.patient_name.split(' ')
+        const name = item.patient.name.split(' ')
         const current = currentHour > startHour && currentHour < endHour
 
         anchor = item.end_time
@@ -96,7 +96,7 @@ const renderItem = (data, initialTime = '8:00:00') => {
                         </Flex>
                         :
                         <Box flexGrow={'1'}>
-                            <Text fontSize={'12px'} fontWeight={'bold'} color={'black'}>{item.patient_name}</Text>
+                            <Text fontSize={'12px'} fontWeight={'bold'} color={'black'}>{item.patient.name}</Text>
                             <Text fontSize={'10px'}>{`${startTime[0]}:${startTime[1]} - ${endTime[0]}:${endTime[1]}`}</Text>
                         </Box>
                     }
@@ -237,7 +237,7 @@ export default function DashboardAppointments({ appointments, current_appointmen
                                     align={'center'}
                                     fontSize={'14px'}
                                 >
-                                    <Box color={'black'} fontWeight={'bold'} >{curData.patient_name}</Box>
+                                    <Box color={'black'} fontWeight={'bold'} >{curData.patient.name}</Box>
                                     <Box>{`${curData.start_time.split(':')[0]}:${curData.start_time.split(':')[1]} - ${curData.end_time.split(':')[0]}:${curData.end_time.split(':')[1]}`}</Box>
                                 </Flex>
 

@@ -4,34 +4,10 @@ import {
     UnorderedList,
     ListItem,
     Text,
-    Input,
-    useDisclosure,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalCloseButton,
-    ModalBody,
-    ModalFooter,
-    Button,
-    FormControl,
-    FormLabel,
-    Link as ChakraLink,
-    InputGroup,
-    InputLeftAddon,
-    Menu,
-    MenuButton,
-    MenuList,
-    MenuItem,
-    IconButton,
-    Select,
-    FormErrorMessage,
 } from "@chakra-ui/react"
 import { useEffect, useRef, useState } from "react"
 import Logo from "../Pages/Shared/Logo"
 import { useForm, Link } from "@inertiajs/react"
-import dialCode from '../Assets/data/dial-code.json'
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons"
 
 export default function PatientLayout({ children, auth, name }) {
     const [windowSize, setWindowSize] = useState(window.innerWidth)
@@ -179,19 +155,6 @@ export default function PatientLayout({ children, auth, name }) {
                                 alignItems={'center'}
                                 listStyleType={'none'}
                             >
-                                {/* <ListItem id="search" mr={'10px'}>
-                                    <Input
-                                        borderColor={'gray.300'}
-                                        borderRadius={'lg'}
-                                        color={'gray.500'}
-                                        bg={'white'}
-                                        w={`calc(${windowSize}px * 25 / 100)`}
-                                        size={'md'}
-                                        name="search-bar"
-                                        id="search-bar"
-                                        placeholder="Search Bar..."
-                                    />
-                                </ListItem> */}
                                 {!auth ? 
                                     <ListItem
                                         _hover={{

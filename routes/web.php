@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientBookingController;
 use App\Http\Controllers\PatientLogInController;
+use App\Http\Controllers\RecordController;
 use App\Http\Controllers\ScheduleController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -49,11 +50,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('schedule/delete/{id}', [ScheduleController::class, 'delete'])->name('schedule.delete');
     Route::post('schedule/store', [ScheduleController::class, 'store'])->name('schedule.store');
 
-    Route::middleware(['auth'])->group(function () {
-        Route::get('/doctor/records', function () {
-            return Inertia::render('Auth/Doctor/Records');
-        })->name('doctor.records');
-    });
+    Route::get('/doctor/records', [RecordController::class, 'index'])->name('doctor.records');
 
     Route::middleware(['auth'])->group(function () {
         Route::get('/doctor/prescriptions', function () {

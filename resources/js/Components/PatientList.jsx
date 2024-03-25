@@ -37,14 +37,16 @@ export default function PatientList({ selectManager }) {
                         p={'16px'}
 
                         borderRadius={'xl'}
-                        border={'1px solid black'}
+                        border={'1px solid gray'}
 
                         _hover={{
                             cursor: 'pointer',
-                            backgroundColor: 'gray',
+                            backgroundColor: '#EAF1FA',
+                            color: '#1366DE'
                         }}
 
-                        bg={selected === 1 ? 'blue.100' : 'transparent'}
+                        bg={selected === 1 ? '#EAF1FA' : 'transparent'}
+                        color={selected === 1 ? '#1366DE' : 'black'}
                         onClick={() => setSelected(1)}
 
                         fontSize={'14px'}
@@ -59,14 +61,16 @@ export default function PatientList({ selectManager }) {
                         p={'16px'}
 
                         borderRadius={'xl'}
-                        border={'1px solid black'}
+                        border={'1px solid gray'}
 
                         _hover={{
                             cursor: 'pointer',
-                            backgroundColor: 'gray',
+                            backgroundColor: '#EAF1FA',
+                            color: '#1366DE'
                         }}
 
-                        bg={selected === 2 ? 'blue.100' : 'transparent'}
+                        bg={selected === 2 ? '#EAF1FA' : 'transparent'}
+                        color={selected === 2 ? '#1366DE' : 'black'}
                         onClick={() => setSelected(2)}
 
                         fontSize={'14px'}
@@ -81,14 +85,16 @@ export default function PatientList({ selectManager }) {
                         p={'16px'}
 
                         borderRadius={'xl'}
-                        border={'1px solid black'}
+                        border={'1px solid gray'}
 
                         _hover={{
                             cursor: 'pointer',
-                            backgroundColor: 'gray',
+                            backgroundColor: '#EAF1FA',
+                            color: '#1366DE'
                         }}
 
-                        bg={selected === 3 ? 'blue.100' : 'transparent'}
+                        bg={selected === 3 ? '#EAF1FA' : 'transparent'}
+                        color={selected === 3 ? '#1366DE' : 'black'}
                         onClick={() => setSelected(3)}
 
                         fontSize={'14px'}

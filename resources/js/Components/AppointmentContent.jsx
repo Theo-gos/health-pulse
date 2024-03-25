@@ -43,7 +43,7 @@ const renderItem = (data, initialTime = '8:00') => {
         const startTime = item.start_time.split(':')
         const endTime = item.end_time.split(':')
 
-        const name = item.patient_name.split(' ')
+        const name = item.patient.name.split(' ')
 
         anchor = item.end_time
 
@@ -82,7 +82,7 @@ const renderItem = (data, initialTime = '8:00') => {
 
                         justify={'space-between'}
                     >
-                        <Box color={'black'} fontWeight={'bold'} fontSize={'13px'}>{item.patient_name}</Box>
+                        <Box color={'black'} fontWeight={'bold'} fontSize={'13px'}>{item.patient.name}</Box>
                         <Box>{`${startTime[0]}:${startTime[1]} > ${endTime[0]}:${endTime[1]}`}</Box>
                     </Flex>
                 }

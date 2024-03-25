@@ -54,24 +54,37 @@ class Doctor extends Authenticatable
         return $this->belongsTo(Service::class);
     }
 
-    public function appointments(): HasMany
-    {
-        return $this->hasMany(Appointment::class);
-    }
-
     public function schedules(): HasMany
     {
         return $this->hasMany(Schedule::class);
     }
 
+    public function appointed_patients(): BelongsToMany
+    {
+        return $this->belongsToMany(Patient::class, 'appointments')
+            ->using(Appointment::class)
+            ->as('appointments')
+            ->withPivot('id', 'doctor_id', 'patient_id', 'date', 'start_time', 'end_time')
+            ->orderByPivot('date', 'asc')
+            ->orderByPivot('start_time', 'asc');
+    }
+
     public function diagnosed_patients(): BelongsToMany
     {
-        return $this->belongsToMany(Patient::class)->using(Diagnosis::class);
+        return $this->belongsToMany(Patient::class, 'diagnoses')
+            ->using(Diagnosis::class)
+            ->as('diagnoses')
+            ->withPivot('id', 'doctor_id', 'patient_id', 'date', 'icd_code', 'icd_name', 'severity', 'color')
+            ->orderByPivot('date', 'asc');
     }
 
     public function prescribed_patients(): BelongsToMany
     {
-        return $this->belongsToMany(Patient::class)->using(Prescription::class);
+        return $this->belongsToMany(Patient::class, 'prescriptions')
+            ->using(Diagnosis::class)
+            ->as('prescriptions')
+            ->withPivot('id', 'doctor_id', 'patient_id', 'date', 'medication_name', 'dose', 'pill_per_day', 'duration')
+            ->orderByPivot('date', 'asc');
     }
 
     public function tested_patients(): BelongsToMany

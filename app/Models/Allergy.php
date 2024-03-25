@@ -11,9 +11,14 @@ class Allergy extends Model
     use HasFactory;
 
     protected $fillable = [
+        'patient_id',
         'name',
         'type',
         'severity',
+    ];
+
+    protected $attributes = [
+        'patient_id' => '1',
     ];
 
     public function patient(): BelongsTo

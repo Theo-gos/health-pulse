@@ -33,10 +33,11 @@ class AppointmentService extends BaseService
         $query_info = $this->roleCheck($doctor_id, $patient_id);
 
         $appointments = $this->model->where($query_info['query_string'], $query_info['query_param'])
-            ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
+            ->select('doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
             ->havingBetween('date', [$date_start, $date_end])
             ->orderBy('date', 'asc')
             ->orderBy('start_time', 'asc')
+            ->with('patient')
             ->get();
 
         $appointmentList = [];
@@ -54,9 +55,10 @@ class AppointmentService extends BaseService
         $query_info = $this->roleCheck($doctor_id, $patient_id);
 
         $appointments = $this->model->where($query_info['query_string'], $query_info['query_param'])
-            ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
+            ->select('doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
             ->where('date', $date)
             ->orderBy('start_time', 'asc')
+            ->with('patient')
             ->get();
 
         return $appointments;
@@ -68,10 +70,11 @@ class AppointmentService extends BaseService
         $query_info = $this->roleCheck($doctor_id, $patient_id);
 
         $appointment = $this->model->where($query_info['query_string'], $query_info['query_param'])
-            ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
+            ->select('doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
             ->where('date', $date)
             ->where('start_time', '<', $hour)
             ->where('end_time', '>', $hour)
+            ->with('patient')
             ->get();
 
         return $appointment;
@@ -85,5 +88,13 @@ class AppointmentService extends BaseService
         $last_day_this_week = date('Y-m-d', strtotime('sunday this week'));
 
         return $this->getAllBetweenDates($first_day_this_week, $last_day_this_week, $doctor_id, null);
+    }
+
+    public function getAllByDoctorId(string $doctor_id)
+    {
+        return $this->model->where('doctor_id', $doctor_id)
+            ->orderBy('date')
+            ->orderBy('start_time')
+            ->get();
     }
 }

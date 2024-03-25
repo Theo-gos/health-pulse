@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('severity');
             $table->timestamps();
-            $table->primary('patient_id');
+            $table->primary(['patient_id', 'name']);
         });
     }
 
