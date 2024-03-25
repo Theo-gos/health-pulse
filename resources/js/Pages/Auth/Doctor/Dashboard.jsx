@@ -7,7 +7,7 @@ import { usePage } from '@inertiajs/react'
 import { useEffect, useState } from 'react'
 
 export default function Dashboard({appointments, current_appointment, schedules}) {
-  const { auth, flash } = usePage().props
+  const { flash } = usePage().props
   const [dashboardAppointments, setDashboardAppointments] = useState({
     list: appointments,
     current: current_appointment,
@@ -43,7 +43,7 @@ export default function Dashboard({appointments, current_appointment, schedules}
       fontWeight='bold'
     >
       <GridItem area={'nav'}>
-        <DashboardSidebar state={'dashboard'} user={auth.user} />
+        <DashboardSidebar state={'dashboard'} />
       </GridItem>
       <GridItem bg='orange.300' area={'header'}>
         Header

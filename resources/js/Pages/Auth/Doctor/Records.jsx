@@ -9,7 +9,6 @@ import { usePage } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function Records({medical_info}) {
-    const { auth, message, flash } = usePage().props
     const [selected, setSelected] = useState(0)
     const selectManager = {
         selected: selected,
@@ -25,7 +24,7 @@ export default function Records({medical_info}) {
                 w={'100%'}
                 h={'100vh'}
             >
-                <DashboardSidebar state={'records'} user={auth.user}/>
+                <DashboardSidebar state={'records'} />
                 <Box
                     w={'55%'}
                     h={'100%'}

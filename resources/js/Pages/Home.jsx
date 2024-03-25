@@ -69,18 +69,13 @@ const clinics = [
 export default function Home() {
     const [windowSize, setWindowSize] = useState(window.innerWidth)
     const { get } = useForm()
-    const { data } = usePage().props
 
     const bookingHandler = () => {
         get(route('patient.booking'))
     }
 
     return (
-        <PatientLayout
-            auth={data ? true : false}
-            name={data ? data.name : ''}
-        >
-
+        <PatientLayout>
             <Box
                 w={'100vw'}
             >

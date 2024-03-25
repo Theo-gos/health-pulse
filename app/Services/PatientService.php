@@ -63,4 +63,19 @@ class PatientService extends BaseService
 
         return $patientMedicalInfos;
     }
+
+    public function store($data)
+    {
+        $name = $data['first_name'].' '.$data['last_name'];
+        $this->model->create([
+            'name' => $name,
+            'address' => $data['address'],
+            'phone' => $data['phone'],
+            'email' => $data['email'],
+            'password' => $data['password'],
+            'date_of_birth' => $data['dob'],
+            'sex' => $data['gender'],
+            'age' => 23,
+        ]);
+    }
 }

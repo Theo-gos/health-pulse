@@ -45,7 +45,7 @@ export default function Appointments({appointments}) {
 
     const [data, setData] = useState(appointments)
     const { get, processing } = useForm()
-    const { auth, flash } = usePage().props
+    const { flash } = usePage().props
 
     useEffect(() => {
         const firstDayOfWeek = dayObj.format('YYYY-MM-DD')
@@ -84,7 +84,7 @@ export default function Appointments({appointments}) {
                 w={'100%'}
                 h={'95vh'}
             >
-                <DashboardSidebar state={'appointments'} user={auth.user}/>
+                <DashboardSidebar state={'appointments'} />
                 <Box>
                     <Box
                         w={'87vw'}

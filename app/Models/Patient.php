@@ -29,6 +29,7 @@ class Patient extends Authenticatable implements MustVerifyEmail
         'sex',
         'age',
         'last_visit',
+        'password',
     ];
 
     /**
@@ -36,14 +37,18 @@ class Patient extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
-    protected $hidden = [];
+    protected $hidden = [
+        'password',
+    ];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [];
+    protected $casts = [
+        'password' => 'hashed',
+    ];
 
     public function allergies(): HasMany
     {

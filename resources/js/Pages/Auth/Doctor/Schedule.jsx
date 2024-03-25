@@ -10,7 +10,7 @@ import { usePage } from "@inertiajs/react";
 import { useEffect, useMemo, useState } from "react";
 
 export default function Schedule({calendars, aside}) {
-    const { auth, message, flash } = usePage().props
+    const { message, flash } = usePage().props
     let calendarData = calendars
     let asideData = aside
     
@@ -57,7 +57,7 @@ export default function Schedule({calendars, aside}) {
                 w={'100%'}
                 h={'100vh'}
             >
-                <DashboardSidebar state={'schedule'} user={auth.user}/>
+                <DashboardSidebar state={'schedule'} />
                 <Box
                     w={'55%'}
                     h={'100%'}

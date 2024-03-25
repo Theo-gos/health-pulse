@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -26,6 +27,7 @@ class PatientFactory extends Factory
             'google_id' => null,
             'address' => fake()->address(),
             'phone' => fake()->phoneNumber(),
+            'password' => static::$password ??= Hash::make('password'),
             'email' => fake()->email(),
             'date_of_birth' => fake()->date('Y-m-d'),
             'sex' => 'M',
