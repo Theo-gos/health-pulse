@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('allergies', function (Blueprint $table) {
-            $table->foreignId('patient_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('name');
-            $table->string('type');
+        Schema::create('icd', function (Blueprint $table) {
+            $table->string('icd_code');
+            $table->string('icd_name');
             $table->string('severity');
-            $table->timestamps();
-            $table->primary(['patient_id', 'name']);
+            $table->string('color');
+            $table->primary('icd_code');
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('allergiess');
+        Schema::dropIfExists('icd');
     }
 };

@@ -143,6 +143,8 @@ export default function ScheduleAside({ idManager, asideData }) {
         }
     }, [asideData])
 
+    console.log(data);
+
     return (
         <Box
             border={'2px solid #F0F0F1'}
@@ -256,7 +258,7 @@ export default function ScheduleAside({ idManager, asideData }) {
 
                         mt={'1.5vh'}
                     >
-                        {!processing && !_.isEmpty(data) ?
+                        {!processing && data ?
                             <>
                                 <Grid
                                     templateRows={'repeat(45, 1fr)'}
@@ -300,7 +302,7 @@ export default function ScheduleAside({ idManager, asideData }) {
                                 </Grid>
                             </>
                             :
-                            <CircularProgress mx={'auto'} mt={'45vh'} isIndeterminate color='blue.300' />
+                            (!data ? '' : <CircularProgress mx={'auto'} mt={'45vh'} isIndeterminate color='blue.300' />)
                         }
                     </Flex>
                 </Box>

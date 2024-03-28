@@ -18,10 +18,22 @@ class DoctorService extends BaseService
             ->get();
     }
 
-    public function getAllWithAppointments()
+    public function getAllAppointedPatientsIdByDoctorId($doctor_id)
+    {
+        $doctor = $this->model
+            ->where('id', $doctor_id)
+            ->with('appointed_patients')
+            ->firstOrFail();
+
+        $patientsList = $doctor->appointed_patients->pluck('id')->toArray();
+
+        return array_values(array_unique($patientsList));
+    }
+
+    public function getAllWithAppointedPatients()
     {
         return $this->model
-            ->with(['appointments', 'service'])
+            ->with(['appointed_patients', 'service'])
             ->get();
     }
 }

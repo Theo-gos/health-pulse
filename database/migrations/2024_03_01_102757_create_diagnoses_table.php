@@ -16,8 +16,10 @@ return new class extends Migration
             $table->foreignId('doctor_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('patient_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->date('date');
-            $table->string('icd_code');
-            $table->string('icd_name');
+            $table->string('icd_code')->nullable();
+            $table->string('icd_name')->nullable();
+            $table->string('severity');
+            $table->char('color', 7);
             $table->timestamps();
         });
     }

@@ -16,11 +16,6 @@ class AllergyFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            //
-            'name' => 'Lactose',
-            'type' => 'Food',
-            'severity' => 'Mild',
-        ];
+        return [];
     }
 }

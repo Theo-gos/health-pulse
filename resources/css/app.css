@@ -5,6 +5,28 @@
 *{
     -ms-overflow-style: none;
 }
+
 ::-webkit-scrollbar {
     display: none;
+}
+
+/* Track */
+.showScrollBar::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+/* Handle */
+.showScrollBar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 20px;
+}
+
+/* Handle on hover */
+.showScrollBar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.showScrollBar::-webkit-scrollbar {
+    display: block;
+    width: 4px;
 }

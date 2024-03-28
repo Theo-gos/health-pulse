@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -22,13 +23,16 @@ class PatientFactory extends Factory
     public function definition(): array
     {
         return [
+            'name' => fake()->name(),
+            'google_id' => null,
             'address' => fake()->address(),
             'phone' => fake()->phoneNumber(),
-            'email' => fake()->unique()->safeEmail(),
-            'date_of_birth' => fake()->dateTimeInInterval('-50 years', '-20 years'),
-            'age' => fake()->numberBetween(25, 50),
-            'last_visit' => fake()->dateTimeInInterval('-3 months', '-1 weeks'),
-            'type' => 'Cardiologist',
+            'password' => static::$password ??= Hash::make('password'),
+            'email' => fake()->email(),
+            'date_of_birth' => fake()->date('Y-m-d'),
+            'sex' => 'M',
+            'age' => 23,
+            'last_visit' => '2016-03-29',
         ];
     }
 

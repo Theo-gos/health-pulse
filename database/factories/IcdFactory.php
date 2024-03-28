@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Appointment>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Icd>
  */
-class AppointmentFactory extends Factory
+class IcdFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,9 +17,7 @@ class AppointmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'date' => '2024-03-22',
-            'end_time' => '08:00:00',
-            'start_time' => '09:00:00',
+            //
         ];
     }
 }

@@ -27,27 +27,21 @@ class BookingService extends BaseService
         $today = date('Y-m-d', strtotime('today'));
 
         $services = $this->model->all();
-        $doctors = $this->doctorService->getAllWithAppointments();
+        $doctors = $this->doctorService->getAllWithAppointedPatients();
         foreach ($doctors as $doctor) {
             $doctor['type'] = $doctor->service->type;
         }
 
-        $appointments = [];
-        foreach ($doctors as $doctor) {
-            $appointments[$doctor['id']] = $doctor->appointments->sortBy('start_time');
-        }
-
         $bookedAppointments = [];
-        foreach ($appointments as $key => $appointment) {
-            foreach ($appointment as $val) {
-                $bookedAppointments[$key][$val['date']][] = $val;
+        foreach ($doctors as $doctor) {
+            foreach ($doctor->appointed_patients as $patient) {
+                $bookedAppointments[$doctor['id']][$patient->appointments->date][] = $patient->appointments;
             }
         }
 
         return [
             'services' => $services,
             'doctors' => $doctors,
-            'appointments' => $appointments,
             'bookedAppointments' => $bookedAppointments,
         ];
     }

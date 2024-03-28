@@ -29,6 +29,7 @@ import SideBarItem from "./SideBarItem";
 import { useEffect, useState } from "react";
 import Logo from "@/Pages/Shared/Logo";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import { usePage } from "@inertiajs/react";
 
 const topOptions = ['dashboard', 'appointments', 'records', 'schedule']
 const botOptions = ['prescriptions', 'test_results']
@@ -43,8 +44,10 @@ const icons = {
     'notification': BsBellFill,
 }
 
-export default function DashboardSidebar({state, user}) {
+export default function DashboardSidebar({state}) {
     const [selected, setSelected] = useState('dashboard')
+    const { auth } = usePage().props
+    const { doctor } = auth
 
     useEffect(() => {
         if (state)
@@ -199,10 +202,10 @@ export default function DashboardSidebar({state, user}) {
                         pt={'12px'}
                         pl={'5px'}
                     >
-                        <Avatar src={user.avatar} bg='blue.500' color={'white'} size={'sm'} name={user.name} />
+                        <Avatar src={doctor.avatar} bg='blue.500' color={'white'} size={'sm'} name={doctor.name} />
                         <Box ml={'4px'}>
-                            <Text fontSize={'11px'} fontWeight={'bold'} color={'black'}>{`Dr ${user.name.charAt(0).toUpperCase()}. ${user.name.split(' ')[1]}`}</Text>
-                            <Text fontSize={'10px'} color={"#637185"}>{user.type}</Text>
+                            <Text fontSize={'11px'} fontWeight={'bold'} color={'black'}>{`Dr ${doctor.name.charAt(0).toUpperCase()}. ${doctor.name.split(' ')[1]}`}</Text>
+                            <Text fontSize={'10px'} color={"#637185"}>{doctor.type}</Text>
                         </Box>
                         <Menu placement={'top'} offset={[-65, 10]}>
                             {({ isOpen }) => (
