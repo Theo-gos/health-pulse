@@ -5,7 +5,9 @@ import {
     GridItem,
     Text,
 } from "@chakra-ui/react";
+import { useForm } from "@inertiajs/react";
 import dayjs from "dayjs";
+import { MdOutlineArrowOutward } from "react-icons/md";
 
 const today = dayjs()
 
@@ -33,7 +35,7 @@ const getSpan = (start, end) => {
     return hours * 3 + rowSpanExchange(minutes)
 }
 
-const renderItem = (data, initialTime = '8:00') => {
+const renderItem = (data, handleClick, initialTime = '8:00') => {
     let anchor = initialTime
 
     return data.map((item, index) => {
@@ -82,7 +84,15 @@ const renderItem = (data, initialTime = '8:00') => {
 
                         justify={'space-between'}
                     >
-                        <Box color={'black'} fontWeight={'bold'} fontSize={'13px'}>{item.patient.name}</Box>
+                        <Flex
+                            w={'100%'}
+
+                            justify={'space-between'}
+                            align={'center'}
+                        >
+                            <Box color={'black'} fontWeight={'bold'} fontSize={'13px'}>{item.patient.name}</Box>
+                            <MdOutlineArrowOutward style={{cursor: 'pointer'}} title="Go to appointment note" onClick={() => handleClick(item.id)} />
+                        </Flex>
                         <Box>{`${startTime[0]}:${startTime[1]} > ${endTime[0]}:${endTime[1]}`}</Box>
                     </Flex>
                 }
@@ -99,6 +109,15 @@ const renderItem = (data, initialTime = '8:00') => {
 }
 
 export default function AppointmentContent({ data, date }) {
+    const { get } = useForm()
+
+    const handleClick = (appointment_id) => {
+        get(route('appointment.note', {appointment: appointment_id}, {
+            forceFormData: true,
+        }))
+        // console.log(patient_id, appointment_id);
+    }
+
     return (
         <>
             <Grid
@@ -113,7 +132,7 @@ export default function AppointmentContent({ data, date }) {
                 h={'100%'}
                 pl={'1px'}
             >
-                {data.Monday ? renderItem(data.Monday) : ''}
+                {data.Monday ? renderItem(data.Monday, handleClick) : ''}
             </Grid>
 
             <Grid
@@ -126,7 +145,7 @@ export default function AppointmentContent({ data, date }) {
                 h={'100%'}
                 pl={'1px'}
             >
-                {data.Tuesday ? renderItem(data.Tuesday) : ''}
+                {data.Tuesday ? renderItem(data.Tuesday, handleClick) : ''}
             </Grid>
 
             <Grid
@@ -141,7 +160,7 @@ export default function AppointmentContent({ data, date }) {
                 h={'100%'}
                 pl={'1px'}
             >
-                {data.Wednesday ? renderItem(data.Wednesday) : ''}
+                {data.Wednesday ? renderItem(data.Wednesday, handleClick) : ''}
             </Grid>
 
             <Grid
@@ -156,7 +175,7 @@ export default function AppointmentContent({ data, date }) {
                 h={'100%'}
                 pl={'1px'}
             >
-                {data.Thursday ? renderItem(data.Thursday) : ''}
+                {data.Thursday ? renderItem(data.Thursday, handleClick) : ''}
             </Grid>
 
             <Grid
@@ -171,7 +190,7 @@ export default function AppointmentContent({ data, date }) {
                 h={'100%'}
                 pl={'1px'}
             >
-                {data.Friday ? renderItem(data.Friday) : ''}
+                {data.Friday ? renderItem(data.Friday, handleClick) : ''}
             </Grid>
 
             <Grid
@@ -186,7 +205,7 @@ export default function AppointmentContent({ data, date }) {
                 h={'100%'}
                 pl={'1px'}
             >
-                {data.Saturday ? renderItem(data.Saturday) : ''}
+                {data.Saturday ? renderItem(data.Saturday, handleClick) : ''}
             </Grid>
 
             <Grid
@@ -201,7 +220,7 @@ export default function AppointmentContent({ data, date }) {
                 h={'100%'}
                 pl={'1px'}
             >
-                {data.Sunday ? renderItem(data.Sunday) : ''}
+                {data.Sunday ? renderItem(data.Sunday, handleClick) : ''}
             </Grid>
         </>
     )

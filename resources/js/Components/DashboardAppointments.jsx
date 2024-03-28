@@ -129,25 +129,28 @@ export default function DashboardAppointments({ appointments, current_appointmen
 
 
     useEffect(() => {
-        if (typeof appointments !== 'undefined') {
-            if (appointments.length !== 0) {
-                setData(appointments)
-                setDate(dayjs(appointments[0].date))
-            }
-        }
+        setData(appointments)
 
-        if (typeof current_appointment !== 'undefined') {
-            if (current_appointment.length !== 0)
-                setCurData(current_appointment[0])
-        }
+        if (current_appointment?.length !== 0)
+            setCurData(current_appointment[0])
     }, [appointments, current_appointment])
         
     const handlePrev = () => {
-        get(route('doctor.dashboard.appointment', date.subtract(1, 'day').format('YYYY-MM-DD')))
+        get(route('doctor.dashboard.appointment', date.subtract(1, 'day').format('YYYY-MM-DD')), {
+            preserveState: true,
+            onSuccess: () => {
+                setDate(date.subtract(1, 'day'))
+            }
+        })
     }
 
     const handleNext = () => {
-        get(route('doctor.dashboard.appointment', date.add(1, 'day').format('YYYY-MM-DD')))
+        get(route('doctor.dashboard.appointment', date.add(1, 'day').format('YYYY-MM-DD')), {
+            preserveState: true,
+            onSuccess: () => {
+                setDate(date.add(1, 'day'))
+            }
+        })
     }
 
     return (

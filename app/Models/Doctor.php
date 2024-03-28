@@ -83,7 +83,7 @@ class Doctor extends Authenticatable
         return $this->belongsToMany(Patient::class, 'prescriptions')
             ->using(Diagnosis::class)
             ->as('prescriptions')
-            ->withPivot('id', 'doctor_id', 'patient_id', 'date', 'medication_name', 'dose', 'pill_per_day', 'duration')
+            ->withPivot('id', 'doctor_id', 'patient_id', 'date', 'medication_name', 'dose', 'pill_per_day', 'recommendation')
             ->orderByPivot('date', 'asc');
     }
 

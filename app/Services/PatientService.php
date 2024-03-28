@@ -66,6 +66,12 @@ class PatientService extends BaseService
 
     public function store($data)
     {
+        $birthDate = $data['dob'];
+        $birthDate = explode('-', $birthDate);
+        $age = (date('md', date('U', mktime(0, 0, 0, $birthDate[2], $birthDate[1], $birthDate[0]))) > date('md')
+            ? ((date('Y') - $birthDate[0]) - 1)
+            : (date('Y') - $birthDate[0]));
+
         $name = $data['first_name'].' '.$data['last_name'];
         $this->model->create([
             'name' => $name,
@@ -75,7 +81,7 @@ class PatientService extends BaseService
             'password' => $data['password'],
             'date_of_birth' => $data['dob'],
             'sex' => $data['gender'],
-            'age' => 23,
+            'age' => $age,
         ]);
     }
 }

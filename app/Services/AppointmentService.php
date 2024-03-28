@@ -33,7 +33,7 @@ class AppointmentService extends BaseService
         $query_info = $this->roleCheck($doctor_id, $patient_id);
 
         $appointments = $this->model->where($query_info['query_string'], $query_info['query_param'])
-            ->select('doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
+            ->select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
             ->havingBetween('date', [$date_start, $date_end])
             ->orderBy('date', 'asc')
             ->orderBy('start_time', 'asc')
@@ -55,7 +55,7 @@ class AppointmentService extends BaseService
         $query_info = $this->roleCheck($doctor_id, $patient_id);
 
         $appointments = $this->model->where($query_info['query_string'], $query_info['query_param'])
-            ->select('doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
+            ->select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
             ->where('date', $date)
             ->orderBy('start_time', 'asc')
             ->with('patient')
@@ -70,7 +70,7 @@ class AppointmentService extends BaseService
         $query_info = $this->roleCheck($doctor_id, $patient_id);
 
         $appointment = $this->model->where($query_info['query_string'], $query_info['query_param'])
-            ->select('doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
+            ->select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
             ->where('date', $date)
             ->where('start_time', '<', $hour)
             ->where('end_time', '>', $hour)

@@ -19,7 +19,7 @@ class Prescription extends Pivot
         'medication_name',
         'dose',
         'pill_per_day',
-        'duration',
+        'recommendation',
     ];
 
     protected $attributes = [
@@ -29,7 +29,7 @@ class Prescription extends Pivot
         'medication_name' => 'Atenolol',
         'dose' => '200 mg oral',
         'pill_per_day' => '1 tablet',
-        'duration' => '1 day',
+        'recommendation' => '1 tablet every morning for 10 days',
     ];
 
     public function patient(): BelongsTo

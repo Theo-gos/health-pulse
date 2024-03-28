@@ -41,7 +41,7 @@ export default function PatientLayout({ children }) {
     const { patient } = auth
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const { data, setData, errors, setError , post, get, processing } = useForm({
+    const { data, setData, errors, setError , post, get, processing, reset: resetData } = useForm({
         email: '',
         password: '',
         confirm_password: '',
@@ -109,7 +109,11 @@ export default function PatientLayout({ children }) {
                 return
             }
 
-            post(route('patient.register'))
+            post(route('patient.register'), {
+                onSuccess: () => {
+                    reset()
+                }
+            })
         }
     }
 
@@ -139,6 +143,7 @@ export default function PatientLayout({ children }) {
     const reset = () => {
         setShow(false)
         setIsLogin(true)
+        resetData()
         onClose()
     }
 
