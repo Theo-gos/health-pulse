@@ -45,7 +45,7 @@ export default function Appointments({appointments}) {
 
     const [data, setData] = useState(appointments)
     const { get, processing } = useForm()
-    const { flash } = usePage().props
+    const { flash, message } = usePage().props
 
     console.log(data);
 
@@ -72,6 +72,10 @@ export default function Appointments({appointments}) {
 
     const handleNext = () => { 
         setDayObj(dayObj.add(1, 'week'))
+    }
+
+    if (message) {
+        console.log(message);
     }
 
     return (
