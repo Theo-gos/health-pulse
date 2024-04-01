@@ -56,7 +56,7 @@ const renderItem = (data, initialTime = '8:00:00') => {
         const startHour = new Date(item.date).setHours(startTime[0], startTime[1], startTime[2])
         const endHour = new Date(item.date).setHours(endTime[0], endTime[1], endTime[2])
         const currentHour = new Date().getTime()
-        const name = item.patient_name.split(' ')
+        const name = item.patient.name.split(' ')
         const current = currentHour > startHour && currentHour < endHour
 
         anchor = item.end_time
@@ -96,7 +96,7 @@ const renderItem = (data, initialTime = '8:00:00') => {
                         </Flex>
                         :
                         <Box flexGrow={'1'}>
-                            <Text fontSize={'12px'} fontWeight={'bold'} color={'black'}>{item.patient_name}</Text>
+                            <Text fontSize={'12px'} fontWeight={'bold'} color={'black'}>{item.patient.name}</Text>
                             <Text fontSize={'10px'}>{`${startTime[0]}:${startTime[1]} - ${endTime[0]}:${endTime[1]}`}</Text>
                         </Box>
                     }
@@ -129,25 +129,28 @@ export default function DashboardAppointments({ appointments, current_appointmen
 
 
     useEffect(() => {
-        if (typeof appointments !== 'undefined') {
-            if (appointments.length !== 0) {
-                setData(appointments)
-                setDate(dayjs(appointments[0].date))
-            }
-        }
+        setData(appointments)
 
-        if (typeof current_appointment !== 'undefined') {
-            if (current_appointment.length !== 0)
-                setCurData(current_appointment[0])
-        }
+        if (current_appointment?.length !== 0)
+            setCurData(current_appointment[0])
     }, [appointments, current_appointment])
         
     const handlePrev = () => {
-        get(route('doctor.dashboard.appointment', date.subtract(1, 'day').format('YYYY-MM-DD')))
+        get(route('doctor.dashboard.appointment', date.subtract(1, 'day').format('YYYY-MM-DD')), {
+            preserveState: true,
+            onSuccess: () => {
+                setDate(date.subtract(1, 'day'))
+            }
+        })
     }
 
     const handleNext = () => {
-        get(route('doctor.dashboard.appointment', date.add(1, 'day').format('YYYY-MM-DD')))
+        get(route('doctor.dashboard.appointment', date.add(1, 'day').format('YYYY-MM-DD')), {
+            preserveState: true,
+            onSuccess: () => {
+                setDate(date.add(1, 'day'))
+            }
+        })
     }
 
     return (
@@ -237,7 +240,7 @@ export default function DashboardAppointments({ appointments, current_appointmen
                                     align={'center'}
                                     fontSize={'14px'}
                                 >
-                                    <Box color={'black'} fontWeight={'bold'} >{curData.patient_name}</Box>
+                                    <Box color={'black'} fontWeight={'bold'} >{curData.patient.name}</Box>
                                     <Box>{`${curData.start_time.split(':')[0]}:${curData.start_time.split(':')[1]} - ${curData.end_time.split(':')[0]}:${curData.end_time.split(':')[1]}`}</Box>
                                 </Flex>
 

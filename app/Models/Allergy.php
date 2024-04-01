@@ -11,6 +11,7 @@ class Allergy extends Model
     use HasFactory;
 
     protected $fillable = [
+        'patient_id',
         'name',
         'type',
         'severity',

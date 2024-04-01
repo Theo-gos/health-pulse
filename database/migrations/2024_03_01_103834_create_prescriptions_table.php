@@ -18,8 +18,8 @@ return new class extends Migration
             $table->date('date');
             $table->string('medication_name');
             $table->string('dose');
-            $table->integer('pill_per_day');
-            $table->integer('duration');
+            $table->string('pill_per_day');
+            $table->text('recommendation');
             $table->timestamps();
         });
     }

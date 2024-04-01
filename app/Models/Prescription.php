@@ -3,19 +3,32 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Prescription extends Model
+class Prescription extends Pivot
 {
     use HasFactory;
 
+    protected $table = 'prescriptions';
+
     protected $fillable = [
-        'medication_name',
         'doctor_id',
         'patient_id',
         'date',
+        'medication_name',
         'dose',
         'pill_per_day',
-        'duration',
+        'recommendation',
     ];
+
+    public function patient(): BelongsTo
+    {
+        return $this->belongsTo(Patient::class);
+    }
+
+    public function doctor(): BelongsTo
+    {
+        return $this->belongsTo(Doctor::class);
+    }
 }

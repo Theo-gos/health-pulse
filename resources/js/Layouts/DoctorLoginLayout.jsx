@@ -6,11 +6,11 @@ import {
     Text,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import Logo from '../Shared/Logo'
+import Logo from '../Pages/Shared/Logo'
 import { Link } from '@inertiajs/react';
 
 
-export default function AuthLayout({ children }) {
+export default function DoctorLoginLayout({ children }) {
     const [windowSize, setWindowSize] = useState(window.innerWidth)
 
     window.addEventListener('resize', () => { 

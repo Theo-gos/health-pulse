@@ -17,10 +17,9 @@ class AppointmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'patient_name' => fake()->name(),
-            'date' => fake()->dateTimeThisMonth(),
-            'end_time' => fake()->time(),
-            'start_time' => fake()->time(),
+            'date' => '2024-03-22',
+            'end_time' => '08:00:00',
+            'start_time' => '09:00:00',
         ];
     }
 }

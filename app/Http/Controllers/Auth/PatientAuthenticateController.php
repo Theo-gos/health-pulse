@@ -1,8 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\PatientLoginRequest;
+use App\Http\Requests\Auth\PatientRegisterRequest;
 use App\Models\Patient;
+use App\Services\PatientService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,8 +19,15 @@ use Laravel\Socialite\Facades\Socialite;
 // use Illuminate\Support\Facades\Hash;
 // use Illuminate\Validation\Rules;
 
-class PatientLogInController extends Controller
+class PatientAuthenticateController extends Controller
 {
+    private $patientService;
+
+    public function __construct(PatientService $patientService)
+    {
+        $this->patientService = $patientService;
+    }
+
     public function redirect(): RedirectResponse
     {
         return Socialite::driver('google')->redirect();
@@ -34,15 +45,25 @@ class PatientLogInController extends Controller
             'google_id' => $googleUser->id,
         ]);
 
-        return redirect()->route('home')->with('data', [
-            'name' => $user->name,
-            'email' => $user->email,
-            'patient_id' => $user->id,
-            'google_id' => $googleUser->id,
-            'token' => $googleUser->token,
-            'refresh_token' => $googleUser->refreshToken,
-            'expire_in' => $googleUser->expiresIn,
-        ]);
+        Auth::guard('patient')->login($user);
+
+        return redirect()->route('home');
+    }
+
+    public function login(PatientLoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
+
+        $request->session()->regenerate();
+
+        return redirect()->route('home');
+    }
+
+    public function register(PatientRegisterRequest $request): RedirectResponse
+    {
+        $this->patientService->store($request->validated());
+
+        return redirect()->route('home');
     }
 
     public function destroy(Request $request): RedirectResponse

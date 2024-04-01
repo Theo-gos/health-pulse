@@ -2,6 +2,7 @@ import DashboardSchedule from "@/Components/DashboardSchedule";
 import DashboardSidebar from "@/Components/DashboardSidebar";
 import ScheduleAside from "@/Components/ScheduleAside";
 import ScheduleForm from "@/Components/ScheduleForm";
+import DoctorLayout from "@/Layouts/DoctorLayout";
 import {
     Box,
     Flex,
@@ -10,7 +11,7 @@ import { usePage } from "@inertiajs/react";
 import { useEffect, useMemo, useState } from "react";
 
 export default function Schedule({calendars, aside}) {
-    const { auth, message, flash } = usePage().props
+    const { message, flash } = usePage().props
     let calendarData = calendars
     let asideData = aside
     
@@ -49,54 +50,39 @@ export default function Schedule({calendars, aside}) {
     }, [flash])
 
     return (
-        <Box
-            w={'100vw'}
-            h={'100vh'}
-        >
-            <Flex
-                w={'100%'}
-                h={'100vh'}
+        <DoctorLayout state={'schedule'}>
+            <Box
+                w={'55%'}
+                h={'100%'}
             >
-                <DashboardSidebar state={'schedule'} user={auth.user}/>
                 <Box
-                    w={'55%'}
+                    w={'100%'}
                     h={'100%'}
-                >
-                    <Box
-                        w={'100%'}
-                        h={'5%'}
-                    >
-                        Header
-                    </Box>
-                    <Box
-                        w={'100%'}
-                        h={'95%'}
-                        p={'4px 8px'}
+                    p={'4px 8px'}
 
-                        fontSize={'14px'}
+                    fontSize={'14px'}
+                >
+                    <Box
+                        w={'100%'}
+                        h={'50%'}
+                        pb={'8px'}
                     >
-                        <Box
-                            w={'100%'}
-                            h={'50%'}
-                            pb={'8px'}
-                        >
-                            <DashboardSchedule width={'100%'} height={'100%'} schedule={calendarData}/>
-                        </Box>
-                        <Box
-                            w={'100%'}
-                            h={'50%'}
-                        >
-                            <ScheduleForm modeManager={modeManager} idManager={taskIdManager} editData={editData} />
-                        </Box>
+                        <DashboardSchedule width={'100%'} height={'100%'} schedule={calendarData}/>
+                    </Box>
+                    <Box
+                        w={'100%'}
+                        h={'50%'}
+                    >
+                        <ScheduleForm modeManager={modeManager} idManager={taskIdManager} editData={editData} />
                     </Box>
                 </Box>
-                <Box
-                    w={'32%'}
-                    h={'100%'}
-                >
-                    <ScheduleAside idManager={taskIdManager} message={message} asideData={asideData} />
-                </Box>
-            </Flex>
-        </Box>
+            </Box>
+            <Box
+                w={'32%'}
+                h={'100%'}
+            >
+                <ScheduleAside idManager={taskIdManager} message={message} asideData={asideData} />
+            </Box>
+        </DoctorLayout>
     )
 }

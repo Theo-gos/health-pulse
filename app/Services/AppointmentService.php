@@ -3,10 +3,28 @@
 namespace App\Services;
 
 use App\Models\Appointment;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Support\Facades\Auth;
 
 class AppointmentService extends BaseService
 {
+    private $appointmentNoteService;
+
+    private $prescriptionService;
+
+    private $diagnosisService;
+
+    public function __construct(
+        AppointmentNoteService $appointmentNoteService,
+        PrescriptionService $prescriptionService,
+        DiagnosisService $diagnosisService
+    ) {
+        parent::__construct();
+        $this->appointmentNoteService = $appointmentNoteService;
+        $this->prescriptionService = $prescriptionService;
+        $this->diagnosisService = $diagnosisService;
+    }
+
     public function getModel()
     {
         return Appointment::class;
@@ -33,10 +51,11 @@ class AppointmentService extends BaseService
         $query_info = $this->roleCheck($doctor_id, $patient_id);
 
         $appointments = $this->model->where($query_info['query_string'], $query_info['query_param'])
-            ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
+            ->select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
             ->havingBetween('date', [$date_start, $date_end])
             ->orderBy('date', 'asc')
             ->orderBy('start_time', 'asc')
+            ->with('patient')
             ->get();
 
         $appointmentList = [];
@@ -54,9 +73,10 @@ class AppointmentService extends BaseService
         $query_info = $this->roleCheck($doctor_id, $patient_id);
 
         $appointments = $this->model->where($query_info['query_string'], $query_info['query_param'])
-            ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
+            ->select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
             ->where('date', $date)
             ->orderBy('start_time', 'asc')
+            ->with('patient')
             ->get();
 
         return $appointments;
@@ -68,10 +88,11 @@ class AppointmentService extends BaseService
         $query_info = $this->roleCheck($doctor_id, $patient_id);
 
         $appointment = $this->model->where($query_info['query_string'], $query_info['query_param'])
-            ->select('doctor_id', 'date', 'patient_name', 'start_time', 'end_time')
+            ->select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
             ->where('date', $date)
             ->where('start_time', '<', $hour)
             ->where('end_time', '>', $hour)
+            ->with('patient')
             ->get();
 
         return $appointment;
@@ -85,5 +106,59 @@ class AppointmentService extends BaseService
         $last_day_this_week = date('Y-m-d', strtotime('sunday this week'));
 
         return $this->getAllBetweenDates($first_day_this_week, $last_day_this_week, $doctor_id, null);
+    }
+
+    public function getAllByDoctorId(int $doctor_id)
+    {
+        return $this->model->where('doctor_id', $doctor_id)
+            ->orderBy('date')
+            ->orderBy('start_time')
+            ->get();
+    }
+
+    public function getAppointmentNoteById(int $appointment_id)
+    {
+        return $this->appointmentNoteService->getByAppointmentId($appointment_id);
+    }
+
+    public function storeAppointmentNote($data)
+    {
+        $payload = $data;
+        $urlList = array_map(function ($file) {
+            $url = Cloudinary::upload($file->getRealPath())->getSecurePath();
+
+            return $url;
+        }, $data['files']);
+        unset($payload['files']);
+        $payload['image_url'] = $urlList;
+
+        return $this->appointmentNoteService->store($payload);
+    }
+
+    public function storePrescription(int $doctor_id, $data)
+    {
+        $payload = $data;
+        $payload['doctor_id'] = $doctor_id;
+        $payload['patient_id'] = intval($payload['patient_id']);
+        $payload['dose'] = $payload['dose'].' '.$payload['dose_addon'];
+        $payload['pill_per_day'] = $payload['pill_per_day'].' '.$payload['pill_type'];
+        unset($payload['pill_type']);
+        unset($payload['dose_addon']);
+
+        return $this->prescriptionService->store($payload);
+    }
+
+    public function storeDiagnoses(int $doctor_id, int $patient_id, $data)
+    {
+        $payload = array_map(function ($diagnosis) use ($doctor_id, $patient_id) {
+            $diagnosis['doctor_id'] = $doctor_id;
+            $diagnosis['patient_id'] = $patient_id;
+            $diagnosis['created_at'] = date('Y-m-d H:i:s');
+            $diagnosis['updated_at'] = date('Y-m-d H:i:s');
+
+            return $diagnosis;
+        }, $data);
+
+        return $this->diagnosisService->insertDiagnoses($payload);
     }
 }

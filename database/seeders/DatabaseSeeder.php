@@ -76,7 +76,34 @@ class DatabaseSeeder extends Seeder
         //     ))
         //     ->hasDoctors(10)
         //     ->create();
-
-        \App\Models\Appointment::factory(10)->create();
+        // \App\Models\Patient::factory(5)->create();
+        // \App\Models\Appointment::factory(10)->create();
+        // \App\Models\Allergy::factory()
+        //     ->count(4)
+        //     ->state(new Sequence(
+        //         [
+        //             'name' => 'Lactose',
+        //             'type' => 'Food',
+        //             'severity' => 'Mild',
+        //         ],
+        //         [
+        //             'name' => 'Peanut',
+        //             'type' => 'Food',
+        //             'severity' => 'Severe',
+        //         ],
+        //         [
+        //             'name' => 'Ethanol',
+        //             'type' => 'Drug',
+        //             'severity' => 'Mild',
+        //         ],
+        //         [
+        //             'name' => 'Flower',
+        //             'type' => 'Environmental',
+        //             'severity' => 'Mild',
+        //         ],
+        //     ))
+        //     ->create();
+        \App\Models\Prescription::factory(4)->create();
+        // \App\Models\Diagnosis::factory(6)->create();
     }
 }
