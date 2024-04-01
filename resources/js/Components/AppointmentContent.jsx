@@ -115,7 +115,6 @@ export default function AppointmentContent({ data, date }) {
         get(route('appointment.note', {appointment: appointment_id}, {
             forceFormData: true,
         }))
-        // console.log(patient_id, appointment_id);
     }
 
     return (

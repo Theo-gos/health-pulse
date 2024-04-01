@@ -22,16 +22,6 @@ class Diagnosis extends Pivot
         'color',
     ];
 
-    protected $attributes = [
-        'doctor_id' => '1',
-        'patient_id' => '1',
-        'date' => '2020-03-22',
-        'icd_code' => null,
-        'icd_name' => null,
-        'severity' => 'stable',
-        'color' => '#1366DE',
-    ];
-
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class);

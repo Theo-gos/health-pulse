@@ -17,10 +17,6 @@ class Allergy extends Model
         'severity',
     ];
 
-    protected $attributes = [
-        'patient_id' => '1',
-    ];
-
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class);

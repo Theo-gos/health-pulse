@@ -7,19 +7,7 @@ import {
     Modal,
     ModalOverlay,
     ModalContent,
-    ModalHeader,
-    ModalCloseButton,
-    ModalBody,
-    ModalFooter,
     useDisclosure,
-    Button,
-    VStack,
-    FormControl,
-    Input,
-    InputGroup,
-    InputLeftElement,
-    FormErrorMessage,
-    InputRightElement,
     Stack,
 } from "@chakra-ui/react"
 import { useEffect, useRef, useState } from "react"
@@ -27,6 +15,7 @@ import Logo from "../Pages/Shared/Logo"
 import { useForm, Link, usePage } from "@inertiajs/react"
 import { EmailIcon, LockIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons"
 import { FcGoogle } from "react-icons/fc";
+import { AiOutlineFacebook, AiOutlineInstagram } from "react-icons/ai";
 import PatientLoginForm from "@/Components/PatientLoginForm"
 import PatientRegisterForm from "@/Components/PatientRegisterForm"
 import dayjs from "dayjs"
@@ -52,52 +41,13 @@ export default function PatientLayout({ children }) {
         gender: 'M',
         dob: '',
     });
-    
+
     function handleSubmit(e) {
         e.preventDefault()
         
         if (isLogin) {
-            if (data.email === '') {
-                setError('email', 'Email is required')
-                return
-            } else if (data.password === '') { 
-                setError('password', 'Password is required')
-                return
-            }
-
             post(route('patient.login'))
-        } else {
-             if (data.first_name === '') { 
-                setError('first_name', 'First name is required')
-                return
-            } else if (data.last_name === '') { 
-                setError('last_name', 'Last name is required')
-                return
-            } else if (data.email === '') {
-                setError('email', 'Email is required')
-                return
-            } else if (data.address === '') { 
-                setError('address', 'Address is required')
-                return
-            } else if (!data.phone) { 
-                setError('phone', 'Phone is required')
-                return
-            } else if (data.password === '') { 
-                setError('password', 'Password is required')
-                return
-            } else if (data.confirm_password === '') { 
-                setError('confirm_password', 'Confirm Password is required')
-                return
-            } else if (data.dob === '') { 
-                setError('dob', 'Date of Birth is required')
-                return
-             }
-            
-            if (data.password.length < 6) {
-                setError('password', 'Password needs at least 6 characters')
-                return
-            }
-            
+        } else {        
             if (data.confirm_password !== data.password) { 
                 setError('confirm_password', 'Passwords do not match')
                 return
@@ -363,18 +313,128 @@ export default function PatientLayout({ children }) {
                 </Box>
                 
             </Box>
+
             <Box
                 mt={'9vh'}
             >
                 {children}
             </Box>
-            <Box
-                    w={'100%'}
-                    h={'75vh'}
 
-                    bg={'purple.100'}
+            <Box
+                w={'100%'}
+                pb={'40px'}
+
+                bg={'#242a61'}
+            >
+                <Stack
+                    w={'85%'}
+                    h={'100%'}
+                    py={'40px'}
+
+                    spacing={4}
+
+                    mx={'auto'}
                 >
-                    Footer
+                    <Flex
+                        alignItems={'center'}
+                        mb={'10px'}
+
+                        fontSize={'30px'}
+                    >
+                        <Logo />
+                        <Text ml={'10px'} fontWeight={'500'} color={'white'}>Health pulse</Text>
+                    </Flex>
+
+                    <Flex
+                        w={'100%'}
+                        pb={'50px'}
+
+                        color={'white'}
+                        fontSize={'14px'}
+
+                        borderBottom={'1px solid white'}
+                    >
+                        <Stack
+                            w={'45%'}
+
+                            spacing={2}
+                        >
+                            <Flex>
+                                <Box fontWeight={'bold'}>Hotline</Box>
+                                <Box ml={'3px'}>1900636893</Box>
+                            </Flex>
+
+                            <Flex>
+                                <Box fontWeight={'bold'}>Email</Box>
+                                <Box ml={'3px'}>support@healthpulse.com</Box>
+                            </Flex>
+
+                            <Box>
+                                Copyright © 2017-2024 Rai and Rohl Technologies, Inc. All rights reserved.
+                            </Box>
+                        </Stack>
+
+                        <Stack
+                            w={'25%'}
+                        >
+                            <Box fontSize={'16px'} fontWeight={'bold'}>Services</Box>
+                            <Box>Booking Appointment</Box>
+                        </Stack>
+
+                        <Stack
+                            w={'25%'}
+                        >
+                            <Box fontSize={'16px'} fontWeight={'bold'}>Learn More</Box>
+                            <Box>Our Doctors</Box>
+                        </Stack>
+                    </Flex>
+
+                    <Flex
+                        w={'100%'}
+                        pt={'24px'}
+
+                        color={'white'}
+                        fontSize={'14px'}
+                    >
+                        <Stack
+                            w={'45%'}
+
+                            spacing={2}
+                        >
+                            <Box fontWeight={'bold'}>JIO HEALTH POLYCLINIC COMPANY LIMITED</Box>
+
+                            <Flex>
+                                <Box fontWeight={'bold'}>Business Registration Number:</Box>
+                                <Box ml={'3px'}>0309145924, first registered on</Box>
+                            </Flex>
+
+                            <Box>
+                                06/07/2009, ninth amended on 06/07/2023, issued by Department of Planning and Investment of Ho Chi Minh City.
+                            </Box>
+                        </Stack>
+
+                        <Stack
+                            w={'30%'}
+                            pl={'28px'}
+                        >
+                            <Box fontSize={'16px'} fontWeight={'bold'}>Address</Box>
+                            <Box>39 Le Duan, Ben Nghe Ward, District 1, Ho Chi Minh city, Vietnam</Box>
+                            <Box fontSize={'16px'} fontWeight={'bold'}>Stay in touch</Box>
+                            <Flex w={'100%'}>
+                                <AiOutlineFacebook fontSize={'45px'} />
+                                <AiOutlineInstagram fontSize={'45px'} />
+                            </Flex>
+                        </Stack>
+
+                        <Stack
+                            w={'30%'}
+
+                            align={'center'}
+                        >
+                            <img src="https://cdn.jiohealth.com/jio-website/home-page/jio-website-v2.2/assets/images/dathongbao.png" width={'150px'}/>
+                        </Stack>
+                    </Flex>
+                </Stack>
             </Box>
         </Box>
     )

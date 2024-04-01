@@ -20,14 +20,6 @@ class Appointment extends Pivot
         'end_time',
     ];
 
-    protected $attributes = [
-        'doctor_id' => '1',
-        'patient_id' => '1',
-        'date' => '2024-03-22',
-        'start_time' => '08:00:00',
-        'end_time' => '09:00:00',
-    ];
-
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class);

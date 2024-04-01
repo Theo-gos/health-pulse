@@ -22,16 +22,6 @@ class Prescription extends Pivot
         'recommendation',
     ];
 
-    protected $attributes = [
-        'doctor_id' => '1',
-        'patient_id' => '1',
-        'date' => '2020-03-22',
-        'medication_name' => 'Atenolol',
-        'dose' => '200 mg oral',
-        'pill_per_day' => '1 tablet',
-        'recommendation' => '1 tablet every morning for 10 days',
-    ];
-
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class);

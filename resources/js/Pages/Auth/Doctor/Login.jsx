@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { EmailIcon, LockIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { Link, useForm } from '@inertiajs/react';
-import AuthLayout from '../../Layouts/AuthLayout';
+import DoctorLoginLayout from '../../../Layouts/DoctorLoginLayout';
 
 export default function Login() {
     const [show, setShow] = useState(false)
@@ -33,7 +33,7 @@ export default function Login() {
     }
 
     return (
-        <AuthLayout>
+        <DoctorLoginLayout>
             <Heading my={'10'} >Log in</Heading>
 
             <form
@@ -133,7 +133,7 @@ export default function Login() {
                     </Button>
                 </VStack>
             </form>
-        </AuthLayout>    
+        </DoctorLoginLayout>    
 
     )
 }
