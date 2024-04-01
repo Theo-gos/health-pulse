@@ -1,17 +1,29 @@
-import { Grid, GridItem } from '@chakra-ui/react'
+import { Grid, GridItem, LightMode } from '@chakra-ui/react'
 import DashboardSidebar from '@/Components/DashboardSidebar'
 import DashboardSchedule from '@/Components/DashboardSchedule'
 import DashboardAppointments from '@/Components/DashboardAppointments'
 import DashboardAside from '@/Components/DashboardAside'
 import { usePage } from '@inertiajs/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
-export default function Dashboard({appointments, current_appointment, schedules}) {
+export default function Dashboard({
+  appointments,
+  current_appointment,
+  schedules,
+  diagnosisStatistic,
+  commonIllnessStatistic,
+  malePatientStatistic,
+  femalePatientStatistic,
+}) {
   const { flash } = usePage().props
   const [dashboardAppointments, setDashboardAppointments] = useState({
     list: appointments,
     current: current_appointment,
   })
+
+  const [pieChartData, setPieChartData] = useState([])
+  const [areaChartData, setAreaChartData] = useState([])
+
   const [dashboardSchedule, setDashboardSchedule] = useState(schedules)
 
   useEffect(() => {
@@ -28,6 +40,39 @@ export default function Dashboard({appointments, current_appointment, schedules}
       }
     }
   }, [flash])
+
+  useMemo(() => {
+    const data = diagnosisStatistic.reduce((accumulator, diagnosis) => {
+      const index = accumulator.findIndex(value => value.severity === diagnosis.severity)
+
+      if (index >= 0) {
+        accumulator[index].count++
+      } else {
+        accumulator.push({
+          severity: diagnosis.severity,
+          count: 1,
+          color: diagnosis.color,
+        })
+      }
+
+      return accumulator
+    }, [])
+
+    setPieChartData(data)
+  }, [diagnosisStatistic])
+
+  useMemo(() => {
+    const ageRangesList = Object.keys(malePatientStatistic)
+    const data = ageRangesList.map(ageRange => {
+      return {
+        age: ageRange,
+        male: malePatientStatistic[ageRange],
+        female: femalePatientStatistic[ageRange],
+      }
+    })
+    
+    setAreaChartData(data)
+  }, [malePatientStatistic, femalePatientStatistic])
 
   return (
     <Grid
@@ -55,7 +100,7 @@ export default function Dashboard({appointments, current_appointment, schedules}
         <DashboardAppointments appointments={dashboardAppointments.list} current_appointment={dashboardAppointments.current} />
       </GridItem>
       <GridItem area={'aside'}>
-        <DashboardAside />
+        <DashboardAside pieChartData={pieChartData} areaChartData={areaChartData} commonIllnessStatistic={commonIllnessStatistic} />
       </GridItem>
     </Grid>
   )

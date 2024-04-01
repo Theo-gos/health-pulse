@@ -15,11 +15,8 @@ class Diagnosis extends Pivot
     protected $fillable = [
         'date',
         'icd_code',
-        'icd_name',
         'doctor_id',
         'patient_id',
-        'severity',
-        'color',
     ];
 
     public function patient(): BelongsTo
@@ -30,5 +27,10 @@ class Diagnosis extends Pivot
     public function doctor(): BelongsTo
     {
         return $this->belongsTo(Doctor::class);
+    }
+
+    public function icd(): BelongsTo
+    {
+        return $this->belongsTo(Icd::class, 'icd_code', 'icd_code');
     }
 }

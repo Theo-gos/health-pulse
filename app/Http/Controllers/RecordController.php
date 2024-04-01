@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\AppointmentService;
 use App\Services\DoctorService;
+use App\Services\IcdService;
 use App\Services\PatientService;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -12,15 +12,18 @@ class RecordController extends Controller
 {
     //
 
-    private $appointmentService;
+    private $icdService;
 
     private $patientService;
 
     private $doctorService;
 
-    public function __construct(AppointmentService $appointmentService, DoctorService $doctorService, PatientService $patientService)
-    {
-        $this->appointmentService = $appointmentService;
+    public function __construct(
+        IcdService $icdService,
+        DoctorService $doctorService,
+        PatientService $patientService
+    ) {
+        $this->icdService = $icdService;
         $this->doctorService = $doctorService;
         $this->patientService = $patientService;
     }
@@ -31,9 +34,11 @@ class RecordController extends Controller
 
         $patients = $this->doctorService->getAllAppointedPatientsIdByDoctorId($doctor_id);
         $medicalInfos = $this->patientService->getMedicalInformationById($patients);
+        $icd = $this->icdService->getAll();
 
         return Inertia::render('Auth/Doctor/Records', [
             'medical_info' => $medicalInfos,
+            'icd' => $icd,
         ]);
     }
 }

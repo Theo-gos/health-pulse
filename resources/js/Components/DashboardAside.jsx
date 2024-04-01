@@ -4,12 +4,14 @@ import {
     Stack,
     Text,
     Icon,
+    HStack,
 } from "@chakra-ui/react";
 import DashboardPiechart from "./DashboardPiechart";
 import DashboardAreaChart from "./DashboardAreachart";
 import { BsDropletFill, BsFillHospitalFill, BsFillShieldFill, BsFileEarmarkPlusFill } from "react-icons/bs";
 
-export default function DashboardAside() {
+export default function DashboardAside({ pieChartData, areaChartData, commonIllnessStatistic }) {
+    console.log(commonIllnessStatistic);
     return (
         <Flex
             borderRadius={'xl'}
@@ -32,7 +34,7 @@ export default function DashboardAside() {
                     w={'100%'}
                     h={'95%'}
                 >
-                    <DashboardAreaChart />
+                    <DashboardAreaChart data={areaChartData} />
                 </Box>
             </Box>
 
@@ -43,7 +45,7 @@ export default function DashboardAside() {
                 p={'16px 8px'}
             >
                 <Box color={'black'}>Patients by condition</Box>
-                <DashboardPiechart />
+                <DashboardPiechart data={pieChartData} />
             </Box>
 
             <Box
@@ -52,86 +54,34 @@ export default function DashboardAside() {
 
                 p={'8px'}
             >
-                <Box mb={'8px'} color={'black'}>Patients by treatment</Box>
-                <Flex
-                    justify={'space-around'}
+                <Box mb={'8px'} color={'black'}>Common Illness</Box>
+                <HStack
+                    spacing={3}
 
                     fontSize={'12px'}
 
                 >
-                    <Box
-                        border={'1px solid #FFF4EB'}
-                        borderRadius={'lg'}
-
-                        p={'8px'}
-                        // h={'px'}
-                        w={'22%'}
-                    >
-                        <Text mb={'30px'} textAlign={'center'}>Rehabilitation</Text>
-                        <Flex justify={'space-between'} align={'center'}>
-                            <Box borderRadius={'3px'} color={'blue'} bg={'blue.200'} p={'2px 2px 2px 0'} pl={'2.5px'}>
-                                <BsFillShieldFill />
+                    {commonIllnessStatistic.map((illness) => {
+                        return (
+                            <Box
+                                key={illness.icd_code}
+                                border={'1px solid #FFF4EB'}
+                                borderRadius={'lg'}
+        
+                                p={'8px'}
+                                w={'22%'}
+                            >
+                                <Text mb={'30px'} title={illness.icd_name} textAlign={'center'} fontSize={'10px'} overflowX={'hidden'} whiteSpace={'nowrap'} textOverflow={'ellipsis'}>{illness.icd_name}</Text>
+                                <Flex justify={'space-between'} align={'center'}>
+                                    <Box bg={illness.color} p={'2px 6px'} fontSize={'10px'} borderRadius={'md'} color={'white'}>{illness.icd_code}</Box>
+                                    <Box>
+                                        {illness.count}
+                                    </Box>
+                                </Flex>
                             </Box>
-                            <Box>
-                                Value
-                            </Box>
-                        </Flex>
-                    </Box>
-                    <Box
-                        border={'1px solid #FFF4EB'}
-                        borderRadius={'lg'}
-
-                        p={'8px'}
-                        h={'50%'}
-                        w={'22%'}
-                    >
-                        <Text mb={'30px'} textAlign={'center'}>Surgery</Text>
-                        <Flex justify={'space-between'} align={'center'}>
-                            <Box borderRadius={'3px'} color={'#ED983C'} bg={'#FFF4EB'} p={'2px 2px 2px 0'} pl={'2.5px'}>
-                                <BsDropletFill />
-                            </Box>
-                            <Box>
-                                Value
-                            </Box>
-                        </Flex>
-                    </Box>
-                    <Box
-                        border={'1px solid #FFF4EB'}
-                        borderRadius={'lg'}
-
-                        p={'8px'}
-                        h={'50%'}
-                        w={'22%'}
-                    >
-                        <Text mb={'30px'} fontSize={'11px'} textAlign={'center'}>Hospitalization</Text>
-                        <Flex justify={'space-between'} align={'center'}>
-                            <Box borderRadius={'3px'} color={'#9D54E6'} bg={'#F3EEFE'} p={'2px 2px 2px 0'} pl={'2.5px'}>
-                                <BsFillHospitalFill />
-                            </Box>
-                            <Box>
-                                Value
-                            </Box>
-                        </Flex>
-                    </Box>
-                    <Box
-                        border={'1px solid #FFF4EB'}
-                        borderRadius={'lg'}
-
-                        p={'8px'}
-                        h={'50%'}
-                        w={'22%'}
-                    >
-                        <Text mb={'30px'} textAlign={'center'}>Lab tests</Text>
-                        <Flex justify={'space-between'} align={'center'}>
-                            <Box borderRadius={'3px'} color={'#4EA44B'} bg={'#E4F8E3'} p={'2px 2px 2px 0'} pl={'2.5px'}>
-                                <BsFileEarmarkPlusFill />
-                            </Box>
-                            <Box>
-                                Value
-                            </Box>
-                        </Flex>
-                    </Box>
-                </Flex>
+                        )
+                    })}
+                </HStack>
             </Box>
         </Flex>
     )

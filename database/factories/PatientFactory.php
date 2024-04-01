@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\GenderType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
@@ -22,16 +23,19 @@ class PatientFactory extends Factory
      */
     public function definition(): array
     {
+        $gender = fake()->randomElement(['male', 'female']);
+        $sex = $gender === 'male' ? GenderType::MALE : GenderType::FEMALE;
+
         return [
-            'name' => fake()->name(),
+            'name' => fake()->name($gender),
             'google_id' => null,
             'address' => fake()->address(),
             'phone' => fake()->phoneNumber(),
             'password' => static::$password ??= Hash::make('password'),
             'email' => fake()->email(),
             'date_of_birth' => fake()->date('Y-m-d'),
-            'sex' => 'M',
-            'age' => 23,
+            'sex' => $sex,
+            'age' => fake()->numberBetween(13, 90),
             'last_visit' => '2016-03-29',
         ];
     }

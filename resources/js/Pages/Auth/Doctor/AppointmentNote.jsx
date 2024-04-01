@@ -50,6 +50,7 @@ const dateFormatter = (date) => {
 
 const prescriptionFieldsToBeValidated = ['medication_name', 'dose', 'pill_per_day', 'recommendation']
 const noteFieldsToBeValidated = ['main_complaint', 'objective_note', 'subjective_note', 'recommendation']
+const icdObj = {}
 
 export default function AppointmentNote({ medicalInfo, appointment, icd, note }) {
     const [fileList, setFileList] = useState([])
@@ -71,7 +72,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
         files: [],
         signature: null,
     })
-    const [selectedDiagnosis, setSelectedDiagnosis] = useState('J00:Acute nasopharyngitis, common cold:Stable:#1366DE')
+    const [selectedDiagnosis, setSelectedDiagnosis] = useState('J00')
     const [isPrescribe, setIsPrescribe] = useState(false)
     const [fileArray, setFileArray] = useState([])
     const [isSigned, setIsSigned] = useState(false)
@@ -119,25 +120,25 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
         }
     }, [isPrescribe])
 
+    useMemo(() => {
+        icd.forEach(item => {
+            icdObj[item.icd_code] = item
+        })
+    }, [icd])
+    console.log(data);
+
+
     const resetModal = () => {
         setData('signature', null)
         onClose()
     }
 
     const handleAddingDiagnosis = () => {
-        const icdData = selectedDiagnosis.split(':')
-
-        const icd_code = icdData[0]
-        const icd_name = icdData[1]
-        const severity = icdData[2]
-        const color = icdData[3]
+        const icd_code = selectedDiagnosis
 
         const diagnosisDetail = {
             date: today.format('YYYY-MM-DD'),
             icd_code: icd_code,
-            icd_name: icd_name,
-            severity: severity,
-            color: color,
         }
 
         const foundDiagnosis = data.diagnoses.find(diagnosis => {
@@ -192,7 +193,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
         post(route('appointment.note', {appointment: appointment.id}))
     }
 
-    useEffect(() => {
+    useMemo(() => {
         if (note.length > 0) { 
             setIsSigned(true)
             setData({
@@ -202,7 +203,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                 subjective_note: note[0].subjective_note,
             })
         }
-    })
+    }, [note])
 
     return (
         <DoctorLayout state={'none'}>
@@ -411,7 +412,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                                                 >
                                                     <Flex align={'center'} w={'12%'} h={'100%'}>
                                                         <Box
-                                                            bg={diagnosis.color}
+                                                            bg={icdObj[diagnosis.icd_code].color}
                                                             borderRadius={'md'}
                                                             
                                                             w={'fit-content'}
@@ -423,7 +424,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                                                             {diagnosis.icd_code}
                                                         </Box>
                                                     </Flex>
-                                                    <Box fontSize={'11px'} w={'65%'} h={'100%'}>{diagnosis.icd_name}</Box>
+                                                    <Box fontSize={'11px'} w={'65%'} h={'100%'}>{icdObj[diagnosis.icd_code].icd_name}</Box>
                                                     <Flex align={'center'} justify={'center'} w={'20%'} h={'100%'} fontSize={'12px'}>{dateFormatter(diagnosis.date)}</Flex>
                                                 </Flex>
                                             })    
@@ -565,7 +566,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                                                                 w={'12%'}
                                                             >
                                                                 <Box
-                                                                    bg={diagnosis.color}
+                                                                    bg={icdObj[diagnosis.icd_code].color}
                                                                     borderRadius={'md'}
                                                                     
                                                                     w={'fit-content'}
@@ -578,7 +579,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                                                                 </Box>
                                                             </Box>
                                                                 
-                                                            <Box w={'88%'} fontSize={'12px'}>{diagnosis.icd_name}</Box>
+                                                            <Box w={'88%'} fontSize={'12px'}>{icdObj[diagnosis.icd_code].icd_name}</Box>
                                                         </HStack>
                                                     </Flex>
                                                 })
@@ -622,7 +623,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                                                     {icd.map((item) => {
                                                         return <option
                                                             key={item.icd_code}
-                                                            value={`${item.icd_code}:${item.icd_name}:${item.severity}:${item.color}`}
+                                                            value={item.icd_code}
                                                         >
                                                             {item.icd_code}: {item.icd_name}
                                                         </option>

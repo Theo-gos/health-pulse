@@ -76,7 +76,7 @@ class DatabaseSeeder extends Seeder
         //     ))
         //     ->hasDoctors(10)
         //     ->create();
-        // \App\Models\Patient::factory(5)->create();
+        // \App\Models\Patient::factory(50)->create();
         // \App\Models\Appointment::factory(10)->create();
         // \App\Models\Allergy::factory()
         //     ->count(4)
@@ -103,7 +103,7 @@ class DatabaseSeeder extends Seeder
         //         ],
         //     ))
         //     ->create();
-        \App\Models\Prescription::factory(4)->create();
+        // \App\Models\Prescription::factory(4)->create();
         // \App\Models\Diagnosis::factory(6)->create();
     }
 }

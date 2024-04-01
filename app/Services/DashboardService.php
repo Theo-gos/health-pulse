@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\GenderType;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardService
@@ -10,14 +11,24 @@ class DashboardService
 
     private $appointmentService;
 
+    private $diagnosisService;
+
     private $scheduleService;
 
-    public function __construct(AppointmentService $appointmentService, ScheduleService $scheduleService)
-    {
+    private $patientService;
+
+    public function __construct(
+        AppointmentService $appointmentService,
+        ScheduleService $scheduleService,
+        DiagnosisService $diagnosisService,
+        PatientService $patientService,
+    ) {
         date_default_timezone_set($this->timezone);
 
         $this->appointmentService = $appointmentService;
+        $this->diagnosisService = $diagnosisService;
         $this->scheduleService = $scheduleService;
+        $this->patientService = $patientService;
     }
 
     public function index()
@@ -31,10 +42,20 @@ class DashboardService
 
         $schedule = $this->scheduleService->getAllBetweenDates($first_day_this_month, $last_day_this_month);
 
+        $diagnosisStatistic = $this->diagnosisService->getLatestDiagnosesPerPatient();
+        $commonIllnessStatistic = $this->diagnosisService->getCommonIllnessCount();
+
+        $malePatientStatistic = $this->patientService->getPatientCountBasedOnAgeAndGender(GenderType::MALE);
+        $femalePatientStatistic = $this->patientService->getPatientCountBasedOnAgeAndGender(GenderType::FEMALE);
+
         return [
             'appointments' => $appointments,
             'current_appointment' => $current_appointment,
             'schedules' => $schedule,
+            'diagnosisStatistic' => $diagnosisStatistic,
+            'commonIllnessStatistic' => $commonIllnessStatistic,
+            'malePatientStatistic' => $malePatientStatistic[0],
+            'femalePatientStatistic' => $femalePatientStatistic[0],
         ];
     }
 

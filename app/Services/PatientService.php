@@ -11,14 +11,27 @@ class PatientService extends BaseService
         return Patient::class;
     }
 
+    public function generateAgeGroupCounts()
+    {
+        return $this->model->selectRaw(
+            '
+            SUM(CASE WHEN age < 18 THEN 1 ELSE 0 END) AS `14-17`,
+            SUM(CASE WHEN age BETWEEN 18 AND 24 THEN 1 ELSE 0 END) AS `18-24`,
+            SUM(CASE WHEN age BETWEEN 25 AND 34 THEN 1 ELSE 0 END) AS `25-34`,
+            SUM(CASE WHEN age BETWEEN 35 AND 44 THEN 1 ELSE 0 END) AS `35-44`,
+            SUM(CASE WHEN age BETWEEN 45 AND 54 THEN 1 ELSE 0 END) AS `45-54`,
+            SUM(CASE WHEN age BETWEEN 55 AND 64 THEN 1 ELSE 0 END) AS `55-64`,
+            SUM(CASE WHEN age BETWEEN 65 AND 74 THEN 1 ELSE 0 END) AS `65-74`,
+            SUM(CASE WHEN age > 75 THEN 1 ELSE 0 END) AS `75-90`'
+        );
+    }
+
     public function getMedicalInformationById($patient_id)
     {
         $patients = $this->model->whereIn('id', $patient_id)
             ->with(['allergies', 'appointed_doctors', 'diagnose_doctors', 'prescribe_doctors', 'appointed_doctors.service'])
             ->get()
             ->all();
-
-        // dd($patients[0]->appointed_doctors[0]->service->type);
 
         $patientMedicalInfos = [];
 
@@ -83,5 +96,13 @@ class PatientService extends BaseService
             'sex' => $data['gender'],
             'age' => $age,
         ]);
+    }
+
+    public function getPatientCountBasedOnAgeAndGender($gender = 'M')
+    {
+        return $this->generateAgeGroupCounts()
+            ->where('sex', '=', $gender)
+            ->get()
+            ->toArray();
     }
 }
