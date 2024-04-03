@@ -15,6 +15,8 @@
         "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.8",
         "sentry/sentry-laravel": "^4.3",
+        "spatie/browsershot": "^4.0",
+        "spatie/laravel-pdf": "^1.4",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {

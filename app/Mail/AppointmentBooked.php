@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Appointment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -13,12 +14,15 @@ class AppointmentBooked extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
+    public $appointment;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(Appointment $appointment)
     {
         //
+        $this->appointment = $appointment;
     }
 
     /**
@@ -27,7 +31,7 @@ class AppointmentBooked extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Appointment Booked',
+            subject: 'Appointment Booked Successfully',
         );
     }
 
@@ -36,8 +40,14 @@ class AppointmentBooked extends Mailable implements ShouldQueue
      */
     public function content(): Content
     {
+        $appointment = $this->appointment;
+
+        // $doctorName = $this->appointment->doctor->name;
         return new Content(
             view: 'mail.appointment-booked',
+            // with: [
+            //     'appointment' => $appointment,
+            // ],
         );
     }
 
