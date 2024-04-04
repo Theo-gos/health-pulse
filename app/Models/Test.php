@@ -11,8 +11,7 @@ class Test extends Model
 
     protected $fillable = [
         'date',
-        'file',
-        'result',
+        'result_url',
         'doctor_id',
         'patient_id',
     ];

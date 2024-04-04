@@ -15,4 +15,9 @@ class IcdService extends BaseService
     {
         return Icd::all();
     }
+
+    public function getByIcdCode($icdCode)
+    {
+        return Icd::where('icd_code', $icdCode)->get();
+    }
 }

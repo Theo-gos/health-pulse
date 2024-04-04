@@ -33,7 +33,7 @@ const getPastAppointments = (data) => {
     return pastAppointments
 }
 
-export default function PatientMedicalRecord({ selectManager, medicalInfo }) {
+export default function PatientMedicalRecord({ selectManager, medicalInfo, icd }) {
     const [data, setData] = useState({})
     const [pastAppointments, setPastAppointments] = useState([])
     const { selected } = selectManager
@@ -47,9 +47,6 @@ export default function PatientMedicalRecord({ selectManager, medicalInfo }) {
             setPastAppointments(getPastAppointments(data.appointments))
         }
     }, [data])
-
-    console.log(data);
-    console.log(getPastAppointments(pastAppointments));
 
     return (
         !_.isEmpty(data) ? 
@@ -260,10 +257,10 @@ export default function PatientMedicalRecord({ selectManager, medicalInfo }) {
 
                                                 fontSize={'11px'}
                                             >
-                                                <Box bg={item.color} p={'2px 6px'} borderRadius={'md'} color={'white'}>{item.icd_code}</Box>
+                                                <Box bg={icd[item.icd_code].color} p={'2px 6px'} borderRadius={'md'} color={'white'}>{item.icd_code}</Box>
                                                 <Box fontSize={'13px'}>{dateFormatter(item.date)}</Box>
                                             </Flex>
-                                            <Box p={'8px'} fontWeight={'bold'}>{item.icd_name}</Box>
+                                            <Box p={'8px'} fontWeight={'bold'}>{icd[item.icd_code].icd_name}</Box>
                                         </Box>
                                     ))
                                     :

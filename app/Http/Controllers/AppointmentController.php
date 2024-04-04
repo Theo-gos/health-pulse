@@ -7,6 +7,7 @@ use App\Models\Appointment;
 use App\Services\AppointmentService;
 use App\Services\IcdService;
 use App\Services\PatientService;
+use App\Services\TestResultService;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -18,14 +19,18 @@ class AppointmentController extends Controller
 
     private $icdService;
 
+    private $testResultService;
+
     public function __construct(
         AppointmentService $appointmentService,
         PatientService $patientService,
         IcdService $icdService,
+        TestResultService $testResultService,
     ) {
         $this->appointmentService = $appointmentService;
         $this->patientService = $patientService;
         $this->icdService = $icdService;
+        $this->testResultService = $testResultService;
     }
 
     public function show(string $date_start, string $date_end)
@@ -56,6 +61,10 @@ class AppointmentController extends Controller
     public function storeAppointmentNoteData(AppointmentNoteRequest $request, Appointment $appointment)
     {
         $user = Auth::user();
+
+        $pdf = $this->testResultService->storeTestResult($user, $request->all());
+
+        dd($pdf);
 
         if ($request->diagnoses) {
             $this->appointmentService->storeDiagnoses($user->id, $request->patient_id, $request->diagnoses);

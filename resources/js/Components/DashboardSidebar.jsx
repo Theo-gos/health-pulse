@@ -31,8 +31,8 @@ import Logo from "@/Pages/Shared/Logo";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { usePage } from "@inertiajs/react";
 
-const topOptions = ['dashboard', 'appointments', 'records', 'schedule']
-const botOptions = ['prescriptions', 'test_results']
+const topOptions = ['dashboard', 'appointments', 'schedule']
+const botOptions = ['records']
 const otherOptions = ['notification']
 const icons = {
     'dashboard': BsFillGridFill,
@@ -137,7 +137,7 @@ export default function DashboardSidebar({state}) {
                                     icon={icons[option]}
                                     title={option.charAt(0).toUpperCase() + option.slice(1)}
                                     onClick={() => setSelected(option)}
-                                    href={route(`doctor.appointments`)}
+                                    href={route(`doctor.${option}`)}
                                     selected={selected === option ? true : false}
                                 />
                             ))}

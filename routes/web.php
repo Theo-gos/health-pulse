@@ -26,6 +26,9 @@ Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
+//test
+Route::get('/send_email', [PatientBookingController::class, 'sendMail'])->name('mail');
+
 // Patient
 Route::get('/patient/redirect', [PatientAuthenticateController::class, 'redirect'])->name('patient.google.redirect');
 Route::get('/patient/callback', [PatientAuthenticateController::class, 'callback'])->name('patient.google.callback');

@@ -89,6 +89,9 @@ export default function PatientLayout({ children }) {
         get(route('patient.booking'))
     }
 
+    const sendEmail = () => {
+        get(route('mail'))
+    }
 
     const reset = () => {
         setShow(false)
@@ -148,7 +151,7 @@ export default function PatientLayout({ children }) {
                                         mr={'12px'}
                                         p={'0 4px'}
                                     >
-                                        <Link
+                                        <Box
                                             style={{
                                                 textDecoration: 'none',
                                                 display: 'block',
@@ -157,12 +160,12 @@ export default function PatientLayout({ children }) {
                                                 color: 'gray.500',
                                                 fontSize: '16px',
                                             }}
-                                            href="/"
+                                            onClick={sendEmail}
                                         >
                                             <Text>
                                                 Appointments
                                             </Text>
-                                        </Link>
+                                        </Box>
                                     </ListItem>
                                     <ListItem
                                         float={'left'}

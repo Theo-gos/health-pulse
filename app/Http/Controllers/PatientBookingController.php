@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AppointmentBookingRequest;
 use App\Mail\AppointmentBooked;
-use App\Models\Patient;
+use App\Models\Appointment;
 use App\Services\BookingService;
 use App\Services\PatientService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
@@ -33,6 +34,7 @@ class PatientBookingController extends Controller
 
     public function store(AppointmentBookingRequest $request)
     {
+        $patient = Auth::guard('patient')->user();
         $appointment = $this->bookingService->store($request->all());
         $message = [];
 
@@ -43,8 +45,7 @@ class PatientBookingController extends Controller
                 'appointment' => $appointment->only('date', 'doctor_id', 'end_time', 'patient_name', 'start_time', 'id'),
             ];
 
-            $patient = Patient::find(1);
-            Mail::to($patient->email)->send(new AppointmentBooked);
+            Mail::to($patient->email)->send(new AppointmentBooked($appointment));
         } else {
             $message = [
                 'message' => 'Failed to store',
@@ -53,5 +54,12 @@ class PatientBookingController extends Controller
         }
 
         return redirect()->back()->with('message', $message);
+    }
+
+    public function sendMail()
+    {
+        $patient = Auth::guard('patient')->user();
+        $appointment = Appointment::find(1);
+        Mail::to($patient->email)->send(new AppointmentBooked($appointment));
     }
 }

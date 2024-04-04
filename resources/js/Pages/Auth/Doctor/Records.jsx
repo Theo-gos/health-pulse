@@ -7,14 +7,22 @@ import {
     Flex,
 } from "@chakra-ui/react";
 import { usePage } from "@inertiajs/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-export default function Records({medical_info}) {
+const icdObj = {}
+
+export default function Records({medical_info, icd}) {
     const [selected, setSelected] = useState(0)
     const selectManager = {
         selected: selected,
         setSelected: setSelected,
     }
+
+    useMemo(() => {
+        icd.forEach(item => {
+            icdObj[item.icd_code] = item
+        })
+    }, [icd])
 
     return (
         <DoctorLayout state={'records'}>
@@ -29,7 +37,7 @@ export default function Records({medical_info}) {
                 >
                     {selected === 0 ? <PatientList selectManager={selectManager} medicalInfo={medical_info ? medical_info : []} />
                         :
-                        <PatientMedicalRecord selectManager={selectManager} medicalInfo={medical_info ? medical_info : []} />}
+                        <PatientMedicalRecord selectManager={selectManager} medicalInfo={medical_info ? medical_info : []} icd={icdObj} />}
                 </Box>
             </Box>
 
