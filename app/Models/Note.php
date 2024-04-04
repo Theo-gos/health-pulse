@@ -13,7 +13,7 @@ class Note extends Model
     protected $fillable = [
         'appointment_id',
         'main_complaint',
-        'subjective_note',
+        'test_results',
         'objective_note',
         'image_url',
         'signature',
@@ -21,6 +21,7 @@ class Note extends Model
 
     protected $casts = [
         'image_url' => 'array',
+        'test_results' => 'array',
         'appointment_id' => 'integer',
     ];
 

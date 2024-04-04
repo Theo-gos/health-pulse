@@ -29,7 +29,7 @@ import SideBarItem from "./SideBarItem";
 import { useEffect, useState } from "react";
 import Logo from "@/Pages/Shared/Logo";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
-import { usePage } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 
 const topOptions = ['dashboard', 'appointments', 'schedule']
 const botOptions = ['records']
@@ -46,6 +46,7 @@ const icons = {
 
 export default function DashboardSidebar({state}) {
     const [selected, setSelected] = useState('dashboard')
+    const { post } = useForm()
     const { auth } = usePage().props
     const { doctor } = auth
 
@@ -53,6 +54,10 @@ export default function DashboardSidebar({state}) {
         if (state)
             setSelected(state)
     }, [])
+
+    const handleLogout = () => {
+        post(route('logout'))
+    }
 
     return (
         <Box
@@ -224,9 +229,9 @@ export default function DashboardSidebar({state}) {
                                         mr={'3px'}
                                         mb={'5px'}
                                     />
-                                    <MenuList minW={'150px'}>
-                                        <MenuItem fontSize={'12px'}>Profile</MenuItem>
-                                        <MenuItem fontSize={'12px'}>Logout</MenuItem>
+                                    <MenuList minW={'180px'}>
+                                        <MenuItem fontSize={'12px'} py={'8px'}>Profile</MenuItem>
+                                        <MenuItem fontSize={'12px'} py={'8px'} onClick={handleLogout}>Logout</MenuItem>
                                     </MenuList>
                                 </>
                             )}

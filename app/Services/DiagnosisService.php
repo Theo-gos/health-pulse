@@ -11,13 +11,6 @@ class DiagnosisService extends BaseService
         return Diagnosis::class;
     }
 
-    public function insertDiagnoses($data)
-    {
-        $this->model->insert($data);
-
-        return $data;
-    }
-
     public function getLatestDiagnosesPerPatient()
     {
         $latestDiagnosesPerPatient = $this->model->selectRaw('patient_id, icds.icd_code, icds.severity, icds.color, MAX(date) as latest_date')

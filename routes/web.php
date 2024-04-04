@@ -61,12 +61,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Medical Record
     Route::get('/doctor/records', [RecordController::class, 'index'])->name('doctor.records');
-
-    Route::middleware(['auth'])->group(function () {
-        Route::get('/doctor/prescriptions', function () {
-            return Inertia::render('Auth/Doctor/Prescription');
-        })->name('doctor.prescriptions');
-    });
 });
 
 // Show doctor login page

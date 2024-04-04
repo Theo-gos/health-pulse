@@ -4,12 +4,14 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import Logo from '../Pages/Shared/Logo'
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import DashboardSidebar from '@/Components/DashboardSidebar';
 
 
 export default function DoctorLayout({ children, state }) {
     const [windowSize, setWindowSize] = useState(window.innerWidth)
+
+    const {auth, message, flash} = usePage().props
 
     window.addEventListener('resize', () => { 
         setWindowSize(window.innerWidth)

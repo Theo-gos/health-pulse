@@ -33,6 +33,7 @@ import { UploadFile } from "antd/lib/upload/interface";
 import { LuHardDriveUpload } from "react-icons/lu";
 import SignatureCanvas from 'react-signature-canvas'
 import DoctorLayout from "@/Layouts/DoctorLayout";
+import _ from 'lodash'
 
 const colors = {
     Stable: 'black',
@@ -49,7 +50,7 @@ const dateFormatter = (date) => {
 }
 
 const prescriptionFieldsToBeValidated = ['medication_name', 'dose', 'pill_per_day', 'recommendation']
-const noteFieldsToBeValidated = ['main_complaint', 'objective_note', 'subjective_note', 'recommendation']
+const testFieldsToBeValidated = ['test_name', 'test_result', 'unit']
 const icdObj = {}
 
 export default function AppointmentNote({ medicalInfo, appointment, icd, note }) {
@@ -60,8 +61,9 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
         appointment_id: appointment.id,
         main_complaint: '',
         objective_note: '',
-        subjective_note: '',
-        diagnoses: [],
+        test_name: '',
+        test_result: '',
+        unit: '',
         date: '',
         medication_name: '',
         dose: '',
@@ -69,7 +71,10 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
         pill_per_day: '',
         pill_type: '',
         recommendation: '',
+        diagnoses: [],
+        prescriptions: [],
         files: [],
+        tests: {},
         signature: null,
     })
     const [selectedDiagnosis, setSelectedDiagnosis] = useState('J00')
@@ -78,6 +83,8 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
     const [isSigned, setIsSigned] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
     const sigRef = useRef()
+
+    const testKey = Object.keys(data.tests)
 
     const handleSignatureEnd = () => {
         setData('signature', sigRef.current.toDataURL('image/png'))
@@ -102,6 +109,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
         if (!isPrescribe) {
             setData({
                 ...data,
+                prescriptions: [],
                 date: '',
                 medication_name: '',
                 dose: '',
@@ -125,8 +133,18 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
             icdObj[item.icd_code] = item
         })
     }, [icd])
-    console.log(data);
 
+    useMemo(() => {
+        if (note.length > 0) {
+            setIsSigned(true)
+            setData({
+                ...data,
+                main_complaint: note[0].main_complaint,
+                objective_note: note[0].objective_note,
+                tests: note[0].test_results,
+            })
+        }
+    }, [note])
 
     const resetModal = () => {
         setData('signature', null)
@@ -163,6 +181,8 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
         setData('diagnoses', data.diagnoses)
     }
 
+    let isError = false
+
     const requireValidate = (key) => {
         if (!data[key]) {
             return false
@@ -170,20 +190,98 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
         return true
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        const fieldsToBeValidated = noteFieldsToBeValidated
-        if (isPrescribe) {
-            fieldsToBeValidated.push(...prescriptionFieldsToBeValidated)
-        }
-
-        fieldsToBeValidated.forEach(key => {
+    const handleAddingPrescription = () => {
+        prescriptionFieldsToBeValidated.forEach(key => {
             if (!requireValidate(key)) {
                 setError(key, 'This field is required')
-                resetModal()
-                return
+                isError = true
             }
         })
+
+        if (isError) {
+            return
+        }
+
+        const prescriptionDetail = {
+            patient_id: data.patient_id,
+            doctor_id: auth.doctor.id,
+            date: today.format('YYYY-MM-DD'),
+            medication_name: data.medication_name,
+            dose: `${data.dose} ${data.dose_addon}`,
+            pill_per_day: `${data.pill_per_day} ${data.pill_type}`,
+            recommendation: data.recommendation,
+        }
+
+        const foundPrescription = data.prescriptions.find(prescription => {
+            return prescription.medication_name === data.medication_name
+        })
+
+        if (!foundPrescription) {
+            setData({
+                ...data,
+                prescriptions: [
+                ...data.prescriptions,
+                prescriptionDetail,
+                ],
+                medication_name: '',
+                dose: '',
+                pill_per_day: '',
+                recommendation: '',
+            })
+        } else {
+            setError('medication_name', 'This medication already exists')
+        }
+    }
+
+    const handleRemovingPrescription = (medication_name) => {
+        const foundPrescription = data.prescriptions.find(prescription => {
+            return prescription.medication_name === medication_name
+        })
+
+        data.prescriptions.splice(data.prescriptions.indexOf(foundPrescription), 1)
+
+        setData('prescriptions', data.prescriptions)
+    }
+
+    const handleAddingTest = () => {
+        testFieldsToBeValidated.forEach(key => {
+            if (!requireValidate(key)) {
+                setError(key, 'This field is required')
+                isError = true
+            }
+        })
+
+        if (isError) {
+            return
+        }
+
+        const foundTest = testKey.find(key => {
+            return key === data.test_name
+        })
+
+        if (!foundTest) { 
+            data.tests[data.test_name] = `${data.test_result} ${data.unit}`
+            setData({
+                ...data,
+                tests: data.tests,
+                test_name: '',
+                test_result: '',
+                unit: '',
+            })
+        } else {
+            setError('test_name', 'This test already exists')
+        }
+    }
+
+    const handleRemovingTest = (key) => {
+        delete data.tests[key]
+        setData('tests', data.tests)
+    }
+
+    console.log(data);
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
 
         if (sigRef.current.isEmpty()) {
             setError('signature', 'Please sign the document')
@@ -192,18 +290,6 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
 
         post(route('appointment.note', {appointment: appointment.id}))
     }
-
-    useMemo(() => {
-        if (note.length > 0) { 
-            setIsSigned(true)
-            setData({
-                ...data,
-                main_complaint: note[0].main_complaint,
-                objective_note: note[0].objective_note,
-                subjective_note: note[0].subjective_note,
-            })
-        }
-    }, [note])
 
     return (
         <DoctorLayout state={'none'}>
@@ -379,7 +465,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                             </Flex>
                         </Box>
 
-                        <Box w={'100%'} py={'8px'}>
+                        <Box w={'100%'} borderBottom={'1px solid #ECEDED'} py={'8px'}>
                             <Box
                                 fontSize={'16px'}
                                 fontWeight={'bold'}
@@ -424,12 +510,56 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                                                             {diagnosis.icd_code}
                                                         </Box>
                                                     </Flex>
-                                                    <Box fontSize={'11px'} w={'65%'} h={'100%'}>{icdObj[diagnosis.icd_code].icd_name}</Box>
+                                                    <Flex align={'center'} fontSize={'11px'} w={'65%'} h={'100%'}>{icdObj[diagnosis.icd_code].icd_name}</Flex>
                                                     <Flex align={'center'} justify={'center'} w={'20%'} h={'100%'} fontSize={'12px'}>{dateFormatter(diagnosis.date)}</Flex>
                                                 </Flex>
                                             })    
                                             :    
                                             <Box fontWeight={'bold'}>No Available Diagnoses</Box>
+                                    }
+                                </Stack>
+                            </Box>
+                        </Box>
+
+                        <Box w={'100%'} mt={'8px'} py={'8px'}>
+                            <Box
+                                fontSize={'16px'}
+                                fontWeight={'bold'}
+
+                                mb={'8px'}
+                            >
+                                Prescriptions
+                            </Box>
+                            <Box
+                                w={'100%'}
+                                h={'23vh'}
+                                overflowY={'scroll'}
+                            >
+                                <Stack w={'100%'} spacing={2}>
+                                    {
+                                        simplifiedMedicalInfo.prescriptions.length > 0 ?
+                                            simplifiedMedicalInfo.prescriptions.map((prescriptionWithDoctor, index) => {
+                                                const prescription = prescriptionWithDoctor.detail
+                                                return <Flex
+                                                    key={`prescription-${index}`}
+                                                    align={'center'}
+                                                    justify={'space-between'}
+
+                                                    borderBottom={'1px solid #ECEDED'}
+                                                    
+                                                    px={'2px'}
+                                                    pb={'4px'}
+                                                    mb={'4px'}
+                                                    w={'100%'}
+                                                    h={'5vh'}
+                                                >
+                                                    <Flex align={'center'} w={'30%'} fontWeight={'bold'} fontSize={'12px'} h={'100%'}>{prescription.medication_name}</Flex>
+                                                    <Flex align={'center'} fontSize={'11px'} w={'50%'} h={'100%'}>{`${prescription.dose}, ${prescription.pill_per_day}`}</Flex>
+                                                    <Flex align={'center'} justify={'center'} w={'20%'} h={'100%'} fontSize={'12px'}>{dateFormatter(prescription.date)}</Flex>
+                                                </Flex>
+                                            })    
+                                            :    
+                                            <Box fontWeight={'bold'}>No Available Prescriptions</Box>
                                     }
                                 </Stack>
                             </Box>
@@ -505,26 +635,150 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                             bg={'white'}
                             borderRadius={'xl'}
                         >
-                            <FormControl isInvalid={errors.subjective_note}>
-                                <Box fontWeight={'bold'} mb={'8px'}>Subjective note</Box>
-                                <Textarea
-                                    disabled={isSigned}
-                                    variant={'filled'}
-                                    borderRadius={'md'}
-                                    placeholder='Subjective note'
+                            <Box fontWeight={'bold'} mb={'8px'}>Test results</Box>
 
-                                    h={'160px'}
-                                    
-                                    fontSize={'14px'}
-                                    resize={isSigned ? 'none' : 'vertical'}
-                                    value={data.subjective_note}
-                                    onChange={(e) => {
-                                        setData('subjective_note', e.target.value)
-                                        clearErrors('subjective_note')
-                                    }}
-                                />
-                                <FormErrorMessage>{errors.subjective_note}</FormErrorMessage>
-                            </FormControl>
+                            <Stack
+                                w={'100%'}
+                                pb={'8px'}
+
+                                spacing={1}
+                                borderBottom={'1px solid #ECEDED'}
+                            >
+                                {!isSigned ? 
+                                
+                                    (testKey.length > 0 ? 
+                                        testKey.map((key, index) => {
+                                            return <Flex
+                                                key={index}
+                                                align={'center'}
+                                                py={'8px'}
+                                            >
+                                                <Box w={'5%'} style={{cursor: 'pointer'}} onClick={() => handleRemovingTest(key)}>
+                                                    <RxCrossCircled />
+                                                </Box>
+                                                <HStack
+                                                    w={'95%'}
+                                                    spacing={3}
+                                                    ml={'16px'}
+                                                >
+                                                    <Box w={'30%'}>{key}</Box>
+                                                        
+                                                    <Box w={'70%'} fontSize={'12px'}>{data.tests[key]}</Box>
+                                                </HStack>
+                                            </Flex>
+                                        })
+                                        :
+                                        ''
+                                    )
+                                    :
+                                    <>
+                                        <Flex
+                                            w={'100%'}
+                                            h={'100%'}
+
+                                            p={'8px'}
+
+                                            align={'center'}
+                                        >
+                                            <Box w={'30%'} p={'8px'} borderBottom={'1px solid #ECEDED'}>Test name</Box>
+                                            <Box w={'70%'} p={'8px'} borderBottom={'1px solid #ECEDED'}>Test results</Box>
+                                        </Flex>
+
+                                        {testKey.length > 0 ? 
+                                            testKey.map((key, index) => {
+                                                return <Flex
+                                                    w={'100%'}
+                                                    h={'100%'}
+        
+                                                    p={'8px'}
+        
+                                                    align={'center'}
+                                                >   
+                                                    <Box w={'30%'} p={'8px'}>{key}</Box>
+                                                    <Box w={'70%'} p={'8px'}>{data.tests[key]}</Box>
+                                                </Flex>
+                                            })
+                                            :
+                                            ''
+                                        }
+                                    </>
+                                }
+                            </Stack>
+
+                            {!isSigned ? 
+                                <Flex
+                                    w={'100%'}
+                                    mt={'8px'}
+
+                                    justify={'space-between'}
+                                    align={'center'}
+                                >
+                                    <FormControl isInvalid={errors.test_name} w={'45%'}>
+                                        <Box fontSize={'12px'} color={'gray'} fontWeight={'bold'} mb={'6px'}>Test Name</Box>
+                                        <Input 
+                                            size={'sm'}  
+                                            fontSize={'11px'}
+                                            
+                                            variant='filled' 
+                                            
+                                            borderRadius={'md'} 
+                                            placeholder='Test name'
+                                        
+                                            value={data.test_name}
+                                            onChange={e => {
+                                                setData('test_name', e.target.value)
+                                                clearErrors('test_name')
+                                            }}
+                                        />
+                                        <FormErrorMessage>{errors.test_name}</FormErrorMessage>
+                                    </FormControl>
+
+                                    <FormControl isInvalid={errors.test_result} w={'35%'} ml={'18px'}>
+                                        <Box fontSize={'12px'} color={'gray'} fontWeight={'bold'} mb={'6px'}>Result</Box>
+                                        <Input 
+                                            size={'sm'}  
+                                            fontSize={'11px'}
+                                            
+                                            variant='filled' 
+                                            
+                                            borderRadius={'md'} 
+                                            placeholder='Result'
+                                        
+                                            value={data.test_result}
+                                            onChange={e => {
+                                                setData('test_result', e.target.value)
+                                                clearErrors('test_result')
+                                            }}
+                                        />
+                                        <FormErrorMessage>{errors.test_result}</FormErrorMessage>
+                                    </FormControl>
+
+                                    <FormControl isInvalid={errors.unit} w={'10%'} ml={'8px'}>
+                                        <Box fontSize={'12px'} color={'gray'} fontWeight={'bold'} mb={'6px'}>Unit</Box>
+                                        <Input 
+                                            size={'sm'}  
+                                            fontSize={'11px'}
+                                            
+                                            variant='filled' 
+                                            
+                                            borderRadius={'md'} 
+                                            placeholder='Unit'
+                                        
+                                            value={data.unit}
+                                            onChange={e => {
+                                                setData('unit', e.target.value)
+                                                clearErrors('unit')
+                                            }}
+                                        />
+                                        <FormErrorMessage>{errors.unit}</FormErrorMessage>
+                                    </FormControl>
+
+
+                                    <Button alignSelf={'flex-end'} colorScheme={'blue'} ml={'8px'} size={'sm'} onClick={handleAddingTest}>Add</Button>
+                                </Flex>
+                                :
+                                <></>
+                            }
                         </Box>
 
                         {!isSigned ? 
@@ -650,41 +904,74 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                                         w={'100%'}
                                     >
                                         <Box fontWeight={'bold'} mb={'8px'}>Prescription</Box>
+                                        
                                         <Flex>
                                             <Box fontSize={'12px'} fontWeight={'bold'} me={'4px'}>Make a prescription?</Box>
                                             <Checkbox onChange={() => setIsPrescribe(!isPrescribe)} />
                                         </Flex>
                                     </Flex>
 
-                                        <Flex
-                                            w={'100%'}
-                                            borderBottom={'1px solid #ECEDED'}
+                                    <Stack
+                                        w={'100%'}
+                                        pb={'8px'}
 
-                                            py={'8px'}
+                                        spacing={1}
+                                        borderBottom={'1px solid #ECEDED'}
+                                    >
+                                        {data.prescriptions.length > 0 ? 
+                                            data.prescriptions.map((prescription, index) => {
+                                                return <Flex
+                                                    key={index}
+                                                    align={'center'}
+                                                    py={'8px'}
+                                                >
+                                                    <Box w={'5%'} style={{cursor: 'pointer'}} onClick={() => handleRemovingPrescription(prescription.medication_name)}>
+                                                        <RxCrossCircled />
+                                                    </Box>
+                                                    <HStack
+                                                        w={'95%'}
+                                                        spacing={3}
+                                                        ml={'16px'}
+                                                    >
+                                                        <Box w={'30%'} fontSize={'12px'}>{prescription.medication_name}</Box>
+                                                        <Box w={'70%'} fontSize={'12px'}>{`${prescription.dose}, ${prescription.pill_per_day} per day`}</Box>
+                                                    </HStack>
+                                                </Flex>
+                                            })
+                                            :
+                                            ''
+                                        }
+                                    </Stack>
 
-                                            align={'center'}
-                                        >
-                                            <FormControl isInvalid={errors.medication_name} w={'40%'}>
-                                                <Box fontSize={'12px'} color={'gray'} fontWeight={'bold'} mb={'6px'}>Medication name</Box>
-                                                <Input 
-                                                    size={'sm'}  
-                                                    fontSize={'11px'}
+                                    <Flex
+                                        w={'100%'}
+                                        borderBottom={'1px solid #ECEDED'}
 
-                                                    disabled={!isPrescribe}
-                                                    
-                                                    variant='filled' 
-                                                    
-                                                    borderRadius={'md'} 
-                                                    placeholder='Medication name'
+                                        py={'8px'}
+
+                                        align={'center'}
+                                    >
+                                        <FormControl isInvalid={errors.medication_name} w={'40%'}>
+                                            <Box fontSize={'12px'} color={'gray'} fontWeight={'bold'} mb={'6px'}>Medication name</Box>
+                                            <Input 
+                                                size={'sm'}  
+                                                fontSize={'11px'}
+
+                                                disabled={!isPrescribe}
                                                 
-                                                    value={data.medication_name}
-                                                    onChange={e => {
-                                                        setData('medication_name', e.target.value)
-                                                        clearErrors('medication_name')
-                                                    }}
-                                                />
-                                                <FormErrorMessage>{errors.medication_name}</FormErrorMessage>
-                                            </FormControl>
+                                                variant='filled' 
+                                                
+                                                borderRadius={'md'} 
+                                                placeholder='Medication name'
+                                            
+                                                value={data.medication_name}
+                                                onChange={e => {
+                                                    setData('medication_name', e.target.value)
+                                                    clearErrors('medication_name')
+                                                }}
+                                            />
+                                            <FormErrorMessage>{errors.medication_name}</FormErrorMessage>
+                                        </FormControl>
 
                                         <Box w={'30%'} ml={'5%'}>
                                             <FormControl isInvalid={errors.dose}>
@@ -801,6 +1088,16 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                                             <FormErrorMessage>{errors.recommendation}</FormErrorMessage>
                                         </FormControl>
                                     </Box>
+
+                                    <Flex
+                                        w={'100%'}
+                                        pt={'8px'}
+
+                                        justify={'flex-end'}
+                                        align={'center'}
+                                    >
+                                        <Button isDisabled={!isPrescribe} colorScheme={'blue'} ml={'2px'} size={'sm'} onClick={handleAddingPrescription}>Add</Button>
+                                    </Flex>
                                 </Box>
                             </>
                         :
@@ -909,7 +1206,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                                 <Box>
                                     <Button
                                         onClick={handleSubmit}
-                                        disabled={processing}
+                                        isLoading={processing}
                                         type='submit'
                                         
                                         bg={'blue.400'}

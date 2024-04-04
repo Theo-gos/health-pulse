@@ -3,7 +3,8 @@
 namespace App\Services;
 
 use App\Models\Test;
-use Spatie\LaravelPdf\Facades\Pdf;
+use Barryvdh\DomPDF\Facade\Pdf;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class TestResultService extends BaseService
 {
@@ -31,14 +32,30 @@ class TestResultService extends BaseService
             $diagnosis['icd_name'] = $icd[0]->icd_name;
         }
 
-        $pdf = Pdf::view('Test.test_result', [
+        $pdf = Pdf::loadView('Test.test_result', [
             'doctor' => $doctor,
             'patient' => $patient,
             'data' => $data,
-        ])
-            ->format('a4')
-            ->name($data['date'].'_'.$patient['name'].'_test-result.pdf');
+        ]);
 
-        dd($pdf);
+        $tempPdfPath = storage_path('app/test_result.pdf');
+        file_put_contents($tempPdfPath, $pdf->output());
+        $result = Cloudinary::upload($tempPdfPath, [
+            'folder' => 'test_results',
+        ])->getSecurePath();
+        unlink($tempPdfPath);
+        dd($result);
+
+        // $pdf->save(public_path() . '/pdf/' . $data['date'] . '_' . $patient['name'] . '_test-result.pdf');
+        // dd(public_path());
+
+        // $pdf = Pdf::view('Test.test_result', [
+        //     'doctor' => $doctor,
+        //     'patient' => $patient,
+        //     'data' => $data,
+        // ])
+        //     ->format('a4')
+        //     ->name($data['date'] . '_' . $patient['name'] . '_test-result.pdf');
+        return $pdf;
     }
 }

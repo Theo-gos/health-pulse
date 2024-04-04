@@ -32,4 +32,10 @@ abstract class BaseService
     {
         return $this->model->create($data);
     }
+
+    // Insert multiple records
+    public function insert($data)
+    {
+        return $this->model->insert($data);
+    }
 }
