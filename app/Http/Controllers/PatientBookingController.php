@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AppointmentBookedEvent;
 use App\Http\Requests\AppointmentBookingRequest;
 use App\Mail\AppointmentBooked;
 use App\Models\Appointment;
@@ -46,6 +47,10 @@ class PatientBookingController extends Controller
             ];
 
             Mail::to($patient->email)->send(new AppointmentBooked($appointment));
+            event(new AppointmentBookedEvent([
+                'doctor_id' => $appointment->doctor_id,
+                'message' => 'There is a new appointment',
+            ]));
         } else {
             $message = [
                 'message' => 'Failed to store',

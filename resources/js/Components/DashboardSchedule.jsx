@@ -30,7 +30,7 @@ let dateOfLast
 let firstDayOfMonth
 let lastDayOfMonth
 
-export default function DashboardSchedule({width, height, schedule}) {
+export default function DashboardSchedule({width, height, schedule, navigation}) {
     const [dayObj, setDayObj] = useState(dayjs())
     const [selected, setSelected] = useState(today)
     const [data, setData] = useState({})
@@ -207,26 +207,30 @@ export default function DashboardSchedule({width, height, schedule}) {
                     justify={'space-between'}
                 >
                     <Text color={'black'} fontWeight={'bold'} mb={'24px'}>Timeline</Text>
-                    <Square
-                        border={'1px solid #BEE3F8'}
-                        borderRadius={'sm'}
-                        
-                        style={{
-                            cursor: 'pointer'
-                        }}
+                        {navigation ? 
+                            <Square
+                                border={'1px solid #BEE3F8'}
+                                borderRadius={'sm'}
+                                
+                                style={{
+                                    cursor: 'pointer'
+                                }}
 
-                        _hover={{
-                            backgroundColor: '#BEE3F8',
-                            color: 'white',
-                        }}
+                                _hover={{
+                                    backgroundColor: '#BEE3F8',
+                                    color: 'white',
+                                }}
 
-                        size={'16px'}
-                        mt={'3px'}
-                    >
-                        <Link href={route(`doctor.schedule`)}>
-                            <ChevronRightIcon />
-                        </Link>
-                    </Square>
+                                size={'16px'}
+                                mt={'3px'}
+                            >
+                                <Link href={route(`doctor.schedule`)}>
+                                    <ChevronRightIcon />
+                                </Link>
+                            </Square>  
+                            :
+                            <></>
+                        }
                 </Flex>
                 <Box
                     w={'100%'}

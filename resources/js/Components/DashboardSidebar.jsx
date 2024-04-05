@@ -44,7 +44,7 @@ const icons = {
     'notification': BsBellFill,
 }
 
-export default function DashboardSidebar({state}) {
+export default function DashboardSidebar({state, isNewNotification}) {
     const [selected, setSelected] = useState('dashboard')
     const { post } = useForm()
     const { auth } = usePage().props

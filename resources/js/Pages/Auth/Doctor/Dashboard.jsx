@@ -94,7 +94,7 @@ export default function Dashboard({
         Header
       </GridItem> */}
       <GridItem area={'schedule'}>
-        <DashboardSchedule width={'55vw'} height={'40vh'} schedule={dashboardSchedule} />
+        <DashboardSchedule width={'55vw'} height={'40vh'} schedule={dashboardSchedule} navigation={true}/>
       </GridItem>
       <GridItem area={'appointment'}>
         <DashboardAppointments appointments={dashboardAppointments.list} current_appointment={dashboardAppointments.current} />

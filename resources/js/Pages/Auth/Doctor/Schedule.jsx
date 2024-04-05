@@ -67,7 +67,7 @@ export default function Schedule({calendars, aside}) {
                         h={'50%'}
                         pb={'8px'}
                     >
-                        <DashboardSchedule width={'100%'} height={'100%'} schedule={calendarData}/>
+                        <DashboardSchedule width={'100%'} height={'100%'} schedule={calendarData} navigation={false} />
                     </Box>
                     <Box
                         w={'100%'}
@@ -81,7 +81,7 @@ export default function Schedule({calendars, aside}) {
                 w={'32%'}
                 h={'100%'}
             >
-                <ScheduleAside idManager={taskIdManager} message={message} asideData={asideData} />
+                <ScheduleAside idManager={taskIdManager} asideData={asideData} />
             </Box>
         </DoctorLayout>
     )
