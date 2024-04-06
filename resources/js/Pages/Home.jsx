@@ -75,14 +75,15 @@ export default function Home() {
     }
 
     return (
-        <PatientLayout>
+        <PatientLayout state={'home'}>
             <Box
                 w={'100vw'}
             >
                 <Box
                     position={'relative'}
 
-                    w={'100%'}
+                    w={'90%'}
+                    ml={'7%'}
 
                     pb={'10px'}
                 >
@@ -267,144 +268,7 @@ export default function Home() {
                         </Button>
                     </Flex>
                 </Box>
-
-                {/* <Box
-                    w={'100%'}
-                    h={'83vh'}
-
-                    bg={'#E8F0FC'}
-
-                    px={'15%'}
-                    pt={'32px'}
-                >
-                    <Box fontSize={'42px'} color={'#1366DE'}>Explore our clinics</Box>
-                    <Flex
-                        justify={'space-between'}
-
-                        mt={'20px'}
-                    >
-                        
-                        {clinics.map((clinic, index) => (
-                            <ClinicCard
-                                key={index}
-                                name={clinic.name}
-                                location={clinic.location}
-                                time={clinic.time}
-                                nextAvailableTime={clinic.timeAvailable}
-                            />
-                        ))}
-                    </Flex>
-                </Box> */}
-
-                <Flex
-                    justify={'center'}
-                    w={'100%'}
-                    h={'75vh'}
-                    pt={'3%'}
-                >
-                    <Card
-                        style={{ 
-                            backgroundImage: `url('https://cdn.jiohealth.com/jio-website/home-page/jio-website-v2.2/assets/images/homepage/find-doctor-bg.png?v=1')`,
-                            backgroundRepeat: 'no-repeat',
-                            backgroundSize: 'cover',
-                            width:'20%' 
-                        }}
-
-                        bg={'blue.100'}
-
-                        borderRadius={'25px'}
-                        w={'20%'}
-                        h={'90%'}
-                        p={'36px 24px'}
-                    >
-                        <Box fontSize={'28px'} color={'#1366DE'}>Find a doctor</Box>
-                    </Card>
-                </Flex>
             </Box>
-
-            {/* <Modal
-                initialFocusRef={initialRef}
-                blockScrollOnMount={false}
-                isOpen={isOpen}
-                onClose={onClose}
-                motionPreset='scale'
-                scrollBehavior={'outside'}
-                size={'lg'}
-                isCentered
-            >
-                <ModalOverlay />
-                <ModalContent>
-                    <form onSubmit={submit}>
-                        <ModalHeader>Log in via email</ModalHeader>
-                        <ModalCloseButton />
-
-                        <ModalBody>
-                            <FormLabel>Email</FormLabel>
-                            <Box>
-                                <FormControl isInvalid={errors.email}>
-                                    <Input
-                                        ref={initialRef}
-                                        name="email"
-                                        id="email"
-                                        placeholder='Email to send you verification link'
-                                        value={data.email}
-                                        onChange={(e) => {
-                                            setData('email', e.target.value)
-                                            setError('email', '')
-                                        }}
-                                        borderRadius={'xl'}
-                                    />
-                                    <FormErrorMessage>{errors.email}</FormErrorMessage>
-                                </FormControl>
-                            </Box> */}
-
-                            
-                            
-
-                            {/* <FormControl mt={4}>
-                                <Flex
-                                    bg={'rgba(22, 24, 35, .06)'}
-                                    borderRadius={'xl'}
-                                    onClick={(e) => {
-                                        e.target.closest('div').style.border = '2px solid #3b82f6'
-                                        e.target.closest('div').style.borderRadius = '14px'
-
-                                    }}
-                                    onBlur={(e) => { 
-                                        e.target.closest('div').style.border = 'none'
-                                        e.target.closest('div').style.borderRadius = 'none'
-                                    }}
-                                >
-                                    <Input
-                                        name="otp"
-                                        id="otp"
-                                        placeholder='OTP'
-                                        value={data.otp}
-                                        bg={'transparent'}
-                                        borderColor={'transparent'}
-                                        _hover={{
-                                            borderColor: 'none'
-                                        }}
-                                        focusBorderColor="transparent"
-                                        onChange={(e) => setData(otp, e.target.value)}
-                                    />
-                                    <Button bg={'blue.500'} color={'white'} borderRadius={'xl'}>Send OTP</Button>
-                                </Flex>
-                            </FormControl> */}
-                        {/* </ModalBody>
-
-                        <ModalFooter>
-                            <Button type="submit" colorScheme='blue' mr={3} >
-                                Send Verification Link
-                            </Button>
-                            <Button colorScheme='red' onClick={onClose}>
-                                Close
-                            </Button>
-                        </ModalFooter>
-                    </form>
-                </ModalContent>
-            </Modal> */}
         </PatientLayout>
-            
     )
 }

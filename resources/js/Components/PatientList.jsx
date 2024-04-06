@@ -17,7 +17,7 @@ const getPatientData = (data, user) => {
             const appointmentDate = dayjs(currentItem.detail.date).second(0).millisecond(0)
             const diff = Math.abs(appointmentDate.diff(today))
             
-            if (diff < minDiff && currentItem.booked_doctor.id === user.id) {
+            if (diff < minDiff && currentItem.doctor.id === user.id) {
                 minDiff = diff
                 accumulator = currentItem
                 return accumulator

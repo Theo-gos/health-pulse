@@ -9,12 +9,22 @@ import {
     ModalContent,
     useDisclosure,
     Stack,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuList,
+    MenuGroup,
+    MenuDivider,
+    Avatar,
 } from "@chakra-ui/react"
 import { useEffect, useRef, useState } from "react"
 import Logo from "../Pages/Shared/Logo"
 import { useForm, Link, usePage } from "@inertiajs/react"
 import { EmailIcon, LockIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons"
 import { FcGoogle } from "react-icons/fc";
+import { IoMdHome } from "react-icons/io";
+import { FaListAlt } from "react-icons/fa";
+import { IoPerson } from "react-icons/io5";
 import { AiOutlineFacebook, AiOutlineInstagram } from "react-icons/ai";
 import PatientLoginForm from "@/Components/PatientLoginForm"
 import PatientRegisterForm from "@/Components/PatientRegisterForm"
@@ -22,10 +32,19 @@ import dayjs from "dayjs"
 
 const today = dayjs().second(0).millisecond(0)
 
-export default function PatientLayout({ children }) {
+const STATE = {
+    HOME: 'home',
+    PATIENT: 'patient',
+    PROFILE: 'profile',
+    NONE: 'none',
+}
+
+export default function PatientLayout({ children, state }) {
+    const isHovered = state === STATE.NONE ? false : true;
     const [show, setShow] = useState(false)
-    const [isLogin, setIsLogin] = useState(true)
+    const [isLogin, setIsLogin] = useState(isHovered)
     const [windowSize, setWindowSize] = useState(window.innerWidth)
+    const [hovered, setHovered] = useState(STATE)
     const { message, auth } = usePage().props
     const { patient } = auth
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -85,14 +104,6 @@ export default function PatientLayout({ children }) {
         setWindowSize(window.innerWidth)
     })
 
-    const bookingHandler = () => {
-        get(route('patient.booking'))
-    }
-
-    const sendEmail = () => {
-        get(route('mail'))
-    }
-
     const reset = () => {
         setShow(false)
         setIsLogin(true)
@@ -109,7 +120,8 @@ export default function PatientLayout({ children }) {
                 left= '0'
                 right= '0'
                 bg= 'gray.200'
-                zIndex= '10'
+                zIndex='10'
+                p={'4px'}
             >
                 <Box
                     mx={'auto'}
@@ -139,89 +151,6 @@ export default function PatientLayout({ children }) {
                                     </Box>
                                 </Link>
                             </Box>
-                            {patient ? 
-                                <UnorderedList listStyleType={'none'}>
-                                    <ListItem
-                                        float={'left'}
-                                        _hover={{
-                                            backgroundColor: '#EDF2F7',
-                                            color: 'gray',
-                                        }}
-                                        borderRadius={'md'}
-                                        mr={'12px'}
-                                        p={'0 4px'}
-                                    >
-                                        <Box
-                                            style={{
-                                                textDecoration: 'none',
-                                                display: 'block',
-                                                padding: '20px 2px',
-                                                mr: '12px',
-                                                color: 'gray.500',
-                                                fontSize: '16px',
-                                            }}
-                                            onClick={sendEmail}
-                                        >
-                                            <Text>
-                                                Appointments
-                                            </Text>
-                                        </Box>
-                                    </ListItem>
-                                    <ListItem
-                                        float={'left'}
-                                        _hover={{
-                                            backgroundColor: '#EDF2F7',
-                                            color: 'gray',
-                                        }}
-                                        borderRadius={'md'}
-                                        mr={'12px'}
-                                        p={'0 4px'}
-                                    >
-                                        <Link
-                                            style={{
-                                                textDecoration: 'none',
-                                                display: 'block',
-                                                padding: '20px 2px',
-                                                mr: '12px',
-                                                color: 'gray.500',
-                                                fontSize: '16px',
-                                            }}
-                                            href="/"
-                                        >
-                                            <Text>
-                                                Prescriptions
-                                            </Text>
-                                        </Link>
-                                    </ListItem>
-                                    <ListItem
-                                        float={'left'}
-                                        _hover={{
-                                            backgroundColor: '#EDF2F7',
-                                            color: 'gray',
-                                        }}
-                                        borderRadius={'md'} 
-                                        p={'0 4px'}
-                                    >
-                                        <Link
-                                            style={{
-                                                textDecoration: 'none',
-                                                display: 'block',
-                                                padding: '20px 2px',
-                                                mr: '12px',
-                                                color: 'gray.500',
-                                                fontSize: '16px',
-                                            }}
-                                            href="/"
-                                        >
-                                            <Text>
-                                                Medical Record
-                                            </Text>
-                                        </Link>
-                                    </ListItem>
-                                </UnorderedList>
-                                :
-                                ''
-                            }
                         </Flex>
                         <Flex
                             marginRight= {'0'}
@@ -270,62 +199,178 @@ export default function PatientLayout({ children }) {
                                     </>
                                     :
                                     <>
-                                        <ListItem
-                                            onClick={bookingHandler}
-                                            _hover={{
-                                                backgroundColor: '#EDF2F7',
-                                                color: 'gray',
-                                            }}
-                                            style={{
-                                                cursor: 'pointer'
-                                            }}
-                                            h={'100%'}
-                                            display={'flex'}
-                                            alignItems={'center'}
-                                            borderRadius={'md'}
-                                            mr={'10px'}
-                                            p={'0 4px'}
-                                        >
-                                            <Text>Book an appointment</Text>
-                                        </ListItem>
-                                        <ListItem mr={'10px'}>
-                                            <Text>Welcome, {patient.name}</Text>
-                                        </ListItem>
-                                        <ListItem
-                                            _hover={{
-                                                backgroundColor: '#EDF2F7',
-                                                color: 'gray',
-                                            }}
-                                            style={{
-                                                cursor: 'pointer'
-                                            }}
-                                            h={'100%'}
-                                            display={'flex'}
-                                            alignItems={'center'}
-                                            borderRadius={'md'}
-                                            mr={'10px'}
-                                            p={'0 4px'}
-                                        >
-                                            <Link href={route('patient.logout')}>Log Out</Link>
-                                        </ListItem>
+                                        <Menu>
+                                            <MenuButton>
+                                                <Avatar name='Dan Abrahmov' size={'md'} src='https://bit.ly/dan-abramov' />
+                                            </MenuButton>
+                                            <MenuList fontSize={'13px'} borderRadius={'lg'}>
+                                                <Flex
+                                                    w={'100%'}
+                                                    p={'10px 8px'}
+
+                                                    align={'center'}
+                                                    justify={'center'}
+                                                >
+                                                    <Avatar name='Dan Abrahmov' size={'md'} src='https://bit.ly/dan-abramov' />
+                                                    <Box fontWeight={'bold'} ml={'18px'}>{patient.name}</Box>
+                                                </Flex>
+                                                <MenuDivider />
+                                                <MenuGroup title="Patient">
+                                                    <MenuItem p={'8px 24px'} as={Link} href={route('patient.lists.show', {state: 'appointments'})}>Appointments</MenuItem>
+                                                    <MenuItem p={'8px 24px'} as={Link} href={route('patient.lists.show', {state: 'prescriptions'})}>Prescriptions</MenuItem>
+                                                    <MenuItem p={'8px 24px'} as={Link} href={route('patient.lists.show', {state: 'record'})}>Medical Record</MenuItem>
+                                                </MenuGroup>
+                                                <MenuDivider />
+                                                <MenuGroup title="Manage">
+                                                    <MenuItem p={'8px 24px'} as={Link} href={route('patient.logout')}>Profile</MenuItem>
+                                                    <MenuItem p={'8px 24px'} as={Link} href={route('patient.logout')}>Log Out</MenuItem>
+                                                </MenuGroup>
+                                            </MenuList>
+                                        </Menu>
                                     </>
                                 }
                             </UnorderedList>
                         </Flex>
                     </Box>
                 </Box>
-                
             </Box>
 
             <Box
                 mt={'9vh'}
+
+                position={'relative'}
             >
                 {children}
+
+                <Box
+                    position={'fixed'}
+                    left={0}
+                    top={'24%'}
+
+                    borderRadius={'20px'}
+
+                    w={'4px'}
+                    h={'37vh'}
+
+                    bg={'#b2b2b2'}
+                    _hover={{
+                        backgroundColor: 'black',
+                    }}
+
+                    hidden={hovered}
+                    onMouseEnter={() => {
+                        if (state === STATE.NONE)
+                            setHovered(true)
+                    }}
+                >
+                </Box>
+
+                <Stack
+                    position={'fixed'}
+                    left={0}
+                    top={'24%'}
+
+                    hidden={!hovered}                   
+                    onMouseLeave={() => {
+                        if (state === STATE.NONE)
+                            setHovered(false)
+                    }}
+
+                    borderRadius={'20px'}
+
+                    w={'100px'}
+                    h={'40vh'}
+                    p={'8px'}
+
+                    spacing={3}
+                >
+                    <Link
+                        w={'100%'}
+                        h={'30%'}
+                        
+                        href="/"
+                    >
+                        <Flex
+                            p={'16px'}
+
+                            direction={'column'}
+                            align={'center'}
+                            justify={'center'}
+
+                            borderRadius={'20px'}
+
+                            _hover={{
+                                opacity: 0.7,
+                                cursor: 'pointer',
+                            }}
+
+                            bg={state === STATE.HOME ? 'gray.200' : 'white'}
+                        >
+                            <IoMdHome fontSize={'20px'} />
+                            <Box fontWeight={'bold'} fontSize={'12px'} mt={'6px'}>Home</Box>
+                        </Flex>
+                    </Link>
+
+                    <Link
+                        w={'100%'}
+                        h={'30%'}
+                        
+                        href={route('patient.lists.show', {state: 'appointments'})}
+                    >
+                        <Flex
+                            p={'16px'}
+                            
+                            direction={'column'}
+                            align={'center'}
+                            justify={'center'}
+
+                            borderRadius={'20px'}
+
+                            _hover={{
+                                opacity: 0.7,
+                                cursor: 'pointer',
+                            }}
+
+                            bg={state === STATE.PATIENT ? 'gray.200' : 'white'}
+                        >
+                            <FaListAlt fontSize={'20px'} />
+                            <Box fontWeight={'bold'} fontSize={'12px'} mt={'6px'}>Patient</Box>
+                        </Flex>
+                    </Link>
+
+                    <Link
+                        w={'100%'}
+                        h={'30%'}
+                        
+                        href="/"
+                    >
+                        <Flex
+                            p={'16px'}
+
+                            direction={'column'}
+                            align={'center'}
+                            justify={'center'}
+
+                            borderRadius={'20px'}
+
+                            _hover={{
+                                opacity: 0.7,
+                                cursor: 'pointer',
+                            }}
+
+                            bg={state === STATE.PROFILE ? 'gray.200' : 'white'}
+                        >
+                            <IoPerson fontSize={'20px'} />
+                            <Box fontWeight={'bold'} fontSize={'12px'} mt={'6px'}>Profile</Box>
+                        </Flex>
+                    </Link>
+                </Stack>
             </Box>
 
             <Box
                 w={'100%'}
                 pb={'40px'}
+                mt={'36px'}
 
                 bg={'#242a61'}
             >

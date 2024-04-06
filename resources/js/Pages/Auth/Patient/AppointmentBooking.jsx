@@ -38,7 +38,7 @@ export default function AppointmentBooking({bookingData}) {
     const { message } = usePage().props
 
     return (
-        <PatientLayout>
+        <PatientLayout state={'none'}>
             <Box mt={'80px'}>
                 <Box
                     fontSize={'32px'}
