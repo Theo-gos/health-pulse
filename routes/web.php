@@ -1,6 +1,5 @@
 <?php
 
-use App\Events\AppointmentBookedEvent;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Auth\PatientAuthenticateController;
 use App\Http\Controllers\DashboardController;
@@ -8,6 +7,7 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientBookingController;
 use App\Http\Controllers\RecordController;
 use App\Http\Controllers\ScheduleController;
+use App\Models\Patient;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,17 +26,6 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
-
-//test
-Route::get('/send_email', [PatientBookingController::class, 'sendMail'])->name('mail');
-Route::get('/broadcast', function () {
-    event(new AppointmentBookedEvent([
-        'doctor_id' => 1,
-        'message' => 'There is a new appointment',
-    ]));
-
-    return response()->json(['message' => 'Event broadcasted']);
-});
 
 // Patient
 Route::get('/patient/redirect', [PatientAuthenticateController::class, 'redirect'])->name('patient.google.redirect');

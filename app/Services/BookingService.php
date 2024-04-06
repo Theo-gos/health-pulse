@@ -46,11 +46,11 @@ class BookingService extends BaseService
         ];
     }
 
-    public function store($data)
+    public function storeAppointment($patient_id, $data)
     {
         return $this->appointmentService->store([
             'doctor_id' => $data['doctor'],
-            'patient_name' => 'Theo Lee',
+            'patient_id' => $patient_id,
             'date' => $data['date'],
             'start_time' => $data['time']['start_time'],
             'end_time' => $data['time']['end_time'],

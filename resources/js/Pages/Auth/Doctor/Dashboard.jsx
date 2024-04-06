@@ -5,6 +5,7 @@ import DashboardAppointments from '@/Components/DashboardAppointments'
 import DashboardAside from '@/Components/DashboardAside'
 import { usePage } from '@inertiajs/react'
 import { useEffect, useMemo, useState } from 'react'
+import DoctorLayout from '@/Layouts/DoctorLayout'
 
 export default function Dashboard({
   appointments,
@@ -75,33 +76,29 @@ export default function Dashboard({
   }, [malePatientStatistic, femalePatientStatistic])
 
   return (
-    <Grid
-      templateAreas={`"nav header aside"
-                      "nav schedule aside"
-                      "nav appointment aside"`}
-      gridTemplateRows={'auto 8fr 11fr'}
-      gridTemplateColumns={'200px 11fr 9fr'}
-      h='100vh'
-      gap='1'
-      color='blackAlpha.700'
-      bg={'#F6F7FA'}
-      fontWeight='bold'
-    >
-      <GridItem area={'nav'}>
-        <DashboardSidebar state={'dashboard'} />
-      </GridItem>
-      {/* <GridItem bg='orange.300' area={'header'}>
-        Header
-      </GridItem> */}
-      <GridItem area={'schedule'}>
-        <DashboardSchedule width={'55vw'} height={'40vh'} schedule={dashboardSchedule} navigation={true}/>
-      </GridItem>
-      <GridItem area={'appointment'}>
-        <DashboardAppointments appointments={dashboardAppointments.list} current_appointment={dashboardAppointments.current} />
-      </GridItem>
-      <GridItem area={'aside'}>
-        <DashboardAside pieChartData={pieChartData} areaChartData={areaChartData} commonIllnessStatistic={commonIllnessStatistic} />
-      </GridItem>
-    </Grid>
+    <DoctorLayout state={'dashboard'}>
+      <Grid
+        templateAreas={`
+                        "schedule aside"
+                        "appointment aside"`}
+        gridTemplateRows={'8fr 11fr'}
+        gridTemplateColumns={'11fr 9fr'}
+        h='100vh'
+        gap='1'
+        color='blackAlpha.700'
+        bg={'#F6F7FA'}
+        fontWeight='bold'
+      >
+        <GridItem area={'schedule'}>
+          <DashboardSchedule width={'55vw'} height={'43vh'} schedule={dashboardSchedule} navigation={true}/>
+        </GridItem>
+        <GridItem area={'appointment'}>
+          <DashboardAppointments appointments={dashboardAppointments.list} current_appointment={dashboardAppointments.current} />
+        </GridItem>
+        <GridItem area={'aside'}>
+          <DashboardAside pieChartData={pieChartData} areaChartData={areaChartData} commonIllnessStatistic={commonIllnessStatistic} />
+        </GridItem>
+      </Grid>
+    </DoctorLayout>
   )
 }
