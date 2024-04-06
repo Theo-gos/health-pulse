@@ -23,8 +23,9 @@ class AppointmentNoteRequest extends FormRequest
     {
         return [
             'main_complaint' => 'required|string',
-            'subjective_note' => 'required|string',
             'objective_note' => 'required|string',
+            'diagnoses' => 'required|array',
+            'prescriptions' => 'required|array',
         ];
     }
 }

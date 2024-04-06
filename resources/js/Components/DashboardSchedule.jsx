@@ -30,7 +30,7 @@ let dateOfLast
 let firstDayOfMonth
 let lastDayOfMonth
 
-export default function DashboardSchedule({width, height, schedule}) {
+export default function DashboardSchedule({width, height, schedule, navigation}) {
     const [dayObj, setDayObj] = useState(dayjs())
     const [selected, setSelected] = useState(today)
     const [data, setData] = useState({})
@@ -61,15 +61,6 @@ export default function DashboardSchedule({width, height, schedule}) {
     useEffect(() => {
         setTimeline(data[selected.format('YYYY-MM-DD')])
     }, [data, selected])
-
-    const CircleIcon = (props) => (
-        <Icon viewBox='0 0 200 200' {...props}>
-            <path
-            fill='currentColor'
-            d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
-            />
-        </Icon>
-    )
 
     const handlePrev = () => { 
         setDayObj(dayObj.subtract(1, 'month'))
@@ -191,7 +182,6 @@ export default function DashboardSchedule({width, height, schedule}) {
                                     fontSize={'11px'}
                                 >
                                     {i + 1}
-                                    <CircleIcon color={'blue.600'} boxSize={2} />
                                 </Flex>
                             </Circle>
                         </Flex>
@@ -201,17 +191,6 @@ export default function DashboardSchedule({width, height, schedule}) {
                         <Box fontSize={'11px'} key={i} />
                     ))}
                 </Grid>
-
-                <Stack pl={'8px'} direction={'row'} spacing='12px'>
-                    <Flex align={'center'} justify={'space-between'}>
-                        <CircleIcon color={'blue.600'} boxSize={2} />
-                        <Text fontSize={'11px'} ml={'3px'}>Work day</Text>
-                    </Flex>
-                    <Flex align={'center'} justify={'space-between'}>
-                        <CircleIcon color={'green.600'} boxSize={2} />
-                        <Text fontSize={'11px'} ml={'3px'}>Holiday</Text>
-                    </Flex>
-                </Stack>
             </Box>
             <Box
                 w={'50%'}
@@ -228,26 +207,30 @@ export default function DashboardSchedule({width, height, schedule}) {
                     justify={'space-between'}
                 >
                     <Text color={'black'} fontWeight={'bold'} mb={'24px'}>Timeline</Text>
-                    <Square
-                        border={'1px solid #BEE3F8'}
-                        borderRadius={'sm'}
-                        
-                        style={{
-                            cursor: 'pointer'
-                        }}
+                        {navigation ? 
+                            <Square
+                                border={'1px solid #BEE3F8'}
+                                borderRadius={'sm'}
+                                
+                                style={{
+                                    cursor: 'pointer'
+                                }}
 
-                        _hover={{
-                            backgroundColor: '#BEE3F8',
-                            color: 'white',
-                        }}
+                                _hover={{
+                                    backgroundColor: '#BEE3F8',
+                                    color: 'white',
+                                }}
 
-                        size={'16px'}
-                        mt={'3px'}
-                    >
-                        <Link href={route(`doctor.schedule`)}>
-                            <ChevronRightIcon />
-                        </Link>
-                    </Square>
+                                size={'16px'}
+                                mt={'3px'}
+                            >
+                                <Link href={route(`doctor.schedule`)}>
+                                    <ChevronRightIcon />
+                                </Link>
+                            </Square>  
+                            :
+                            <></>
+                        }
                 </Flex>
                 <Box
                     w={'100%'}

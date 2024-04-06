@@ -124,6 +124,7 @@ class AppointmentService extends BaseService
     public function storeAppointmentNote($data)
     {
         $payload = $data;
+
         $urlList = array_map(function ($file) {
             $url = Cloudinary::upload($file->getRealPath())->getSecurePath();
 
@@ -132,20 +133,21 @@ class AppointmentService extends BaseService
         unset($payload['files']);
         $payload['image_url'] = $urlList;
 
+        $payload['test_results'] = $data['tests'];
+
         return $this->appointmentNoteService->store($payload);
     }
 
-    public function storePrescription(int $doctor_id, $data)
+    public function storePrescription($data)
     {
-        $payload = $data;
-        $payload['doctor_id'] = $doctor_id;
-        $payload['patient_id'] = intval($payload['patient_id']);
-        $payload['dose'] = $payload['dose'].' '.$payload['dose_addon'];
-        $payload['pill_per_day'] = $payload['pill_per_day'].' '.$payload['pill_type'];
-        unset($payload['pill_type']);
-        unset($payload['dose_addon']);
+        $payload = array_map(function ($prescription) {
+            $prescription['created_at'] = date('Y-m-d H:i:s');
+            $prescription['updated_at'] = date('Y-m-d H:i:s');
 
-        return $this->prescriptionService->store($payload);
+            return $prescription;
+        }, $data);
+
+        return $this->prescriptionService->insert($payload);
     }
 
     public function storeDiagnoses(int $doctor_id, int $patient_id, $data)
@@ -159,6 +161,6 @@ class AppointmentService extends BaseService
             return $diagnosis;
         }, $data);
 
-        return $this->diagnosisService->insertDiagnoses($payload);
+        return $this->diagnosisService->insert($payload);
     }
 }

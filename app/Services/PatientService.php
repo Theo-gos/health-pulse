@@ -66,8 +66,11 @@ class PatientService extends BaseService
             }
 
             if ($patient->prescribe_doctors->count() > 0) {
+                $index = 0;
                 foreach ($patient->prescribe_doctors->all() as $pres_doctor) {
-                    $patientMedicalInfos[$patient->id]['prescriptions'][] = $pres_doctor->prescriptions;
+                    $patientMedicalInfos[$patient->id]['prescriptions'][$index]['doctor'] = $pres_doctor;
+                    $patientMedicalInfos[$patient->id]['prescriptions'][$index]['detail'] = $pres_doctor->prescriptions;
+                    $index++;
                 }
             } else {
                 $patientMedicalInfos[$patient->id]['prescriptions'] = [];

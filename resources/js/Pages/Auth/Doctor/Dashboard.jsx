@@ -90,11 +90,11 @@ export default function Dashboard({
       <GridItem area={'nav'}>
         <DashboardSidebar state={'dashboard'} />
       </GridItem>
-      <GridItem bg='orange.300' area={'header'}>
+      {/* <GridItem bg='orange.300' area={'header'}>
         Header
-      </GridItem>
+      </GridItem> */}
       <GridItem area={'schedule'}>
-        <DashboardSchedule width={'55vw'} height={'40vh'} schedule={dashboardSchedule} />
+        <DashboardSchedule width={'55vw'} height={'40vh'} schedule={dashboardSchedule} navigation={true}/>
       </GridItem>
       <GridItem area={'appointment'}>
         <DashboardAppointments appointments={dashboardAppointments.list} current_appointment={dashboardAppointments.current} />

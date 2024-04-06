@@ -61,28 +61,32 @@ class AppointmentController extends Controller
     public function storeAppointmentNoteData(AppointmentNoteRequest $request, Appointment $appointment)
     {
         $user = Auth::user();
-
-        $pdf = $this->testResultService->storeTestResult($user, $request->all());
-
-        dd($pdf);
+        // dd($request->all());
+        // $this->testResultService->storeTestResult($user, $request->all());
 
         if ($request->diagnoses) {
-            $this->appointmentService->storeDiagnoses($user->id, $request->patient_id, $request->diagnoses);
+            $isStored = $this->appointmentService->storeDiagnoses($user->id, $request->patient_id, $request->diagnoses);
+
+            if (! $isStored) {
+                return redirect()->back()->with('message', [
+                    'message' => 'Failed to store diagnoses',
+                    'type' => 'error',
+                ]);
+            }
         }
 
-        $prescription = [];
-        if (! is_null($request->medication_name)) {
-            $prescription = $this->appointmentService->storePrescription($user->id, $request->only('patient_id', 'date', 'medication_name', 'dose', 'dose_addon', 'pill_per_day', 'pill_type', 'recommendation'));
+        if ($request->prescriptions) {
+            $isStored = $this->appointmentService->storePrescription($request->prescriptions);
+
+            if (! $isStored) {
+                return redirect()->back()->with('message', [
+                    'message' => 'Failed to store prescriptions',
+                    'type' => 'error',
+                ]);
+            }
         }
 
-        if (! $prescription) {
-            return redirect(route('doctor.appointments'))->with('message', [
-                'message' => 'Failed to store',
-                'type' => 'error',
-            ]);
-        }
-
-        $note = $this->appointmentService->storeAppointmentNote($request->only('appointment_id', 'main_complaint', 'objective_note', 'subjective_note', 'files', 'signature'));
+        $note = $this->appointmentService->storeAppointmentNote($request->only('appointment_id', 'main_complaint', 'objective_note', 'tests', 'files', 'signature'));
 
         if ($note) {
             return redirect(route('doctor.appointments'))->with('message', [
@@ -90,7 +94,7 @@ class AppointmentController extends Controller
                 'type' => 'success',
             ]);
         } else {
-            return redirect(route('doctor.appointments'))->with('message', [
+            return redirect()->back()->with('message', [
                 'message' => 'Failed to store',
                 'type' => 'error',
             ]);
