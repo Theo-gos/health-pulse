@@ -10,9 +10,12 @@ class Appointment extends Pivot
 {
     use HasFactory;
 
+    public $incrementing = true;
+
     protected $table = 'appointments';
 
     protected $fillable = [
+        'id',
         'doctor_id',
         'patient_id',
         'date',

@@ -10,6 +10,8 @@ class Diagnosis extends Pivot
 {
     use HasFactory;
 
+    public $incrementing = true;
+
     protected $table = 'diagnoses';
 
     protected $fillable = [

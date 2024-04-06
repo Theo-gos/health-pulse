@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Events\AppointmentBookedEvent;
 use App\Http\Requests\AppointmentBookingRequest;
-use App\Mail\AppointmentBooked;
-use App\Models\Appointment;
+use App\Notifications\AppointmentBookedForDoctor;
+use App\Notifications\AppointmentBookedForPatient;
 use App\Services\BookingService;
 use App\Services\PatientService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class PatientBookingController extends Controller
@@ -35,8 +34,9 @@ class PatientBookingController extends Controller
 
     public function store(AppointmentBookingRequest $request)
     {
-        $patient = Auth::guard('patient')->user();
-        $appointment = $this->bookingService->store($request->all());
+        $patient = $this->patientService->getById(Auth::guard('patient')->user()->id);
+        $appointment = $this->bookingService->storeAppointment($patient->id, $request->all());
+        $doctor = $appointment->doctor;
         $message = [];
 
         if ($appointment) {
@@ -46,7 +46,9 @@ class PatientBookingController extends Controller
                 'appointment' => $appointment->only('date', 'doctor_id', 'end_time', 'patient_name', 'start_time', 'id'),
             ];
 
-            Mail::to($patient->email)->send(new AppointmentBooked($appointment));
+            $patient->notify(new AppointmentBookedForPatient($appointment));
+            $doctor->notify(new AppointmentBookedForDoctor($appointment));
+
             event(new AppointmentBookedEvent([
                 'doctor_id' => $appointment->doctor_id,
                 'message' => 'There is a new appointment',
@@ -59,12 +61,5 @@ class PatientBookingController extends Controller
         }
 
         return redirect()->back()->with('message', $message);
-    }
-
-    public function sendMail()
-    {
-        $patient = Auth::guard('patient')->user();
-        $appointment = Appointment::find(1);
-        Mail::to($patient->email)->send(new AppointmentBooked($appointment));
     }
 }
