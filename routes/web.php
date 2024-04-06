@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\PatientAuthenticateController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientBookingController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RecordController;
 use App\Http\Controllers\ScheduleController;
 use App\Models\Patient;
@@ -33,8 +34,14 @@ Route::get('/patient/callback', [PatientAuthenticateController::class, 'callback
 Route::get('/patient/logout', [PatientAuthenticateController::class, 'destroy'])->name('patient.logout');
 Route::post('/patient/login', [PatientAuthenticateController::class, 'login'])->name('patient.login');
 Route::post('/patient/register', [PatientAuthenticateController::class, 'register'])->name('patient.register');
-Route::get('/patient/booking', [PatientBookingController::class, 'booking'])->name('patient.booking');
-Route::post('/patient/booking', [PatientBookingController::class, 'store'])->name('patient.booking.store');
+
+Route::middleware(['auth:patient'])->group(function () {
+    Route::get('/patient/booking', [PatientBookingController::class, 'booking'])->name('patient.booking');
+    Route::post('/patient/booking', [PatientBookingController::class, 'store'])->name('patient.booking.store');
+
+    Route::get('patient/lists/{state}', [PatientController::class, 'show'])->name('patient.lists.show');
+    Route::get('patient/lists', [PatientController::class, 'index'])->name('patient.lists');
+});
 
 //Doctor
 Route::middleware(['auth'])->group(function () {

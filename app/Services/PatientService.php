@@ -49,7 +49,7 @@ class PatientService extends BaseService
                 $index = 0;
                 foreach ($patient->appointed_doctors->all() as $ap_doctor) {
                     $ap_doctor['type'] = $ap_doctor->service->type;
-                    $patientMedicalInfos[$patient->id]['appointments'][$index]['booked_doctor'] = $ap_doctor;
+                    $patientMedicalInfos[$patient->id]['appointments'][$index]['doctor'] = $ap_doctor;
                     $patientMedicalInfos[$patient->id]['appointments'][$index]['detail'] = $ap_doctor->appointments;
                     $index++;
                 }

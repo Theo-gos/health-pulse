@@ -335,50 +335,6 @@ export default function PatientMedicalRecord({ selectManager, medicalInfo, icd }
                                     </SimpleGrid>
                                 </Box>
 
-                                {/* <Box
-                                    w={'100%'}
-                                    mt={'12px'}
-                                >
-                                    <Box fontWeight={'bold'} ml={'6px'}>Medications</Box>
-                                    <Box
-                                        w={'100%'}
-
-                                        overflowX={'scroll'}
-                                    >
-                                        <HStack
-                                            w={'fit-content'}
-                                            mt={'16px'}
-
-                                            overflowX={'scroll'}
-                                            spacing='4px'
-                                        >
-                                            {data.prescriptions.length > 0 ? 
-                                                data.prescriptions.map((item, index) => {
-                                                    const prescription = item.detail
-                                                    return <Box
-                                                        key={`medication-${index}`}
-                                                        h={'10vh'}
-                                                        w={'180px'}
-                                                        p={'12px 18px'}
-
-                                                        fontSize={'13px'}
-
-                                                        bg={'white'}
-                                                        
-                                                        border={'1px solid #EEEFF1'}
-                                                        borderRadius={'xl'}
-                                                    >
-                                                        <Box fontWeight={'bold'}>{prescription.medication_name}</Box>
-                                                        <Box mt={'10px'} color={'gray.500'}>{`${prescription.dose} ${prescription.pill_per_day.split(' ')[1]}`}</Box>
-                                                    </Box>
-                                                })
-                                            :
-                                                <Box pl={'8px'}>No Available Medications</Box>    
-                                            }
-                                        </HStack>
-                                    </Box>
-                                </Box> */}
-
                                 <Box
                                     mt={'24px'}
                                     w={'100%'}
@@ -455,7 +411,7 @@ export default function PatientMedicalRecord({ selectManager, medicalInfo, icd }
                                                                     p={'8px'}
                                                                     borderBottom={'1px solid #D1D1D3'}
                                                                 >
-                                                                    {`Dr. ${appointment.booked_doctor.name}`}
+                                                                    {`Dr. ${appointment.doctor.name}`}
                                                                 </Box>  
 
                                                                 <Box
@@ -463,7 +419,7 @@ export default function PatientMedicalRecord({ selectManager, medicalInfo, icd }
                                                                     p={'8px'}
                                                                     borderBottom={'1px solid #D1D1D3'}
                                                                 >
-                                                                    {`${appointment.booked_doctor.type.charAt(0).toUpperCase()}${appointment.booked_doctor.type.slice(1)}`}
+                                                                    {`${appointment.doctor.type.charAt(0).toUpperCase()}${appointment.doctor.type.slice(1)}`}
                                                                 </Box>  
 
                                                                 <Box
