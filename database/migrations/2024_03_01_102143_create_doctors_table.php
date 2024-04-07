@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('service_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
-            $table->string('avatar')->nullable();
+            $table->longText('avatar')->nullable();
             $table->string('phone')->unique();
             $table->string('email')->unique();
             $table->string('password');

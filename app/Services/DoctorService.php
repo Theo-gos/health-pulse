@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Doctor;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class DoctorService extends BaseService
 {
@@ -35,5 +36,14 @@ class DoctorService extends BaseService
         return $this->model
             ->with(['appointed_patients', 'service'])
             ->get();
+    }
+
+    public function updateAvatarForDoctor(Doctor $doctor, $data)
+    {
+        $url = Cloudinary::upload($data['avatar']->getRealPath())->getSecurePath();
+
+        $data['avatar'] = $url;
+
+        return $doctor->update($data);
     }
 }

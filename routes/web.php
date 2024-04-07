@@ -4,8 +4,10 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Auth\PatientAuthenticateController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\DoctorProfileController;
 use App\Http\Controllers\PatientBookingController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PatientProfileController;
 use App\Http\Controllers\RecordController;
 use App\Http\Controllers\ScheduleController;
 use App\Models\Patient;
@@ -35,13 +37,13 @@ Route::get('/patient/logout', [PatientAuthenticateController::class, 'destroy'])
 Route::post('/patient/login', [PatientAuthenticateController::class, 'login'])->name('patient.login');
 Route::post('/patient/register', [PatientAuthenticateController::class, 'register'])->name('patient.register');
 
-Route::middleware(['auth:patient'])->group(function () {
-    Route::get('/patient/booking', [PatientBookingController::class, 'booking'])->name('patient.booking');
-    Route::post('/patient/booking', [PatientBookingController::class, 'store'])->name('patient.booking.store');
+Route::get('/patient/booking', [PatientBookingController::class, 'booking'])->name('patient.booking');
+Route::post('/patient/booking', [PatientBookingController::class, 'store'])->name('patient.booking.store');
 
-    Route::get('patient/lists/{state}', [PatientController::class, 'show'])->name('patient.lists.show');
-    Route::get('patient/lists', [PatientController::class, 'index'])->name('patient.lists');
-});
+Route::get('patient/lists/{state}', [PatientController::class, 'show'])->name('patient.lists.show');
+Route::get('patient/lists', [PatientController::class, 'index'])->name('patient.lists');
+Route::get('patient/profile', [PatientProfileController::class, 'index'])->name('patient.profile');
+Route::post('patient/profile/{patient}', [PatientProfileController::class, 'uploadAvatar'])->name('patient.update.avatar');
 
 //Doctor
 Route::middleware(['auth'])->group(function () {
@@ -66,6 +68,13 @@ Route::middleware(['auth'])->group(function () {
 
     // Medical Record
     Route::get('/doctor/records', [RecordController::class, 'index'])->name('doctor.records');
+
+    // Profile
+    Route::get('doctor/profile', [DoctorProfileController::class, 'index'])->name('doctor.profile');
+    Route::post('doctor/profile/{doctor}', [DoctorProfileController::class, 'uploadAvatar'])->name('doctor.update.avatar');
+
+    // Notifications
+    Route::get('doctor/notification', [DoctorController::class, 'showNotifications'])->name('doctor.notifications');
 });
 
 // Show doctor login page

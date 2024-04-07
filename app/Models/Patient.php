@@ -30,6 +30,7 @@ class Patient extends Authenticatable implements MustVerifyEmail
         'age',
         'last_visit',
         'password',
+        'avatar',
     ];
 
     /**

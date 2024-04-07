@@ -7,7 +7,7 @@ import {
     Modal,
     ModalOverlay,
     ModalContent,
-    useDisclosure,
+    useToast,
     Stack,
     Menu,
     MenuButton,
@@ -39,15 +39,50 @@ const STATE = {
     NONE: 'none',
 }
 
-export default function PatientLayout({ children, state }) {
+let isOpen
+let onOpen
+let onClose
+
+export default function PatientLayout({ children, state, modalManager = null }) {
     const isHovered = state === STATE.NONE ? false : true;
     const [show, setShow] = useState(false)
-    const [isLogin, setIsLogin] = useState(isHovered)
+    const [isLogin, setIsLogin] = useState(true)
     const [windowSize, setWindowSize] = useState(window.innerWidth)
-    const [hovered, setHovered] = useState(STATE)
+    const [hovered, setHovered] = useState(isHovered)
     const { message, auth } = usePage().props
+    const [messageData, setMessageData] = useState(message)
     const { patient } = auth
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const toast = useToast()
+
+    console.log(messageData);
+
+    useEffect(() => {
+        setMessageData(message)
+    }, [message])
+
+    useEffect(() => {
+        if (messageData) {
+            toast({
+                title: `${message.type.charAt(0).toUpperCase()}${message.type.slice(1)}!`,
+                description: message.message,
+                status: message.type,
+                position: 'top',
+                duration: 5000,
+                isClosable: true,
+                onCloseComplete: () => {
+                    setMessageData(null)
+                }
+            })
+        }
+    }, [messageData])
+
+
+    if (modalManager) {
+        isOpen = modalManager.isOpen
+        onOpen = modalManager.onOpen
+        onClose = modalManager.onClose
+    }
+
 
     const { data, setData, errors, setError , post, get, processing, reset: resetData } = useForm({
         email: '',
@@ -201,7 +236,7 @@ export default function PatientLayout({ children, state }) {
                                     <>
                                         <Menu>
                                             <MenuButton>
-                                                <Avatar name='Dan Abrahmov' size={'md'} src='https://bit.ly/dan-abramov' />
+                                                <Avatar name={patient.name} bg={'#1366DE'} color={'white'} size={'md'} src={patient.avatar} />
                                             </MenuButton>
                                             <MenuList fontSize={'13px'} borderRadius={'lg'}>
                                                 <Flex
@@ -211,7 +246,7 @@ export default function PatientLayout({ children, state }) {
                                                     align={'center'}
                                                     justify={'center'}
                                                 >
-                                                    <Avatar name='Dan Abrahmov' size={'md'} src='https://bit.ly/dan-abramov' />
+                                                    <Avatar name={patient.name} bg={'#1366DE'} color={'white'} size={'md'} src={patient.avatar} />
                                                     <Box fontWeight={'bold'} ml={'18px'}>{patient.name}</Box>
                                                 </Flex>
                                                 <MenuDivider />
@@ -222,7 +257,7 @@ export default function PatientLayout({ children, state }) {
                                                 </MenuGroup>
                                                 <MenuDivider />
                                                 <MenuGroup title="Manage">
-                                                    <MenuItem p={'8px 24px'} as={Link} href={route('patient.logout')}>Profile</MenuItem>
+                                                    <MenuItem p={'8px 24px'} as={Link} href={route('patient.profile')}>Profile</MenuItem>
                                                     <MenuItem p={'8px 24px'} as={Link} href={route('patient.logout')}>Log Out</MenuItem>
                                                 </MenuGroup>
                                             </MenuList>
@@ -242,129 +277,137 @@ export default function PatientLayout({ children, state }) {
             >
                 {children}
 
-                <Box
-                    position={'fixed'}
-                    left={0}
-                    top={'24%'}
-
-                    borderRadius={'20px'}
-
-                    w={'4px'}
-                    h={'37vh'}
-
-                    bg={'#b2b2b2'}
-                    _hover={{
-                        backgroundColor: 'black',
-                    }}
-
-                    hidden={hovered}
-                    onMouseEnter={() => {
-                        if (state === STATE.NONE)
-                            setHovered(true)
-                    }}
-                >
-                </Box>
-
-                <Stack
-                    position={'fixed'}
-                    left={0}
-                    top={'24%'}
-
-                    hidden={!hovered}                   
-                    onMouseLeave={() => {
-                        if (state === STATE.NONE)
-                            setHovered(false)
-                    }}
-
-                    borderRadius={'20px'}
-
-                    w={'100px'}
-                    h={'40vh'}
-                    p={'8px'}
-
-                    spacing={3}
-                >
-                    <Link
-                        w={'100%'}
-                        h={'30%'}
-                        
-                        href="/"
-                    >
-                        <Flex
-                            p={'16px'}
-
-                            direction={'column'}
-                            align={'center'}
-                            justify={'center'}
+                {patient ? 
+                    <>
+                        <Box
+                            position={'fixed'}
+                            left={0}
+                            top={'24%'}
 
                             borderRadius={'20px'}
 
+                            w={'4px'}
+                            h={'37vh'}
+
+                            bg={'#b2b2b2'}
                             _hover={{
-                                opacity: 0.7,
-                                cursor: 'pointer',
+                                backgroundColor: 'black',
                             }}
 
-                            bg={state === STATE.HOME ? 'gray.200' : 'white'}
+                            hidden={hovered}
+                            onMouseEnter={() => {
+                                if (state === STATE.NONE)
+                                    setHovered(true)
+                            }}
                         >
-                            <IoMdHome fontSize={'20px'} />
-                            <Box fontWeight={'bold'} fontSize={'12px'} mt={'6px'}>Home</Box>
-                        </Flex>
-                    </Link>
+                        </Box>
 
-                    <Link
-                        w={'100%'}
-                        h={'30%'}
-                        
-                        href={route('patient.lists.show', {state: 'appointments'})}
-                    >
-                        <Flex
-                            p={'16px'}
-                            
-                            direction={'column'}
-                            align={'center'}
-                            justify={'center'}
+                        <Stack
+                            position={'fixed'}
+                            left={0}
+                            top={'24%'}
+
+                            hidden={!hovered}                   
+                            onMouseLeave={() => {
+                                if (state === STATE.NONE)
+                                    setHovered(false)
+                            }}
 
                             borderRadius={'20px'}
 
-                            _hover={{
-                                opacity: 0.7,
-                                cursor: 'pointer',
-                            }}
+                            w={'100px'}
+                            h={'40vh'}
+                            p={'8px'}
 
-                            bg={state === STATE.PATIENT ? 'gray.200' : 'white'}
+                            spacing={3}
                         >
-                            <FaListAlt fontSize={'20px'} />
-                            <Box fontWeight={'bold'} fontSize={'12px'} mt={'6px'}>Patient</Box>
-                        </Flex>
-                    </Link>
+                            <Link
+                                w={'100%'}
+                                h={'30%'}
+                                
+                                href="/"
+                            >
+                                <Flex
+                                    p={'16px'}
 
-                    <Link
-                        w={'100%'}
-                        h={'30%'}
-                        
-                        href="/"
-                    >
-                        <Flex
-                            p={'16px'}
+                                    direction={'column'}
+                                    align={'center'}
+                                    justify={'center'}
 
-                            direction={'column'}
-                            align={'center'}
-                            justify={'center'}
+                                    borderRadius={'20px'}
 
-                            borderRadius={'20px'}
+                                    _hover={{
+                                        opacity: 0.7,
+                                        cursor: 'pointer',
+                                    }}
 
-                            _hover={{
-                                opacity: 0.7,
-                                cursor: 'pointer',
-                            }}
+                                    bg={state === STATE.HOME ? 'gray.200' : 'white'}
+                                >
+                                    <IoMdHome fontSize={'20px'} />
+                                    <Box fontWeight={'bold'} fontSize={'12px'} mt={'6px'}>Home</Box>
+                                </Flex>
+                            </Link>
 
-                            bg={state === STATE.PROFILE ? 'gray.200' : 'white'}
-                        >
-                            <IoPerson fontSize={'20px'} />
-                            <Box fontWeight={'bold'} fontSize={'12px'} mt={'6px'}>Profile</Box>
-                        </Flex>
-                    </Link>
-                </Stack>
+                            <Link
+                                w={'100%'}
+                                h={'30%'}
+                                
+                                href={route('patient.lists.show', {state: 'appointments'})}
+                            >
+                                <Flex
+                                    p={'16px'}
+                                    
+                                    direction={'column'}
+                                    align={'center'}
+                                    justify={'center'}
+
+                                    borderRadius={'20px'}
+
+                                    _hover={{
+                                        opacity: 0.7,
+                                        cursor: 'pointer',
+                                    }}
+
+                                    bg={state === STATE.PATIENT ? 'gray.200' : 'white'}
+                                >
+                                    <FaListAlt fontSize={'20px'} />
+                                    <Box fontWeight={'bold'} fontSize={'12px'} mt={'6px'}>Patient</Box>
+                                </Flex>
+                            </Link>
+
+                            <Link
+                                w={'100%'}
+                                h={'30%'}
+                                
+                                href={route('patient.profile')}
+                            >
+                                <Flex
+                                    p={'16px'}
+
+                                    direction={'column'}
+                                    align={'center'}
+                                    justify={'center'}
+
+                                    borderRadius={'20px'}
+
+                                    _hover={{
+                                        opacity: 0.7,
+                                        cursor: 'pointer',
+                                    }}
+
+                                    bg={state === STATE.PROFILE ? 'gray.200' : 'white'}
+                                >
+                                    <IoPerson fontSize={'20px'} />
+                                    <Box fontWeight={'bold'} fontSize={'12px'} mt={'6px'}>Profile</Box>
+                                </Flex>
+                            </Link>
+                        </Stack>
+                    </>
+                
+                :
+                    <></>
+                }
+
             </Box>
 
             <Box

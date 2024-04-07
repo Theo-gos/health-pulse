@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Patient;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class PatientService extends BaseService
 {
@@ -107,5 +108,14 @@ class PatientService extends BaseService
             ->where('sex', '=', $gender)
             ->get()
             ->toArray();
+    }
+
+    public function updateAvatarForPatient(Patient $patient, $data)
+    {
+        $url = Cloudinary::upload($data['avatar']->getRealPath())->getSecurePath();
+
+        $data['avatar'] = $url;
+
+        return $patient->update($data);
     }
 }
