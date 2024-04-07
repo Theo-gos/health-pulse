@@ -1,38 +1,9 @@
 import {
     Box,
     Flex,
-    UnorderedList,
-    ListItem,
-    Text,
-    Input,
-    useDisclosure,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalCloseButton,
-    ModalBody,
-    ModalFooter,
-    Button,
-    FormControl,
-    FormLabel,
-    Link as ChakraLink,
-    InputGroup,
-    InputLeftAddon,
-    Menu,
-    MenuButton,
-    MenuList,
-    MenuItem,
-    IconButton,
-    Select,
-    FormErrorMessage,
-    Container,
     Circle,
-    Card,
-    CardBody,
-    CardFooter,
-    ButtonGroup,
-    Image,
+    useDisclosure,
+    Button,
 } from "@chakra-ui/react"
 import { useEffect, useRef, useState } from "react"
 import Logo from "./Shared/Logo"
@@ -43,39 +14,33 @@ import React from "react"
 import PatientLayout from '@/Layouts/PatientLayout'
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import ClinicCard from "@/Components/ClinicCard"
-
-const clinics = [
-    {
-        name: 'M Plaza',
-        location: '1st Floor, M Plaza - 39 Le Duan, Ben Nghe, District 1, HCMC',
-        time: 'Everyday, 08:00 - 20:00',
-        timeAvailable: '10:45'
-    },
-    {
-        name: 'Republic Plaza',
-        location: 'Ground floor, 18E Cong Hoa, Ward 4, Tan Binh, HCMC',
-        time: 'Everyday, 08:00 - 20:00',
-        timeAvailable: '10:15'
-    },
-    {
-        name: 'Q2 Thao Dien',
-        location: '21 Vo Truong Toan (Street 10 Gate), Thao Dien, District 2, HCMC',
-        time: 'Everyday, 08:00 - 20:00',
-        timeAvailable: '11:00'
-    }
-]
 
 export default function Home() {
     const [windowSize, setWindowSize] = useState(window.innerWidth)
     const { get } = useForm()
+    const { auth } = usePage().props
+    useDisclosure
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const modalManager = {
+        isOpen: isOpen,
+        onOpen: onOpen,
+        onClose: onClose,
+    }
+
+    const patient = auth.patient
+
+    console.log(patient);
 
     const bookingHandler = () => {
-        get(route('patient.booking'))
+        if (patient) {
+            get(route('patient.booking'))
+        } else {
+            onOpen()
+        }
     }
 
     return (
-        <PatientLayout state={'home'}>
+        <PatientLayout state={'home'} modalManager={modalManager}>
             <Box
                 w={'100vw'}
             >

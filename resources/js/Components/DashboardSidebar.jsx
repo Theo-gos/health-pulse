@@ -46,7 +46,7 @@ const icons = {
 
 export default function DashboardSidebar({state, isNewNotification}) {
     const [selected, setSelected] = useState('dashboard')
-    const { post } = useForm()
+    const { post, get } = useForm()
     const { auth } = usePage().props
     const { doctor } = auth
 
@@ -57,6 +57,10 @@ export default function DashboardSidebar({state, isNewNotification}) {
 
     const handleLogout = () => {
         post(route('logout'))
+    }
+
+    const handleProfile = () => {
+        get(route('doctor.profile'))
     }
 
     return (
@@ -101,7 +105,7 @@ export default function DashboardSidebar({state, isNewNotification}) {
                         justify={'flex-start'}
                     >
                         <Logo width={'30px'} />
-                        <Text ml={'5px'}>Healthpulse</Text>
+                        <Text ml={'5px'}>HealthPulse</Text>
                     </Flex>
 
                     <Box mb={'16px'}>
@@ -230,7 +234,7 @@ export default function DashboardSidebar({state, isNewNotification}) {
                                         mb={'5px'}
                                     />
                                     <MenuList minW={'180px'}>
-                                        <MenuItem fontSize={'12px'} py={'8px'}>Profile</MenuItem>
+                                        <MenuItem fontSize={'12px'} py={'8px'} onClick={handleProfile}>Profile</MenuItem>
                                         <MenuItem fontSize={'12px'} py={'8px'} onClick={handleLogout}>Logout</MenuItem>
                                     </MenuList>
                                 </>
