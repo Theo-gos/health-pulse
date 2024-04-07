@@ -18,9 +18,10 @@ class DiagnosisFactory extends Factory
     {
         return [
             //
-            'date' => fake()->date(),
+            'doctor_id' => 71,
+            'patient_id' => 1,
             'icd_code' => 'I70.231',
-            'icd_name' => 'Atherosclerosis of native arteries of right leg with ulceration of thigh',
+            'date' => fake()->date(),
         ];
     }
 }
