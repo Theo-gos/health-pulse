@@ -74,7 +74,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('doctor/profile/{doctor}', [DoctorProfileController::class, 'uploadAvatar'])->name('doctor.update.avatar');
 
     // Notifications
-    Route::get('doctor/notification', [DoctorController::class, 'showNotifications'])->name('doctor.notifications');
+    Route::get('doctor/notifications', [DoctorController::class, 'showNotifications'])->name('doctor.notifications');
+    Route::get('doctor/notifications/read', [DoctorController::class, 'markAllNotificationsAsRead'])->name('doctor.notifications.all-read');
+    Route::get('doctor/notification/{notification}', [DoctorController::class, 'markNotificationAsRead'])->name('doctor.notification.read');
 });
 
 // Show doctor login page

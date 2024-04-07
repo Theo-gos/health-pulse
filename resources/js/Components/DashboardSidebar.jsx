@@ -30,6 +30,7 @@ import { useEffect, useState } from "react";
 import Logo from "@/Pages/Shared/Logo";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { useForm, usePage } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 
 const topOptions = ['dashboard', 'appointments', 'schedule']
 const botOptions = ['records']
@@ -44,11 +45,12 @@ const icons = {
     'notification': BsBellFill,
 }
 
-export default function DashboardSidebar({state, isNewNotification}) {
+export default function DashboardSidebar({state, newNotificationManager}) {
     const [selected, setSelected] = useState('dashboard')
     const { post, get } = useForm()
     const { auth } = usePage().props
     const { doctor } = auth
+    const {isNewNotification, setIsNewNotification} = newNotificationManager
 
     useEffect(() => {
         if (state)
@@ -162,29 +164,49 @@ export default function DashboardSidebar({state, isNewNotification}) {
                     direction={'column'}
                     align={'center'}
                 >
-                    <Box
-                        borderRadius={'lg'}
-                        bg={selected === 'notification' ? '#F2F7FF' :'transparent'}
-                        color={selected === 'notification' ? '#1366DE' : '#637185'}
-
-                        _hover={selected === 'notification' ? '' :
-                        {
-                            backgroundColor: '#F2F7FF',
+                    <Link
+                        style={{
+                            width: '100%',
                         }}
-                        style={{ cursor: 'pointer' }}
-            
-                        w={'92%'}
-                        p={'5px 16px'}
-                        mb={'16px'}
-
-                        onClick={() => setSelected('notification')}
-            
-                        fontSize={'12px'}
-                        textAlign={'left'}
+                        href={route(`doctor.notifications`)}
+                        onClick={() => {
+                            setSelected('notification')
+                            if (isNewNotification)
+                                setIsNewNotification(false)
+                        }}
                     >
-                        <Icon as={BsBellFill} mr={'8px'} mb={'2px'}></Icon>
-                        Notification
-                    </Box>
+                        <Box
+                            borderRadius={'lg'}
+                            bg={selected === 'notification' ? '#F2F7FF' :'transparent'}
+                            color={selected === 'notification' ? '#1366DE' : '#637185'}
+
+                            _hover={selected === 'notification' ? '' :
+                            {
+                                backgroundColor: '#F2F7FF',
+                            }}
+                            style={{ cursor: 'pointer' }}
+                
+                            w={'92%'}
+                            p={'5px 16px'}
+                            mb={'16px'}
+                
+                            fontSize={'12px'}
+                            textAlign={'left'}
+                        >
+                            <Flex
+                                w={'100%'}
+                                
+                                justify={'space-between'}
+                                align={'center'}
+                            >
+                                <Box>
+                                    <Icon as={BsBellFill} mr={'8px'} mb={'2px'}></Icon>
+                                    Notification
+                                </Box>
+                                {isNewNotification ? <Box bg={'#1366DE'} w={'8px'} h={'8px'} borderRadius={'50%'} /> : <></>}
+                            </Flex>
+                        </Box>
+                    </Link>
 
                     <Box
                         borderRadius={'md'}

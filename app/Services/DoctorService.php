@@ -46,4 +46,26 @@ class DoctorService extends BaseService
 
         return $doctor->update($data);
     }
+
+    public function getAllDoctorNotifications($doctor)
+    {
+        $notifications = $doctor->notifications->all();
+        $unreadNotifications = $doctor->unreadNotifications->all();
+
+        return [
+            'notifications' => $notifications,
+            'unreadNotifications' => $unreadNotifications,
+        ];
+    }
+
+    public function markNotificationAsRead($notification)
+    {
+        $notification->update(['read_at' => now()]);
+    }
+
+    public function markAllNotificationsAsRead($doctor_id)
+    {
+        $doctor = $this->model->findOrFail($doctor_id);
+        $doctor->unreadNotifications->markAsRead();
+    }
 }
