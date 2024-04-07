@@ -7,6 +7,7 @@ import {
     Image,
     Stack,
     useDisclosure,
+    Avatar,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import _ from "lodash";
@@ -23,11 +24,14 @@ export default function DoctorCard({ data, selectedManager, dataManager, modalMa
                     justify={'center'}
                     w={'100%'}
                 >
-                    <Image
-                        bg={'blue.100'}
-                        borderRadius={'50%'}
-                        w={'50%'}
+                    <Avatar
+                        name={data.name}
                         src={data.avatar}
+                        
+                        bg={'#1366DE'}
+                        color={'white'}
+                        
+                        size={'2xl'}
                     />
                 </Flex>
 

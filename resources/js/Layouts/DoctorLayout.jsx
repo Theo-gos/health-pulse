@@ -18,6 +18,11 @@ export default function DoctorLayout({ children, state }) {
     const [messageData, setMessageData] = useState(message)
     const [isNewNotification, setIsNewNotification] = useState(false)
 
+    const newNotificationManager = {
+        isNewNotification: isNewNotification,
+        setIsNewNotification: setIsNewNotification,
+    }
+
     window.addEventListener('resize', () => { 
         setWindowSize(window.innerWidth)
     })
@@ -30,7 +35,6 @@ export default function DoctorLayout({ children, state }) {
         const channel = pusher.subscribe(`appointment-booking-channel.${auth.doctor.id}`);
         channel.bind('appointment-booked-event', function(e) {
             console.log('Received data:', e.data.message);
-            // Do something with the received data
             toast({
                 title: `Info`,
                 description: e.data.message,
@@ -81,7 +85,7 @@ export default function DoctorLayout({ children, state }) {
                 w={'100%'}
                 h={'95vh'}
             >
-                <DashboardSidebar state={state} isNewNotification={isNewNotification}  />
+                <DashboardSidebar state={state} newNotificationManager={newNotificationManager}  />
 
                 {children}
             </Flex>
