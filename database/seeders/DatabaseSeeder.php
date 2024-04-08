@@ -102,35 +102,11 @@ class DatabaseSeeder extends Seeder
                     'name' => fake()->name('male'),
                 ],
             ))
+            ->hasAllergies(1)
             ->create();
 
         \App\Models\Patient::factory(50)->create();
         \App\Models\Appointment::factory(10)->create();
-        \App\Models\Allergy::factory()
-            ->count(4)
-            ->state(new Sequence(
-                [
-                    'name' => 'Lactose',
-                    'type' => 'Food',
-                    'severity' => 'Mild',
-                ],
-                [
-                    'name' => 'Peanut',
-                    'type' => 'Food',
-                    'severity' => 'Severe',
-                ],
-                [
-                    'name' => 'Ethanol',
-                    'type' => 'Drug',
-                    'severity' => 'Mild',
-                ],
-                [
-                    'name' => 'Flower',
-                    'type' => 'Environmental',
-                    'severity' => 'Mild',
-                ],
-            ))
-            ->create();
         \App\Models\Icd::factory()
             ->count(5)
             ->state(new Sequence(
