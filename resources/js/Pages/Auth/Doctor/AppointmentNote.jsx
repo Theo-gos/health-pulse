@@ -33,6 +33,7 @@ import { UploadFile } from "antd/lib/upload/interface";
 import { LuHardDriveUpload } from "react-icons/lu";
 import SignatureCanvas from 'react-signature-canvas'
 import DoctorLayout from "@/Layouts/DoctorLayout";
+import TestResultList from "@/Components/TestResultList"
 import _ from 'lodash'
 
 const colors = {
@@ -64,7 +65,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
         test_name: '',
         test_result: '',
         unit: '',
-        date: '',
+        date: today.format('YYYY-MM-DD'),
         medication_name: '',
         dose: '',
         dose_addon: '',
@@ -110,7 +111,6 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
             setData({
                 ...data,
                 prescriptions: [],
-                date: '',
                 medication_name: '',
                 dose: '',
                 dose_addon: '',
@@ -121,7 +121,6 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
         } else {
             setData({
                 ...data,
-                date: today.format('YYYY-MM-DD'),
                 dose_addon: 'mg oral',
                 pill_type: 'tablet',
             })
@@ -296,12 +295,13 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
             <Box
                 w={'87vw'}
                 h={'99vh'}
-                
+                    
                 fontSize={'14px'}
             >
                 <Box
                     w={'100%'}
                     p={'8px'}
+                    ml={'16px'}
                 >
                     <Flex
                         align={'center'}
@@ -345,11 +345,12 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
 
                 <HStack
                     w={'100%'}
-                    h={'88vh'}
+                    h={'87vh'}
                     pl={'8px'}
                 >
                     <Box
                         w={'40%'}
+                        h={'100%'}
                         p={'16px'}
 
                         bg={'white'}
@@ -378,190 +379,216 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                             </Box>                   
                         </Flex>
 
-                        <Box w={'100%'} borderBottom={'1px solid #ECEDED'} py={'8px'}>
-                            <Box
-                                fontSize={'16px'}
-                                fontWeight={'bold'}
+                        <Box
+                            w={'100%'}
+                            h={'100%'}
+                            overflowY={'scroll'}
+                        >
+                            <Box w={'100%'} borderBottom={'1px solid #ECEDED'} py={'8px'}>
+                                <Box
+                                    fontSize={'16px'}
+                                    fontWeight={'bold'}
 
-                                mb={'8px'}
-                            >
-                                Allergies
-                            </Box>
-                            <Flex
-                                w={'100%'}
-                                mb={'8px'}
-
-                                align={'center'}
-                                justify={'space-between'}
-
-                                fontSize={'12px'}
-                                fontWeight={'bold'}
-                            >
-                                <Box w={'30%'} h={'10vh'}>
-                                    <Box color={'gray'}>Drug</Box>
-                                    {simplifiedMedicalInfo.allergies.Drug ? 
-                                        simplifiedMedicalInfo.allergies.Drug.map((allergy, index) => {
-                                            return (
-                                                <Flex
-                                                    key={`drug-${index}`}
-                                                    w={'100%'}
-                                                    justify={'space-between'}
-                                                    align={'center'}
-                                                    overflowY={'scroll'}
-                                                >
-                                                    <Box color={colors[allergy.severity]} fontWeight={'bold'}>{allergy.severity}</Box>
-                                                    <Box>{allergy.name}</Box>
-                                                </Flex>
-                                            )
-                                        })
-                                    :
-                                        <Box fontWeight={'bold'}>No known allergies</Box>
-                                    }
+                                    mb={'8px'}
+                                >
+                                    Allergies
                                 </Box>
+                                <Flex
+                                    w={'100%'}
+                                    mb={'8px'}
 
-                                <Box w={'30%'} h={'10vh'}>
-                                    <Box color={'gray'}>Food</Box>
-                                    {simplifiedMedicalInfo.allergies.Food ? 
-                                        simplifiedMedicalInfo.allergies.Food.map((allergy, index) => {
-                                            return (
-                                                <Flex
-                                                    key={`drug-${index}`}
-                                                    w={'100%'}
-                                                    justify={'space-between'}
-                                                    align={'center'}
-                                                    overflowY={'scroll'}
-                                                >
-                                                    <Box color={colors[allergy.severity]} fontWeight={'bold'}>{allergy.severity}</Box>
-                                                    <Box>{allergy.name}</Box>
-                                                </Flex>
-                                            )
-                                        })
-                                    :
-                                        <Box fontWeight={'bold'}>No known allergies</Box>
-                                    }
-                                </Box>
+                                    align={'center'}
+                                    justify={'space-between'}
 
-                                <Box w={'30%'} h={'10vh'}>
-                                    <Box color={'gray'}>Environmental</Box>
-                                    {simplifiedMedicalInfo.allergies.Environmental ? 
-                                        simplifiedMedicalInfo.allergies.Environmental.map((allergy, index) => {
-                                            return (
-                                                <Flex
-                                                    key={`drug-${index}`}
-                                                    w={'100%'}
-                                                    justify={'space-between'}
-                                                    align={'center'}
-                                                    overflowY={'scroll'}
-                                                >
-                                                    <Box color={colors[allergy.severity]} fontWeight={'bold'}>{allergy.severity}</Box>
-                                                    <Box>{allergy.name}</Box>
-                                                </Flex>
-                                            )
-                                        })
-                                    :
-                                        <Box fontWeight={'bold'}>No known allergies</Box>
-                                    }
-                                </Box>
-                            </Flex>
-                        </Box>
-
-                        <Box w={'100%'} borderBottom={'1px solid #ECEDED'} py={'8px'}>
-                            <Box
-                                fontSize={'16px'}
-                                fontWeight={'bold'}
-
-                                mb={'8px'}
-                            >
-                                Diagnoses
-                            </Box>
-                            <Box
-                                w={'100%'}
-                                h={'23vh'}
-                                overflowY={'scroll'}
-                            >
-                                <Stack w={'100%'} spacing={2}>
-                                    {
-                                        simplifiedMedicalInfo.diagnoses.length > 0 ?
-                                            simplifiedMedicalInfo.diagnoses.map((diagnosis, index) => {
-                                                return <Flex
-                                                    key={`diagnosis-${index}`}
-                                                    align={'center'}
-                                                    justify={'space-between'}
-
-                                                    borderBottom={'1px solid #ECEDED'}
-                                                    
-                                                    px={'2px'}
-                                                    pb={'4px'}
-                                                    mb={'4px'}
-                                                    w={'100%'}
-                                                    h={'5vh'}
-                                                >
-                                                    <Flex align={'center'} w={'12%'} h={'100%'}>
-                                                        <Box
-                                                            bg={icdObj[diagnosis.icd_code].color}
-                                                            borderRadius={'md'}
-                                                            
-                                                            w={'fit-content'}
-                                                            p={'1px 5px'}
-                                                            
-                                                            fontSize={'10px'}
-                                                            color={'white'}
-                                                        >
-                                                            {diagnosis.icd_code}
-                                                        </Box>
+                                    fontSize={'12px'}
+                                    fontWeight={'bold'}
+                                >
+                                    <Box w={'30%'} h={'10vh'}>
+                                        <Box color={'gray'}>Drug</Box>
+                                        {simplifiedMedicalInfo.allergies.Drug ? 
+                                            simplifiedMedicalInfo.allergies.Drug.map((allergy, index) => {
+                                                return (
+                                                    <Flex
+                                                        key={`drug-${index}`}
+                                                        w={'100%'}
+                                                        justify={'space-between'}
+                                                        align={'center'}
+                                                        overflowY={'scroll'}
+                                                    >
+                                                        <Box color={colors[allergy.severity]} fontWeight={'bold'}>{allergy.severity}</Box>
+                                                        <Box>{allergy.name}</Box>
                                                     </Flex>
-                                                    <Flex align={'center'} fontSize={'11px'} w={'65%'} h={'100%'}>{icdObj[diagnosis.icd_code].icd_name}</Flex>
-                                                    <Flex align={'center'} justify={'center'} w={'20%'} h={'100%'} fontSize={'12px'}>{dateFormatter(diagnosis.date)}</Flex>
-                                                </Flex>
-                                            })    
-                                            :    
-                                            <Box fontWeight={'bold'}>No Available Diagnoses</Box>
-                                    }
-                                </Stack>
+                                                )
+                                            })
+                                        :
+                                            <Box fontWeight={'bold'}>No known allergies</Box>
+                                        }
+                                    </Box>
+
+                                    <Box w={'30%'} h={'10vh'}>
+                                        <Box color={'gray'}>Food</Box>
+                                        {simplifiedMedicalInfo.allergies.Food ? 
+                                            simplifiedMedicalInfo.allergies.Food.map((allergy, index) => {
+                                                return (
+                                                    <Flex
+                                                        key={`drug-${index}`}
+                                                        w={'100%'}
+                                                        justify={'space-between'}
+                                                        align={'center'}
+                                                        overflowY={'scroll'}
+                                                    >
+                                                        <Box color={colors[allergy.severity]} fontWeight={'bold'}>{allergy.severity}</Box>
+                                                        <Box>{allergy.name}</Box>
+                                                    </Flex>
+                                                )
+                                            })
+                                        :
+                                            <Box fontWeight={'bold'}>No known allergies</Box>
+                                        }
+                                    </Box>
+
+                                    <Box w={'30%'} h={'10vh'}>
+                                        <Box color={'gray'}>Environmental</Box>
+                                        {simplifiedMedicalInfo.allergies.Environmental ? 
+                                            simplifiedMedicalInfo.allergies.Environmental.map((allergy, index) => {
+                                                return (
+                                                    <Flex
+                                                        key={`drug-${index}`}
+                                                        w={'100%'}
+                                                        justify={'space-between'}
+                                                        align={'center'}
+                                                        overflowY={'scroll'}
+                                                    >
+                                                        <Box color={colors[allergy.severity]} fontWeight={'bold'}>{allergy.severity}</Box>
+                                                        <Box>{allergy.name}</Box>
+                                                    </Flex>
+                                                )
+                                            })
+                                        :
+                                            <Box fontWeight={'bold'}>No known allergies</Box>
+                                        }
+                                    </Box>
+                                </Flex>
                             </Box>
-                        </Box>
 
-                        <Box w={'100%'} mt={'8px'} py={'8px'}>
-                            <Box
-                                fontSize={'16px'}
-                                fontWeight={'bold'}
+                            <Box w={'100%'} borderBottom={'1px solid #ECEDED'} py={'8px'}>
+                                <Box
+                                    fontSize={'16px'}
+                                    fontWeight={'bold'}
 
-                                mb={'8px'}
-                            >
-                                Prescriptions
+                                    mb={'8px'}
+                                >
+                                    Diagnoses
+                                </Box>
+                                <Box
+                                    w={'100%'}
+                                    h={'23vh'}
+                                    overflowY={'scroll'}
+                                >
+                                    <Stack w={'100%'} spacing={2}>
+                                        {
+                                            simplifiedMedicalInfo.diagnoses.length > 0 ?
+                                                simplifiedMedicalInfo.diagnoses.map((diagnosis, index) => {
+                                                    return <Flex
+                                                        key={`diagnosis-${index}`}
+                                                        align={'center'}
+                                                        justify={'space-between'}
+
+                                                        borderBottom={'1px solid #ECEDED'}
+                                                        
+                                                        px={'2px'}
+                                                        pb={'4px'}
+                                                        mb={'4px'}
+                                                        w={'100%'}
+                                                        h={'5vh'}
+                                                    >
+                                                        <Flex align={'center'} w={'12%'} h={'100%'}>
+                                                            <Box
+                                                                bg={icdObj[diagnosis.icd_code].color}
+                                                                borderRadius={'md'}
+                                                                
+                                                                w={'fit-content'}
+                                                                p={'1px 5px'}
+                                                                
+                                                                fontSize={'10px'}
+                                                                color={'white'}
+                                                            >
+                                                                {diagnosis.icd_code}
+                                                            </Box>
+                                                        </Flex>
+                                                        <Flex align={'center'} fontSize={'11px'} w={'65%'} h={'100%'}>{icdObj[diagnosis.icd_code].icd_name}</Flex>
+                                                        <Flex align={'center'} justify={'center'} w={'20%'} h={'100%'} fontSize={'12px'}>{dateFormatter(diagnosis.date)}</Flex>
+                                                    </Flex>
+                                                })    
+                                                :    
+                                                <Box fontWeight={'bold'}>No Available Diagnoses</Box>
+                                        }
+                                    </Stack>
+                                </Box>
                             </Box>
-                            <Box
-                                w={'100%'}
-                                h={'23vh'}
-                                overflowY={'scroll'}
-                            >
-                                <Stack w={'100%'} spacing={2}>
-                                    {
-                                        simplifiedMedicalInfo.prescriptions.length > 0 ?
-                                            simplifiedMedicalInfo.prescriptions.map((prescriptionWithDoctor, index) => {
-                                                const prescription = prescriptionWithDoctor.detail
-                                                return <Flex
-                                                    key={`prescription-${index}`}
-                                                    align={'center'}
-                                                    justify={'space-between'}
 
-                                                    borderBottom={'1px solid #ECEDED'}
-                                                    
-                                                    px={'2px'}
-                                                    pb={'4px'}
-                                                    mb={'4px'}
-                                                    w={'100%'}
-                                                    h={'5vh'}
-                                                >
-                                                    <Flex align={'center'} w={'30%'} fontWeight={'bold'} fontSize={'12px'} h={'100%'}>{prescription.medication_name}</Flex>
-                                                    <Flex align={'center'} fontSize={'11px'} w={'50%'} h={'100%'}>{`${prescription.dose}, ${prescription.pill_per_day}`}</Flex>
-                                                    <Flex align={'center'} justify={'center'} w={'20%'} h={'100%'} fontSize={'12px'}>{dateFormatter(prescription.date)}</Flex>
-                                                </Flex>
-                                            })    
-                                            :    
-                                            <Box fontWeight={'bold'}>No Available Prescriptions</Box>
-                                    }
-                                </Stack>
+                            <Box w={'100%'} mt={'8px'} py={'8px'}>
+                                <Box
+                                    fontSize={'16px'}
+                                    fontWeight={'bold'}
+
+                                    mb={'8px'}
+                                >
+                                    Prescriptions
+                                </Box>
+                                <Box
+                                    w={'100%'}
+                                    h={'23vh'}
+                                    overflowY={'scroll'}
+                                >
+                                    <Stack w={'100%'} spacing={2}>
+                                        {
+                                            simplifiedMedicalInfo.prescriptions.length > 0 ?
+                                                simplifiedMedicalInfo.prescriptions.map((prescriptionWithDoctor, index) => {
+                                                    const prescription = prescriptionWithDoctor.detail
+                                                    return <Flex
+                                                        key={`prescription-${index}`}
+                                                        align={'center'}
+                                                        justify={'space-between'}
+
+                                                        borderBottom={'1px solid #ECEDED'}
+                                                        
+                                                        px={'2px'}
+                                                        pb={'4px'}
+                                                        mb={'4px'}
+                                                        w={'100%'}
+                                                        h={'5vh'}
+                                                    >
+                                                        <Flex align={'center'} w={'30%'} fontWeight={'bold'} fontSize={'12px'} h={'100%'}>{prescription.medication_name}</Flex>
+                                                        <Flex align={'center'} fontSize={'11px'} w={'50%'} h={'100%'}>{`${prescription.dose}, ${prescription.pill_per_day}`}</Flex>
+                                                        <Flex align={'center'} justify={'center'} w={'20%'} h={'100%'} fontSize={'12px'}>{dateFormatter(prescription.date)}</Flex>
+                                                    </Flex>
+                                                })    
+                                                :    
+                                                <Box fontWeight={'bold'}>No Available Prescriptions</Box>
+                                        }
+                                    </Stack>
+                                </Box>
+                            </Box>
+
+                            <Box w={'100%'} mt={'8px'} py={'8px'}>
+                                <Box
+                                    fontSize={'16px'}
+                                    fontWeight={'bold'}
+
+                                    mb={'8px'}
+                                >
+                                    Test Results
+                                </Box>
+                                <Box
+                                    w={'100%'}
+                                    h={'23vh'}
+                                    overflowY={'scroll'}
+                                >
+                                    <Stack w={'100%'} spacing={2}>
+                                        <TestResultList data={simplifiedMedicalInfo} width={'90%'} />
+                                    </Stack>
+                                </Box>
                             </Box>
                         </Box>
                     </Box>
@@ -883,7 +910,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                                                         </option>
                                                     })}
                                                 </Select>
-                                                <Button colorScheme={'blue'} ml={'2px'} size={'sm'} onClick={handleAddingDiagnosis}>Add</Button>
+                                                <Button colorScheme={'blue'} ml={'16px'} size={'sm'} onClick={handleAddingDiagnosis}>Add</Button>
                                             </Flex>
                                         </Stack>
                                     </Box>

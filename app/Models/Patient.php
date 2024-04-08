@@ -91,6 +91,10 @@ class Patient extends Authenticatable implements MustVerifyEmail
 
     public function test_doctors(): BelongsToMany
     {
-        return $this->belongsToMany(Doctor::class)->using(Test::class);
+        return $this->belongsToMany(Doctor::class, 'tests')
+            ->using(Test::class)
+            ->as('test_results')
+            ->withPivot('id', 'doctor_id', 'patient_id', 'name', 'date', 'result_url')
+            ->orderByPivot('date', 'asc');
     }
 }

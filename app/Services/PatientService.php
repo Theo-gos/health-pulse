@@ -30,7 +30,7 @@ class PatientService extends BaseService
     public function getMedicalInformationById($patient_id)
     {
         $patients = $this->model->whereIn('id', $patient_id)
-            ->with(['allergies', 'appointed_doctors', 'diagnose_doctors', 'prescribe_doctors', 'appointed_doctors.service'])
+            ->with(['allergies', 'appointed_doctors', 'diagnose_doctors', 'prescribe_doctors', 'appointed_doctors.service', 'test_doctors'])
             ->get()
             ->all();
 
@@ -76,6 +76,17 @@ class PatientService extends BaseService
             } else {
                 $patientMedicalInfos[$patient->id]['prescriptions'] = [];
             }
+
+            if ($patient->test_doctors->count() > 0) {
+                $index = 0;
+                foreach ($patient->test_doctors->all() as $test_doctor) {
+                    $patientMedicalInfos[$patient->id]['tests'][$index]['doctor'] = $test_doctor;
+                    $patientMedicalInfos[$patient->id]['tests'][$index]['detail'] = $test_doctor->test_results;
+                    $index++;
+                }
+            } else {
+                $patientMedicalInfos[$patient->id]['tests'] = [];
+            }
         }
 
         return $patientMedicalInfos;
@@ -117,5 +128,12 @@ class PatientService extends BaseService
         $data['avatar'] = $url;
 
         return $patient->update($data);
+    }
+
+    public function updateLastVisitById($patient_id)
+    {
+        $patient = $this->model->findOrFail($patient_id);
+
+        return $patient->update(['last_visit' => now()]);
     }
 }

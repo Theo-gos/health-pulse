@@ -3,16 +3,32 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Test extends Model
+class Test extends Pivot
 {
     use HasFactory;
+
+    public $incrementing = true;
+
+    protected $table = 'tests';
 
     protected $fillable = [
         'date',
         'result_url',
         'doctor_id',
         'patient_id',
+        'name',
     ];
+
+    public function patient(): BelongsTo
+    {
+        return $this->belongsTo(Patient::class);
+    }
+
+    public function doctor(): BelongsTo
+    {
+        return $this->belongsTo(Doctor::class);
+    }
 }

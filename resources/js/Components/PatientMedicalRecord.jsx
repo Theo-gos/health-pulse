@@ -1,14 +1,15 @@
 import {
     Box,
     Flex,
-    HStack,
     SimpleGrid,
     Stack,
-} from "@chakra-ui/layout"
+} from "@chakra-ui/react"
 import { useEffect, useMemo, useState } from "react"
 import dayjs from "dayjs"
 import _ from "lodash"
 import { CircularProgress } from "@chakra-ui/react"
+import { Link, useForm } from "@inertiajs/react";
+import TestResultList from "./TestResultList"
 
 const today = dayjs().second(0).millisecond(0)
 
@@ -27,6 +28,11 @@ const FILTER = {
 const TAB = {
     GENERAL: 'general',
     PRESCRIPTION: 'prescription',
+}
+
+const STATE = {
+    APPOINTMENTS: 'appointments',
+    TESTS: 'tests',
 }
 
 function isValidDateString(dateString) {
@@ -66,7 +72,10 @@ export default function PatientMedicalRecord({ selectManager, medicalInfo, icd }
     const [tab, setTab] = useState(TAB.GENERAL)
     const [prescriptions, setPrescriptions] = useState({})
     const [pastAppointments, setPastAppointments] = useState([])
+    const [state, setState] = useState(STATE.APPOINTMENTS);
     const [filter, setFilter] = useState(FILTER.DATE)
+    const { get } = useForm()
+
     const { selected } = selectManager
 
     const prescriptionKeys = Object.keys(prescriptions)
@@ -87,6 +96,12 @@ export default function PatientMedicalRecord({ selectManager, medicalInfo, icd }
             setPrescriptions(getPrescriptionsByKey(data.prescriptions, filter))
         }
     }, [filter])
+
+    const handleNoteClick = (id) => {
+        get(route('appointment.note', {appointment: id}))
+    }
+
+    console.log(data);
 
     return (
         !_.isEmpty(data) ? 
@@ -339,105 +354,202 @@ export default function PatientMedicalRecord({ selectManager, medicalInfo, icd }
                                     mt={'24px'}
                                     w={'100%'}
                                 >
-                                    <Box fontWeight={'bold'} ml={'6px'}>Visits history</Box>
-                                    {
-                                        pastAppointments.length > 0 ? 
+                                    <Flex
+                                        w={'99%'}
+                                        ml={'6px'}
+                                        mb={'8px'}
+
+                                        align={'center'}
+                                        justify={'space-between'}
+                                    >
+                                        <Box
+                                            fontWeight={'bold'}
+                                            fontSize={'14px'}
+                                        >
+                                            Visits history
+                                        </Box>
+
+                                        <Flex
+                                            w={'20%'}
+
+                                            align={'center'}
+
+                                            borderRadius={'20px'}
+                                            border={'1px solid #ECEDED'}
+                                        >
                                             <Box
-                                                w={'100%'}
-                                                h={'30vh'}
-                                                p={'4px'}
+                                                w={'50%'}
+                                                h={'100%'}
+                                                p={'2px 4px'}
+
+                                                borderLeftRadius={'20px'}
+                                                _hover={state == STATE.TESTS ? {
+                                                    backgroundColor: '#EAF1FA',
+                                                    color: '#1366DE',
+                                                    cursor: 'pointer',
+                                                } : {
+                                                    cursor: 'default',
+                                                }} 
+                                                bg={state == STATE.APPOINTMENTS ? 'blue.100' : 'white'}
+                                                color={state == STATE.APPOINTMENTS ? '#1366DE' : 'gray'}
+                                                fontWeight={state == STATE.APPOINTMENTS ? 'bold' : ''}
+
+                                                fontSize={'10px'}
+                                                textAlign={'center'}
+
+                                                onClick={() => setState(STATE.APPOINTMENTS)}
                                             >
-                                                <Flex
-                                                    align={'center'}
+                                                Appointments
+                                            </Box>
 
-                                                    fontSize={'13px'}
-                                                    color={'gray'}
-                                                >
-                                                    <Box
-                                                        w={'25%'}
-                                                        p={'8px'}
-                                                    >
-                                                        Date
-                                                    </Box>  
+                                            <Box
+                                                w={'50%'}
+                                                h={'100%'}
+                                                p={'2px 4px'}
 
-                                                    <Box
-                                                        w={'25%'}
-                                                        p={'8px'}
-                                                    >
-                                                        Doctor
-                                                    </Box>  
+                                                borderRightRadius={'20px'}
 
-                                                    <Box
-                                                        w={'31.7%'}
-                                                        p={'8px'}
-                                                    >
-                                                        Specialty
-                                                    </Box>  
-
-                                                    <Box
-                                                        w={'fit-content'}
-                                                        p={'8px'}
-                                                    >
-                                                        Note
-                                                    </Box>  
-                                                </Flex>
+                                                _hover={state == STATE.APPOINTMENTS ? {
+                                                    backgroundColor: '#EAF1FA',
+                                                    color: '#1366DE',
+                                                    cursor: 'pointer',
+                                                } : {
+                                                    cursor: 'default',
+                                                }} 
+                                                bg={state == STATE.TESTS ? 'blue.100' : 'white'}
+                                                color={state == STATE.TESTS ? '#1366DE' : 'gray'}
+                                                fontWeight={state == STATE.TESTS ? 'bold' : ''}
                                                 
+                                                fontSize={'10px'}
+                                                textAlign={'center'}
+
+                                                onClick={() => setState(STATE.TESTS)}
+                                            >
+                                                Tests
+                                            </Box>
+                                        </Flex>
+                                    </Flex>
+
+                                    {
+                                        state === STATE.APPOINTMENTS ? (
+                                            pastAppointments.length > 0 ? 
                                                 <Box
                                                     w={'100%'}
-                                                    h={'90%'}
-                                                    overflowY={'scroll'}
+                                                    h={'30vh'}
+                                                    p={'4px'}
                                                 >
-                                                    <Stack spacing={3}>
-                                                        {pastAppointments.map((appointment, index) => {
-                                                            return <Flex
-                                                                key={`appointment-${index}`}
-                                                                w={'100%'}
-                                                                align={'center'}
-
-                                                                fontSize={'12px'}
-                                                                color={'black'}
-                                                                fontWeight={'bold'}
-                                                            >
-                                                                <Box
-                                                                    w={'25%'}
-                                                                    p={'8px'}
-                                                                    borderBottom={'1px solid #D1D1D3'}
+                                                    <Flex
+                                                        align={'center'}
+    
+                                                        fontSize={'13px'}
+                                                        color={'gray'}
+                                                    >
+                                                        <Box
+                                                            w={'25%'}
+                                                            p={'8px'}
+                                                        >
+                                                            Date
+                                                        </Box>  
+    
+                                                        <Box
+                                                            w={'25%'}
+                                                            p={'8px'}
+                                                        >
+                                                            Doctor
+                                                        </Box>  
+    
+                                                        <Box
+                                                            w={'25%'}
+                                                            p={'8px'}
+                                                        >
+                                                            Specialty
+                                                        </Box>  
+    
+                                                        <Box
+                                                            w={'15%'}
+                                                            textAlign={'center'}
+                                                            p={'8px'}
+                                                        >
+                                                            Note
+                                                        </Box>  
+                                                    </Flex>
+                                                    
+                                                    <Box
+                                                        w={'100%'}
+                                                        h={'90%'}
+                                                        overflowY={'scroll'}
+                                                    >
+                                                        <Stack spacing={3}>
+                                                            {pastAppointments.map((appointment, index) => {
+                                                                return <Flex
+                                                                    key={`appointment-${index}`}
+                                                                    w={'100%'}
+                                                                    align={'center'}
+    
+                                                                    fontSize={'12px'}
+                                                                    color={'black'}
+                                                                    fontWeight={'bold'}
                                                                 >
-                                                                    {appointment.detail.date}
-                                                                </Box>  
+                                                                    <Box
+                                                                        w={'25%'}
+                                                                        p={'8px'}
+                                                                        borderBottom={'1px solid #D1D1D3'}
+                                                                    >
+                                                                        {appointment.detail.date}
+                                                                    </Box>  
+    
+                                                                    <Box
+                                                                        w={'25%'}
+                                                                        p={'8px'}
+                                                                        borderBottom={'1px solid #D1D1D3'}
+                                                                    >
+                                                                        {`Dr. ${appointment.doctor.name}`}
+                                                                    </Box>  
+    
+                                                                    <Box
+                                                                        w={'25%'}
+                                                                        p={'8px'}
+                                                                        borderBottom={'1px solid #D1D1D3'}
+                                                                    >
+                                                                        {`${appointment.doctor.type.charAt(0).toUpperCase()}${appointment.doctor.type.slice(1)}`}
+                                                                    </Box>  
+    
+                                                                    <Box
+                                                                        w={'15%'}
+                                                                        p={'8px'}
+                                                                        borderBottom={'1px solid #D1D1D3'}
+                                                                        textAlign={'center'}
+                                                                        color={'#1366DE'}
 
-                                                                <Box
-                                                                    w={'25%'}
-                                                                    p={'8px'}
-                                                                    borderBottom={'1px solid #D1D1D3'}
-                                                                >
-                                                                    {`Dr. ${appointment.doctor.name}`}
-                                                                </Box>  
+                                                                        _hover={{
+                                                                            color: 'blue',
+                                                                            cursor: 'pointer',
+                                                                        }}
 
-                                                                <Box
-                                                                    w={'25%'}
-                                                                    p={'8px'}
-                                                                    borderBottom={'1px solid #D1D1D3'}
-                                                                >
-                                                                    {`${appointment.doctor.type.charAt(0).toUpperCase()}${appointment.doctor.type.slice(1)}`}
-                                                                </Box>  
-
-                                                                <Box
-                                                                    w={'150px'}
-                                                                    p={'8px'}
-                                                                    borderBottom={'1px solid #D1D1D3'}
-                                                                    textAlign={'center'}
-                                                                    color={'#1366DE'}
-                                                                >
-                                                                    Link
-                                                                </Box>  
-                                                            </Flex>
-                                                        })}
-                                                    </Stack>
+                                                                        onClick={() => handleNoteClick(appointment.detail.id)}
+                                                                    >
+                                                                        Link
+                                                                    </Box>  
+                                                                </Flex>
+                                                            })}
+                                                        </Stack>
+                                                    </Box>
                                                 </Box>
-                                            </Box>
-                                        :
-                                            <Box>No past appointments</Box>
+                                            :
+                                                <Box>No past appointments</Box>
+                                        ) : (
+                                                <Stack
+                                                    w={'100%'}
+                                                    h={'30vh'}
+
+                                                    spacing={3}
+
+                                                    p={'4px'}
+                                                    overflowY={'scroll'}   
+                                                >
+                                                    <TestResultList data={data}/>
+                                                </Stack>
+                                        )
                                     }
                                 </Box>
                             </Stack>
