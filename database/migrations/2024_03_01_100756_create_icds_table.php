@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('icd_name');
             $table->string('severity');
             $table->string('color');
+            $table->timestamps();
             $table->primary('icd_code');
         });
     }
