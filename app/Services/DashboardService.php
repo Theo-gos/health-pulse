@@ -17,11 +17,14 @@ class DashboardService
 
     private $patientService;
 
+    private $testResultService;
+
     public function __construct(
         AppointmentService $appointmentService,
         ScheduleService $scheduleService,
         DiagnosisService $diagnosisService,
         PatientService $patientService,
+        TestResultService $testResultService,
     ) {
         date_default_timezone_set($this->timezone);
 
@@ -29,6 +32,7 @@ class DashboardService
         $this->diagnosisService = $diagnosisService;
         $this->scheduleService = $scheduleService;
         $this->patientService = $patientService;
+        $this->testResultService = $testResultService;
     }
 
     public function index()
@@ -36,9 +40,15 @@ class DashboardService
         $user = Auth::user();
         $first_day_this_month = date('Y-m-01');
         $last_day_this_month = date('Y-m-t');
+        $current_diagnoses = [];
+        $current_tests = [];
 
         $appointments = $this->appointmentService->getAllByDate(date('Y-m-d'), $user->id, null)->toArray();
         $current_appointment = $this->appointmentService->getByHourAndDate(date('H:i:s'), date('Y-m-d'), $user->id, null);
+        if ($current_appointment) {
+            $current_diagnoses = $this->diagnosisService->getDiagnosesByPatientId($current_appointment->all()[0]->patient_id);
+            $current_tests = $this->testResultService->getTestResultsByPatientId($current_appointment->all()[0]->patient_id);
+        }
 
         $schedule = $this->scheduleService->getAllBetweenDates($first_day_this_month, $last_day_this_month);
 
@@ -51,6 +61,8 @@ class DashboardService
         return [
             'appointments' => $appointments,
             'current_appointment' => $current_appointment,
+            'current_diagnoses' => $current_diagnoses,
+            'current_tests' => $current_tests,
             'schedules' => $schedule,
             'diagnosisStatistic' => $diagnosisStatistic,
             'commonIllnessStatistic' => $commonIllnessStatistic,

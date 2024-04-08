@@ -32,6 +32,13 @@ class TestResultService extends BaseService
             $diagnosis['icd_name'] = $icd[0]->icd_name;
         }
 
+        $payload = [
+            'doctor_id' => $doctor->id,
+            'patient_id' => $patient->id,
+            'date' => $data['date'],
+            'name' => $patient->name.'_'.$data['date'].'.pdf',
+        ];
+
         $pdf = Pdf::loadView('Test.test_result', [
             'doctor' => $doctor,
             'patient' => $patient,
@@ -44,18 +51,30 @@ class TestResultService extends BaseService
             'folder' => 'test_results',
         ])->getSecurePath();
         unlink($tempPdfPath);
-        dd($result);
 
-        // $pdf->save(public_path() . '/pdf/' . $data['date'] . '_' . $patient['name'] . '_test-result.pdf');
-        // dd(public_path());
+        $payload['result_url'] = $result;
 
-        // $pdf = Pdf::view('Test.test_result', [
-        //     'doctor' => $doctor,
-        //     'patient' => $patient,
-        //     'data' => $data,
-        // ])
-        //     ->format('a4')
-        //     ->name($data['date'] . '_' . $patient['name'] . '_test-result.pdf');
-        return $pdf;
+        $test = $this->model->create($payload);
+
+        return $test;
+    }
+
+    public function getTestResultsByPatientId($patientId)
+    {
+        $tests = $this->model->where('patient_id', $patientId)->with('doctor')->get()->all();
+        $testsList = [];
+
+        if ($tests) {
+            $index = 0;
+            foreach ($tests as $test) {
+                $testsList['tests'][$index]['doctor'] = $test->doctor;
+                $testsList['tests'][$index]['detail'] = $test;
+                $index++;
+            }
+        } else {
+            $testsList['tests'] = [];
+        }
+
+        return $testsList;
     }
 }

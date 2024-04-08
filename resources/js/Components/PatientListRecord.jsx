@@ -7,6 +7,7 @@ import {
 import _ from "lodash";
 import dayjs from "dayjs";
 import { useMemo } from "react";
+import TestResultList from "@/Components/TestResultList"
 
 const today = dayjs()
 const icdObj = {}
@@ -215,6 +216,25 @@ export default function PatientListRecord({ medicalInfo, icd }) {
                             <Box pl={'8px'}>No Available Diagnoses</Box>
                         }
                     </SimpleGrid>
+                </Box>
+
+                
+                <Box
+                    w={'100%'}
+                    h={'28vh'}
+                >
+                    <Box fontWeight={'bold'} ml={'6px'}>Test Results</Box>
+                    <Stack
+                        w={'100%'}
+                        h={'90%'}
+                        mt={'18px'}
+
+                        spacing={2}
+
+                        overflowY={'scroll'}
+                    >
+                        <TestResultList data={medicalInfo} width={'70%'} />
+                    </Stack>
                 </Box>
             </Stack>
         </Box>

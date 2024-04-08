@@ -61,8 +61,15 @@ class AppointmentController extends Controller
     public function storeAppointmentNoteData(AppointmentNoteRequest $request, Appointment $appointment)
     {
         $user = Auth::user();
-        // dd($request->all());
-        // $this->testResultService->storeTestResult($user, $request->all());
+
+        $isUpdated = $this->patientService->updateLastVisitById($request->patient_id);
+
+        if (! $isUpdated) {
+            return redirect()->back()->with('message', [
+                'message' => 'Failed to update patient last visit',
+                'type' => 'error',
+            ]);
+        }
 
         if ($request->diagnoses) {
             $isStored = $this->appointmentService->storeDiagnoses($user->id, $request->patient_id, $request->diagnoses);
@@ -88,14 +95,23 @@ class AppointmentController extends Controller
 
         $note = $this->appointmentService->storeAppointmentNote($request->only('appointment_id', 'main_complaint', 'objective_note', 'tests', 'files', 'signature'));
 
-        if ($note) {
+        if (! $note) {
+            return redirect()->back()->with('message', [
+                'message' => 'Failed to store appointment note',
+                'type' => 'error',
+            ]);
+        }
+
+        $test = $this->testResultService->storeTestResult($user, $request->all());
+
+        if ($test) {
             return redirect(route('doctor.appointments'))->with('message', [
                 'message' => 'Stored to database successfully',
                 'type' => 'success',
             ]);
         } else {
             return redirect()->back()->with('message', [
-                'message' => 'Failed to store',
+                'message' => 'Failed to store test result',
                 'type' => 'error',
             ]);
         }

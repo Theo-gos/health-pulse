@@ -10,6 +10,8 @@ import DoctorLayout from '@/Layouts/DoctorLayout'
 export default function Dashboard({
   appointments,
   current_appointment,
+  current_diagnoses,
+  current_tests,
   schedules,
   diagnosisStatistic,
   commonIllnessStatistic,
@@ -93,7 +95,12 @@ export default function Dashboard({
           <DashboardSchedule width={'55vw'} height={'43vh'} schedule={dashboardSchedule} navigation={true}/>
         </GridItem>
         <GridItem area={'appointment'}>
-          <DashboardAppointments appointments={dashboardAppointments.list} current_appointment={dashboardAppointments.current} />
+          <DashboardAppointments
+            appointments={dashboardAppointments.list}
+            current_appointment={dashboardAppointments.current}
+            current_diagnoses={current_diagnoses}
+            current_tests={current_tests}
+          />
         </GridItem>
         <GridItem area={'aside'}>
           <DashboardAside pieChartData={pieChartData} areaChartData={areaChartData} commonIllnessStatistic={commonIllnessStatistic} />

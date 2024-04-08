@@ -89,6 +89,10 @@ class Doctor extends Authenticatable
 
     public function tested_patients(): BelongsToMany
     {
-        return $this->belongsToMany(Patient::class)->using(Test::class);
+        return $this->belongsToMany(Patient::class, 'tests')
+            ->using(Test::class)
+            ->as('test_results')
+            ->withPivot('id', 'doctor_id', 'patient_id', 'name', 'date', 'result_url')
+            ->orderByPivot('date', 'asc');
     }
 }

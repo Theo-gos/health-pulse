@@ -31,4 +31,9 @@ class DiagnosisService extends BaseService
             ->get()
             ->toArray();
     }
+
+    public function getDiagnosesByPatientId($patientId)
+    {
+        return $this->model->where('patient_id', $patientId)->with('icd')->get()->all();
+    }
 }

@@ -6,6 +6,7 @@ import {
     Grid,
     GridItem,
     Text,
+    Stack,
     calc,
 } from "@chakra-ui/react";
 import { BsArrowUpRight, BsCalendar2Event } from "react-icons/bs";
@@ -14,6 +15,7 @@ import { Link, useForm } from "@inertiajs/react";
 import dayjs from "dayjs"
 import { useEffect, useState } from "react";
 import _ from 'lodash';
+import TestResultList from "./TestResultList"
 
 // Using the duration (time_end - time_start) to calculate the rowspan
 // Using the interval between 2 appointments (time_start - time_end) to calculate the rowspan
@@ -42,6 +44,11 @@ const getSpan = (start, end) => {
     const minutes = Math.floor(diff / 1000 / 60)
 
     return hours * 4 + rowSpanExchange(minutes)
+}
+
+const dateFormatter = (date) => {
+    const dateArray = date.split('-')
+    return `${dateArray[2]}.${dateArray[1]}.${dateArray[0]}`
 }
 
 const renderItem = (data, initialTime = '8:00:00') => {
@@ -121,12 +128,13 @@ const renderItem = (data, initialTime = '8:00:00') => {
 }
 
 
-export default function DashboardAppointments({ appointments, current_appointment }) {
+export default function DashboardAppointments({ appointments, current_appointment, current_diagnoses, current_tests }) {
     const [date, setDate] = useState(dayjs())
     const [data, setData] = useState([])
     const [curData, setCurData] = useState({})
     const { get, processing } = useForm()
 
+    console.log(current_tests);
 
     useEffect(() => {
         setData(appointments)
@@ -260,9 +268,10 @@ export default function DashboardAppointments({ appointments, current_appointmen
                                                         "tests tests_content"`}
                                         gridTemplateRows={'auto auto 1fr'}
                                         gridTemplateColumns={'20% 1fr'}
-                                        gap='1'
+                                        gap={3}
                                         
-                                        h='auto'
+                                        h='100%'
+                                        overflowY={'scroll'}
                                     >
                                         <GridItem area={'visit'}>
                                             Last visit
@@ -271,13 +280,7 @@ export default function DashboardAppointments({ appointments, current_appointmen
                                             <Flex
                                                 justify={'space-between'}
                                             >
-                                                <Text>16.01.2024</Text>
-                                                <Link>
-                                                    <Flex color={'#1366DE'} fontSize={'12px'} align={'center'}>
-                                                        <Text mr={'4px'}>Medical Record</Text>
-                                                        <BsArrowUpRight />
-                                                    </Flex>
-                                                </Link>
+                                                <Text>{curData.patient.last_visit}</Text>
                                             </Flex>
                                         </GridItem>
 
@@ -285,16 +288,60 @@ export default function DashboardAppointments({ appointments, current_appointmen
                                             Diagnoses
                                         </GridItem>
                                         <GridItem color={'#74777A'} area={'diagnoses_content'}>
-                                            ---
+                                            <Stack
+                                                w={'100%'}
+                                                spacing={2}
+                                            >
+                                                {current_diagnoses.length > 0 ? 
+                                                    current_diagnoses.map((item, index) => (
+                                                        <Box
+                                                            key={index}
+                                                            h={'60px'}
+                                                            p={'12px'}
+
+                                                            fontSize={'11px'}
+
+                                                            bg={'white'}
+                                                            
+                                                            border={'1px solid #EEEFF1'}
+                                                            borderRadius={'xl'}
+                                                        >
+                                                            <Flex
+                                                                align={'center'}
+                                                                justify={'space-between'}
+                                                                p={'2px 6px'}
+                                                                mb={'4px'}
+
+                                                                fontSize={'11px'}
+                                                            >
+                                                                <Flex
+                                                                    w={'70%'}
+
+                                                                    align={'center'}
+                                                                >
+                                                                    <Box w={'20%'} textAlign={'center'} bg={item.icd.color} p={'2px 6px'} borderRadius={'md'} color={'white'}>{item.icd_code}</Box>
+                                                                    <Box w={'80%'} p={'8px'} fontWeight={'bold'}>{item.icd.icd_name}</Box>
+                                                                </Flex>
+                                                                <Box fontSize={'13px'}>{dateFormatter(item.date)}</Box>
+                                                            </Flex>
+                                                        </Box>
+                                                    ))
+                                                    :
+                                                    <Box pl={'8px'}>No Available Diagnoses</Box>
+                                                }
+                                            </Stack>
                                         </GridItem>
 
                                         <GridItem area={'tests'}>
                                             Tests
                                         </GridItem>
                                         <GridItem color={'#74777A'} area={'tests_content'}>
-                                            <Box border={'1px solid #818EA0'} maxW={'150px'} borderRadius={'lg'} p={'2px'} mb={'2px'}>File 1</Box>
-                                            <Box border={'1px solid #818EA0'} maxW={'150px'} borderRadius={'lg'} p={'2px'} mb={'2px'}>File 2</Box>
-                                            <Box border={'1px solid #818EA0'} maxW={'150px'} borderRadius={'lg'} p={'2px'} mb={'2px'}>File 3</Box>
+                                            <Stack
+                                                w={'100%'}
+                                                spacing={2}
+                                            >
+                                                <TestResultList data={current_tests} width={'100%'} />
+                                            </Stack>
                                         </GridItem>
                                     </Grid>
                                 </Box>
