@@ -54,8 +54,6 @@ export default function PatientLayout({ children, state, modalManager = null }) 
     const { patient } = auth
     const toast = useToast()
 
-    console.log(messageData);
-
     useEffect(() => {
         setMessageData(message)
     }, [message])

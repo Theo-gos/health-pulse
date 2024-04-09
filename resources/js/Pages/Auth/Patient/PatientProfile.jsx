@@ -53,7 +53,6 @@ export default function PatientProfile() {
         })
     }
 
-    console.log(data.avatar);
     return (
         <PatientLayout state={'profile'}>
             <Box mt={'80px'}>

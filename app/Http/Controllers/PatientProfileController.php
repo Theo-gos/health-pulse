@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileAvatarUpdateRequest;
 use App\Models\Patient;
 use App\Services\PatientService;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class PatientProfileController extends Controller
@@ -18,6 +19,10 @@ class PatientProfileController extends Controller
 
     public function index()
     {
+        if (! Auth::guard('patient')->check()) {
+            return redirect()->route('home');
+        }
+
         return Inertia::render('Auth/Patient/PatientProfile');
     }
 

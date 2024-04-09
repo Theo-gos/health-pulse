@@ -34,7 +34,6 @@ export default function DoctorLayout({ children, state }) {
 
         const channel = pusher.subscribe(`appointment-booking-channel.${auth.doctor.id}`);
         channel.bind('appointment-booked-event', function(e) {
-            console.log('Received data:', e.data.message);
             toast({
                 title: `Info`,
                 description: e.data.message,

@@ -101,8 +101,6 @@ export default function PatientMedicalRecord({ selectManager, medicalInfo, icd }
         get(route('appointment.note', {appointment: id}))
     }
 
-    console.log(data);
-
     return (
         !_.isEmpty(data) ? 
             <Box

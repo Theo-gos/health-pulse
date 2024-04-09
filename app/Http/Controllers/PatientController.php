@@ -21,6 +21,10 @@ class PatientController extends Controller
 
     public function index()
     {
+        if (! Auth::guard('patient')->check()) {
+            return redirect()->route('home');
+        }
+
         $patient = Auth::guard('patient')->user();
         $medicalInfo = $this->patientService->getMedicalInformationById([$patient->id]);
         $icd = $this->icdService->getAll();
@@ -33,6 +37,10 @@ class PatientController extends Controller
 
     public function show(string $state)
     {
+        if (! Auth::guard('patient')->check()) {
+            return redirect()->route('home');
+        }
+
         return redirect()->route('patient.lists')->with('data', $state);
     }
 }

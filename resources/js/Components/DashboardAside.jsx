@@ -11,7 +11,6 @@ import DashboardAreaChart from "./DashboardAreachart";
 import { BsDropletFill, BsFillHospitalFill, BsFillShieldFill, BsFileEarmarkPlusFill } from "react-icons/bs";
 
 export default function DashboardAside({ pieChartData, areaChartData, commonIllnessStatistic }) {
-    console.log(commonIllnessStatistic);
     return (
         <Flex
             borderRadius={'xl'}

@@ -277,8 +277,6 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
         setData('tests', data.tests)
     }
 
-    console.log(data);
-
     const handleSubmit = (e) => {
         e.preventDefault()
 
