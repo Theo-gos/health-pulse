@@ -121,6 +121,18 @@ class AppointmentService extends BaseService
         return $this->appointmentNoteService->getByAppointmentId($appointment_id);
     }
 
+    public function getAllToday()
+    {
+        $today = date('Y-m-d');
+
+        $appointments = $this->model->where('date', $today)
+            ->orderBy('start_time', 'asc')
+            ->with(['patient', 'doctor'])
+            ->get();
+
+        return $appointments->all();
+    }
+
     public function storeAppointmentNote($data)
     {
         $payload = $data;

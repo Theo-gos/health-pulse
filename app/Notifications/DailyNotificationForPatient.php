@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AppointmentBookedForPatient extends Notification implements ShouldQueue
+class DailyNotificationForPatient extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -45,9 +45,8 @@ class AppointmentBookedForPatient extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->greeting('Hello from Health Pulse!')
-            ->lineIf($this->appointment, "You have booked an appointment with Dr. {$this->doctor->name}.")
-            ->lineIf($this->appointment, "The appointment is on {$this->appointment->date}.")
-            ->lineIf($this->appointment, "Starting from {$this->appointment->start_time}.")
+            ->lineIf($this->appointment, "Today, you have an appointment with Dr. {$this->doctor->name}.")
+            ->lineIf($this->appointment, "The appointment starts at {$this->appointment->start_time}.")
             ->line('Thank you for using our service!');
     }
 

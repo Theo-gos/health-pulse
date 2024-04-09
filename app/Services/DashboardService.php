@@ -45,7 +45,7 @@ class DashboardService
 
         $appointments = $this->appointmentService->getAllByDate(date('Y-m-d'), $user->id, null)->toArray();
         $current_appointment = $this->appointmentService->getByHourAndDate(date('H:i:s'), date('Y-m-d'), $user->id, null);
-        if ($current_appointment) {
+        if ($current_appointment->all()) {
             $current_diagnoses = $this->diagnosisService->getDiagnosesByPatientId($current_appointment->all()[0]->patient_id);
             $current_tests = $this->testResultService->getTestResultsByPatientId($current_appointment->all()[0]->patient_id);
         }
