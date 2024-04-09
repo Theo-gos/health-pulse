@@ -56,11 +56,6 @@ class Patient extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Allergy::class);
     }
 
-    public function insurances(): HasMany
-    {
-        return $this->hasMany(Insurance::class);
-    }
-
     public function appointed_doctors(): BelongsToMany
     {
         return $this->belongsToMany(Doctor::class, 'appointments')
