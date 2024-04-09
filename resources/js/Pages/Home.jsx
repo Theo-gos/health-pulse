@@ -19,7 +19,6 @@ export default function Home() {
     const [windowSize, setWindowSize] = useState(window.innerWidth)
     const { get } = useForm()
     const { auth } = usePage().props
-    useDisclosure
     const { isOpen, onOpen, onClose } = useDisclosure()
     const modalManager = {
         isOpen: isOpen,
@@ -28,8 +27,6 @@ export default function Home() {
     }
 
     const patient = auth.patient
-
-    console.log(patient);
 
     const bookingHandler = () => {
         if (patient) {

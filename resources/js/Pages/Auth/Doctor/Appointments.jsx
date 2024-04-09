@@ -48,8 +48,6 @@ export default function Appointments({appointments}) {
     const { get, processing } = useForm()
     const { flash, message } = usePage().props
 
-    console.log(data);
-
     useEffect(() => {
         const firstDayOfWeek = dayObj.format('YYYY-MM-DD')
         const lastDayOfWeek = dayObj.add(6, 'day').format('YYYY-MM-DD')
@@ -73,10 +71,6 @@ export default function Appointments({appointments}) {
 
     const handleNext = () => { 
         setDayObj(dayObj.add(1, 'week'))
-    }
-
-    if (message) {
-        console.log(message);
     }
 
     return (

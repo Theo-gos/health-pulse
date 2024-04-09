@@ -133,9 +133,7 @@ export default function DashboardAppointments({ appointments, current_appointmen
     const [data, setData] = useState([])
     const [curData, setCurData] = useState({})
     const { get, processing } = useForm()
-
-    console.log(current_tests);
-
+    
     useEffect(() => {
         setData(appointments)
 

@@ -42,11 +42,6 @@ export default function ScheduleForm({ modeManager, idManager, editData }) {
     const { changeId, id } = idManager
 
     const { message } = usePage().props
-    
-    if (message) {
-        console.log(message)
-        // changeId(0)
-    }
 
     useEffect(() => {
         if (!_.isEmpty(editData)) {

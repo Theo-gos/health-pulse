@@ -142,9 +142,7 @@ export default function ScheduleAside({ idManager, asideData }) {
             setData(asideData)
         }
     }, [asideData])
-
-    console.log(data);
-
+    
     return (
         <Box
             border={'2px solid #F0F0F1'}
