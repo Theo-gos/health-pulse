@@ -17,6 +17,11 @@ class Allergy extends Model
         'severity',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class);

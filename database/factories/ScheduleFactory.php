@@ -17,11 +17,12 @@ class ScheduleFactory extends Factory
     public function definition(): array
     {
         return [
-            'task' => fake()->title(),
+            'doctor_id' => 71,
+            'task' => 'Some task',
             'location' => 'North Office, floor 1, room C206',
-            'date' => fake()->dateTimeThisMonth(),
-            'end_time' => fake()->time(),
-            'start_time' => fake()->time(),
+            'date' => '2024-04-01',
+            'end_time' => '09:00:00',
+            'start_time' => '08:00:00',
         ];
     }
 }
