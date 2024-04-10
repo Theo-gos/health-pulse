@@ -83,7 +83,7 @@ class AppointmentService extends BaseService
     }
 
     // Get the current ongoing appointment of the day
-    public function getByHourAndDate(string $hour, string $date, ?int $doctor_id, ?int $patient_id)
+    public function getOngoingAppointment(string $hour, string $date, ?int $doctor_id, ?int $patient_id)
     {
         $query_info = $this->roleCheck($doctor_id, $patient_id);
 
@@ -106,6 +106,22 @@ class AppointmentService extends BaseService
         $last_day_this_week = date('Y-m-d', strtotime('sunday this week'));
 
         return $this->getAllBetweenDates($first_day_this_week, $last_day_this_week, $doctor_id, null);
+    }
+
+    public function getNextBookedAppointmentFromHour(string $hour, string $date, ?int $doctor_id, ?int $patient_id)
+    {
+        $query_info = $this->roleCheck($doctor_id, $patient_id);
+
+        $appointment = $this->model->where($query_info['query_string'], $query_info['query_param'])
+            ->select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
+            ->where('date', $date)
+            ->where('start_time', '>=', $hour)
+            ->orderBy('start_time', 'asc')
+            ->limit(1)
+            ->with('patient')
+            ->get();
+
+        return $appointment;
     }
 
     public function getAllByDoctorId(int $doctor_id)

@@ -44,7 +44,7 @@ class DashboardService
         $current_tests = [];
 
         $appointments = $this->appointmentService->getAllByDate(date('Y-m-d'), $user->id, null)->toArray();
-        $current_appointment = $this->appointmentService->getByHourAndDate(date('H:i:s'), date('Y-m-d'), $user->id, null);
+        $current_appointment = $this->appointmentService->getOngoingAppointment(date('H:i:s'), date('Y-m-d'), $user->id, null);
         if ($current_appointment->all()) {
             $current_diagnoses = $this->diagnosisService->getDiagnosesByPatientId($current_appointment->all()[0]->patient_id);
             $current_tests = $this->testResultService->getTestResultsByPatientId($current_appointment->all()[0]->patient_id);
@@ -75,7 +75,7 @@ class DashboardService
     {
         $user = Auth::user();
         $appointments = $this->appointmentService->getAllByDate($date, $user->id, null)->toArray();
-        $current_appointment = $this->appointmentService->getByHourAndDate(date('h:i:s'), date('Y-m-d'), $user->id, null);
+        $current_appointment = $this->appointmentService->getOngoingAppointment(date('h:i:s'), date('Y-m-d'), $user->id, null);
 
         return [
             'list' => $appointments,
