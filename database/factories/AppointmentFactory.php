@@ -16,12 +16,14 @@ class AppointmentFactory extends Factory
      */
     public function definition(): array
     {
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+
         return [
             'doctor_id' => 71,
             'patient_id' => 1,
-            'date' => '2024-03-22',
-            'end_time' => '08:00:00',
-            'start_time' => '09:00:00',
+            'date' => date('Y-m-d'),
+            'end_time' => '09:00:00',
+            'start_time' => '08:00:00',
         ];
     }
 }

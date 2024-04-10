@@ -40,6 +40,8 @@ class Patient extends Authenticatable implements MustVerifyEmail
      */
     protected $hidden = [
         'password',
+        'created_at',
+        'updated_at',
     ];
 
     /**

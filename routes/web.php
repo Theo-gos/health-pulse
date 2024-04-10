@@ -57,7 +57,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('appointment/note/{appointment}', [AppointmentController::class, 'showAppointmentNote'])->name('appointment.note');
     Route::post('appointment/note/{appointment}', [AppointmentController::class, 'storeAppointmentNoteData']);
     Route::get('appointment/{date_start}/{date_end}', [AppointmentController::class, 'show'])->name('appointment.show');
-    Route::get('appointment/date/{date}', [AppointmentController::class, 'getAllByDate'])->name('appointment.date');
 
     // Schedule
     Route::get('/doctor/schedule', [ScheduleController::class, 'index'])->name('doctor.schedule');
