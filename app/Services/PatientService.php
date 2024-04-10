@@ -101,7 +101,8 @@ class PatientService extends BaseService
             : (date('Y') - $birthDate[0]));
 
         $name = $data['first_name'].' '.$data['last_name'];
-        $this->model->create([
+
+        return $this->model->create([
             'name' => $name,
             'address' => $data['address'],
             'phone' => $data['phone'],

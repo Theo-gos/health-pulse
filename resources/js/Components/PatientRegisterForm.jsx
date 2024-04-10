@@ -26,13 +26,15 @@ import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 
 export default function PatientRegisterForm({formManager, isLoginManager}) {
-    const [show, setShow] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [phoneValue, setPhoneValue] = useState()
 
     const { data, setData, errors, setError, processing, handleSubmit } = formManager
     const { setIsLogin } = isLoginManager
     
-    const handleClick = () => setShow(!show)
+    const handleClickPassword = () => setShowPassword(!showPassword)
+    const handleClickConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword)
 
     useEffect(() => {
         setData('phone', phoneValue)
@@ -194,7 +196,7 @@ export default function PatientRegisterForm({formManager, isLoginManager}) {
                                 id='password'
                                 name='password'
                                 variant='outline'
-                                type={show ? 'text' : 'password'}
+                                type={showPassword ? 'text' : 'password'}
                                 placeholder='Enter password'
                                 borderColor='gray.400'
                                 value={data.password}
@@ -204,8 +206,8 @@ export default function PatientRegisterForm({formManager, isLoginManager}) {
                                 }}
                             />
                             <InputRightElement>
-                                <Button h='1.75rem' size='sm' onClick={handleClick}>
-                                    {show ? <ViewIcon /> : <ViewOffIcon />}
+                                <Button h='1.75rem' size='sm' onClick={handleClickPassword}>
+                                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                                 </Button>
                             </InputRightElement>
                         </InputGroup>
@@ -221,7 +223,7 @@ export default function PatientRegisterForm({formManager, isLoginManager}) {
                                 id='confirm_password'
                                 name='confirm_password'
                                 variant='outline'
-                                type={show ? 'text' : 'password'}
+                                type={showConfirmPassword ? 'text' : 'password'}
                                 placeholder='Re-enter password'
                                 borderColor='gray.400'
                                 value={data.confirm_password}
@@ -231,8 +233,8 @@ export default function PatientRegisterForm({formManager, isLoginManager}) {
                                 }}
                             />
                             <InputRightElement>
-                                <Button h='1.75rem' size='sm' onClick={handleClick}>
-                                    {show ? <ViewIcon /> : <ViewOffIcon />}
+                                <Button h='1.75rem' size='sm' onClick={handleClickConfirmPassword}>
+                                    {showConfirmPassword ? <ViewIcon /> : <ViewOffIcon />}
                                 </Button>
                             </InputRightElement>
                         </InputGroup>

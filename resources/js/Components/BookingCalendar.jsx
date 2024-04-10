@@ -253,12 +253,14 @@ export default function BookingCalendar({width, height, dateManager, dataManager
                                     color={selected == index ? '#1366DE' : 'black'}
 
                                     onClick={() => {
-                                        dataManager.changeData('time', {
-                                            start_time: item.start_time,
-                                            end_time: item.end_time,
-                                        })
-                                        dataManager.setError('time', '')
-                                        setSelected(index)
+                                        if (item.state == 'free') {
+                                            dataManager.changeData('time', {
+                                                start_time: item.start_time,
+                                                end_time: item.end_time,
+                                            })
+                                            dataManager.setError('time', '')
+                                            setSelected(index)
+                                        }
                                     }}
 
                                     style={
@@ -268,7 +270,7 @@ export default function BookingCalendar({width, height, dateManager, dataManager
                                             }
                                         :
                                             {
-                                                cursor: 'default'
+                                                cursor: 'not-allowed'
                                             }
                                     }
 

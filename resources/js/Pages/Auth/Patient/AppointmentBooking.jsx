@@ -15,7 +15,7 @@ import ServiceCard from "../../../Components/ServiceCard";
 import AppointmentBookingContent from "@/Components/AppointmentBookingContent";
 
 export default function AppointmentBooking({bookingData}) {
-    const { post, data, setData, errors, setError } = useForm({
+    const { post, data, setData, errors, setError, processing } = useForm({
         service: 0,
         doctor: 0,
         date: '',
@@ -27,6 +27,7 @@ export default function AppointmentBooking({bookingData}) {
         errors: errors,
         setError: setError,
         post: post,
+        processing: processing,
     }
 
     const [view, setView] = useState('Service')
