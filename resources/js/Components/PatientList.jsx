@@ -26,6 +26,7 @@ const getPatientData = (data, user) => {
     let minDiff = Number.MAX_SAFE_INTEGER;
     patientData.patientId = data.patient.id
     patientData.name = data.patient.name
+    patientData.age = data.patient.age
     if (data.appointments) {
         const foundItem = data.appointments.reduce((accumulator, currentItem) => {
             const appointmentDate = dayjs(currentItem.detail.date).second(0).millisecond(0)
@@ -183,7 +184,7 @@ export default function PatientList({ selectManager, medicalInfo }) {
                         filteredData.map((item) => {
                             const patientData = getPatientData(item, auth.doctor)
                             if (patientData) {
-                                const { patientId, name, date, startTime, endTime } = patientData
+                                const { patientId, name, age, date, startTime, endTime } = patientData
                                 const appointmentTime = getAppointmentTime(date, startTime)
                                 return (
                                     <Box
@@ -206,7 +207,7 @@ export default function PatientList({ selectManager, medicalInfo }) {
     
                                         fontSize={'14px'}
                                     >
-                                        <Box fontWeight={'bold'}>{name}</Box>
+                                        <Box fontWeight={'bold'}>{`${name}, ${age} years old`}</Box>
                                         {appointmentTime.diff(today) < 0 ? 
                                             <Box fontSize={'12px'} fontWeight={'bold'} mt={'4px'}>Last visit:</Box>
                                         :
