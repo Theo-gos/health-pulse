@@ -101,7 +101,8 @@ class PatientService extends BaseService
             : (date('Y') - $birthDate[0]));
 
         $name = $data['first_name'].' '.$data['last_name'];
-        $this->model->create([
+
+        return $this->model->create([
             'name' => $name,
             'address' => $data['address'],
             'phone' => $data['phone'],
@@ -115,10 +116,24 @@ class PatientService extends BaseService
 
     public function getPatientCountBasedOnAgeAndGender($gender = 'M')
     {
-        return $this->generateAgeGroupCounts()
+        $ageGroupCount = $this->generateAgeGroupCounts()
             ->where('sex', '=', $gender)
             ->get()
             ->toArray();
+        if ($ageGroupCount[0]['14-17'] !== null) {
+            return $ageGroupCount;
+        } else {
+            return [[
+                '14-17' => '0',
+                '18-24' => '0',
+                '25-34' => '0',
+                '35-44' => '0',
+                '45-54' => '0',
+                '55-64' => '0',
+                '65-74' => '0',
+                '75-90' => '0',
+            ]];
+        }
     }
 
     public function updateAvatarForPatient(Patient $patient, $data)

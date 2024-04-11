@@ -121,7 +121,7 @@ export default function Login() {
                     </Flex> */}
                     <Button
                         type='submit'
-                        disabled={processing}
+                        isLoading={processing}
                         bg={'blue.400'}
                         color={'white'}
                         w={'25%'}

@@ -243,7 +243,7 @@ export default function AppointmentBookingContent({ data, duration, bookedAppoin
                             <Button variant='ghost' mr={3} onClick={reset}>
                             Close
                             </Button>
-                            <Button type={'submit'} colorScheme='blue'>Book now</Button>
+                            <Button type={'submit'} isDisabled={_.isEmpty(dataManager.data.time)} isLoading={dataManager.processing} colorScheme='blue'>Book now</Button>
                         </ModalFooter>
                     </form>
                 </ModalContent>

@@ -12,6 +12,11 @@ class Icd extends Model
 
     protected $table = 'icds';
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     public function diagnoses(): HasMany
     {
         return $this->hasMany(Diagnosis::class, 'icd_code', 'icd_code');
