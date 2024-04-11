@@ -712,6 +712,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                                         {testKey.length > 0 ? 
                                             testKey.map((key, index) => {
                                                 return <Flex
+                                                    key={key}
                                                     w={'100%'}
                                                     h={'100%'}
         
