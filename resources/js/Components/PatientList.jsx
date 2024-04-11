@@ -152,6 +152,8 @@ export default function PatientList({ selectManager, medicalInfo, paginator }) {
     
     const data = Object.values(medicalInfo)
 
+    console.log(paginator);
+
     const handleSearch = (query) => {
         formData[filter] = query
         get(route('doctor.records'))
