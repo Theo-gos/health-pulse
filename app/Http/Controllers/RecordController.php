@@ -32,9 +32,15 @@ class RecordController extends Controller
     public function index(Request $request)
     {
         $doctor_id = Auth::user()->id;
+        $medicalInfosAndPaginator = [];
 
         $patients = $this->doctorService->getAllAppointedPatientsIdForTodayByDoctorId($doctor_id);
-        $medicalInfosAndPaginator = $this->patientService->getMedicalInformationById($patients, $request);
+        if ($request->query('name') || $request->query('age')) {
+            $medicalInfosAndPaginator = $this->patientService->getMedicalInformationById($patients, $request);
+        } else {
+            $medicalInfosAndPaginator = $this->patientService->getMedicalInformationById($patients);
+        }
+
         $medicalInfos = $medicalInfosAndPaginator['medicalInfos'];
         $paginator = $medicalInfosAndPaginator['paginator'];
 
