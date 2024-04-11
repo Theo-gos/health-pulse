@@ -30,7 +30,7 @@ class PatientService extends BaseService
     public function getMedicalInformationById($patient_id, $request = null)
     {
         $patients = null;
-        if ($request->query('name') || $request->query('age')) {
+        if ($request) {
             if ($request->query('name')) {
                 $patients = $this->model->whereIn('id', $patient_id)
                     ->whereRaw('LOWER(name) LIKE ?', [strtolower($request->query('name')).'%'])
