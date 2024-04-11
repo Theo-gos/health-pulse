@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\CurrentTimeZone;
 use App\Models\Service;
 
 class BookingService extends BaseService
@@ -48,7 +49,7 @@ class BookingService extends BaseService
 
     public function storeAppointment($patient_id, $data)
     {
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        date_default_timezone_set(CurrentTimeZone::TIMEZONE);
 
         if (strtotime($data['date']) < strtotime(date('Y-m-d'))) {
             return [
