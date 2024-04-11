@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\CurrentTimeZone;
 use App\Models\Doctor;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
@@ -19,14 +20,22 @@ class DoctorService extends BaseService
             ->get();
     }
 
-    public function getAllAppointedPatientsIdByDoctorId($doctor_id)
+    public function getAllAppointedPatientsIdForTodayByDoctorId($doctor_id)
     {
+        date_default_timezone_set(CurrentTimeZone::TIMEZONE);
+
         $doctor = $this->model
             ->where('id', $doctor_id)
             ->with('appointed_patients')
             ->firstOrFail();
 
-        $patientsList = $doctor->appointed_patients->pluck('id')->toArray();
+        $patientsList = [];
+
+        foreach ($doctor->appointed_patients as $appointed_patient) {
+            if (strtotime($appointed_patient->appointments->date) >= strtotime(date('Y-m-d'))) {
+                array_push($patientsList, $appointed_patient->id);
+            }
+        }
 
         return array_values(array_unique($patientsList));
     }

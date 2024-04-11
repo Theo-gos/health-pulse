@@ -4,9 +4,11 @@ import {
     Input,
     InputGroup,
     InputLeftAddon,
+    Circle,
+    HStack,
     Flex,
 } from "@chakra-ui/react";
-import { usePage } from "@inertiajs/react";
+import { Link, usePage, useForm } from "@inertiajs/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 
@@ -49,33 +51,112 @@ const getPatientData = (data, user) => {
     return patientData
 }
 
-const getFilteredData = (data, input, key = 'name') => {
-    
-    const filteredData = data.filter((item) => {
-        if (input === '') {
-            return item;
-        }
-        
-        else {
-            const patientFieldToTest = item.patient[key]
-            const regex = new RegExp(input, "i")
-            return regex.test(patientFieldToTest)
-        }
-    })
+const renderPaginator = (paginator) => {
+    return <>
+        <Box
+            style={paginator.links[0].url ?
+                { color: '#1366DE', cursor: 'pointer' } :
+                { color: 'gray', cursor: 'not-allowed' }
+            }
+        >
+            {paginator.links[0].url ? 
+                <Link href={paginator.first_page_url}>{`<<`}</Link>
+                :
+                `<<`
+            }
+        </Box>
+        <Box
+            style={paginator.links[0].url ?
+                { color: '#1366DE', cursor: 'pointer' } :
+                { color: 'gray', cursor: 'not-allowed' }
+            }
+        >
+            {paginator.links[0].url ? 
+                <Link href={paginator.links[0].url}>{`<`}</Link>
+                :
+                `<`
+            }
+        </Box>
+        {paginator.links
+            .filter(link => {
+                return link.url && Number(link.label)
+            })
+            .map(link => {
+                return <Link key={link.label} href={link.url}>
+                    <Circle
+                        style={ link.active ?
+                        {
+                                opacity: 0.4,
+                        } : {
+                                cursor: 'pointer',
+                        }}
 
-    return filteredData
+                        _hover={link.active ?
+                            {}
+                            :
+                            {
+                                backgroundColor: 'blue.100',
+                                color: 'white',
+                            }
+                        }
+
+                        size={'27px'}
+
+                        bg={link.active ? 'blue.100' : 'transparent'}
+                        color={link.active ? 'gray' : '#1366DE'}
+                    > 
+                        <Box>{link.label}</Box>
+                    </Circle>
+                </Link>
+            })
+        }
+        <Box
+            style={paginator.links[paginator.links.length - 1].url ?
+                { color: '#1366DE', cursor: 'pointer' } :
+                { color: 'gray', cursor: 'not-allowed' }
+            }
+        >
+            {paginator.links[paginator.links.length - 1].url ? 
+                <Link href={paginator.links[paginator.links.length - 1].url}>{`>`}</Link>
+                :
+                `>`
+            }
+        </Box>
+        <Box
+            style={paginator.links[paginator.links.length - 1].url ?
+                { color: '#1366DE', cursor: 'pointer' } :
+                { color: 'gray', cursor: 'not-allowed' }
+            }
+        >
+            {paginator.links[paginator.links.length - 1].url ? 
+                <Link href={paginator.last_page_url}>{`>>`}</Link>
+                :
+                `>`
+            }
+        </Box>
+    </>
 }
 
-
-export default function PatientList({ selectManager, medicalInfo }) {
+export default function PatientList({ selectManager, medicalInfo, paginator }) {
+    const queryParams = new URLSearchParams(window.location.search);
     const { selected, setSelected } = selectManager
     const { auth } = usePage().props
-    const [input, setInput] = useState('');
-    const [filter, setFilter] = useState(FILTER.NAME)
+    const [input, setInput] = useState('')
+    const [typingTimeout, setTypingTimeout] = useState(0)
+    const [filter, setFilter] = useState(queryParams.get('age') ? FILTER.AGE : FILTER.NAME)
+    const { get, data: formData, setData, reset } = useForm({
+        name: queryParams.get('name') || '',
+        age: queryParams.get('age') || '',
+        page: paginator.current_page,
+    });
     
     const data = Object.values(medicalInfo)
-    const filteredData = getFilteredData(data, input, filter);
-    
+
+    const handleSearch = (query) => {
+        formData[filter] = query
+        get(route('doctor.records'))
+    }
+
     return (
         <Box
             w={'100%'}
@@ -130,7 +211,18 @@ export default function PatientList({ selectManager, medicalInfo }) {
                         fontSize={'10px'}
                         textAlign={'center'}
 
-                        onClick={() => setFilter(FILTER.NAME)}
+                        onClick={() => {
+                            setData({
+                                ...formData,
+                                name: '',
+                                age: '',
+                            })
+                            setFilter(FILTER.NAME)
+                            if (typingTimeout) {
+                                clearTimeout(typingTimeout)
+                                setTypingTimeout(0)
+                            }
+                        }}
                     >
                         Name
                     </Box>
@@ -156,15 +248,36 @@ export default function PatientList({ selectManager, medicalInfo }) {
                         fontSize={'10px'}
                         textAlign={'center'}
 
-                        onClick={() => setFilter(FILTER.AGE)}
+                        onClick={() =>{
+                            setData({
+                                ...formData,
+                                name: '',
+                                age: '',
+                            })
+                            setFilter(FILTER.AGE)
+                            if (typingTimeout) {
+                                clearTimeout(typingTimeout)
+                                setTypingTimeout(0)
+                            }
+                        }}
                     >
                         Age
                     </Box>
                 </Flex>
                 <Input
                     placeholder={`Type a patient ${filter}...`}
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
+                    value={formData[filter]}
+                    onChange={(e) => {
+                        setData(filter, e.target.value)
+
+                        if (typingTimeout) {
+                            clearTimeout(typingTimeout)
+                        }
+
+                        setTypingTimeout(setTimeout(() => {
+                            handleSearch(e.target.value)
+                        }, 1000))
+                    }}
                     
                     size={'md'}
 
@@ -173,6 +286,17 @@ export default function PatientList({ selectManager, medicalInfo }) {
                 />
             </Flex>
 
+            <HStack
+                justify={'center'}
+                mb={'16px'}
+
+                color={'#1366DE'}
+
+                spacing={5}
+            >
+                {renderPaginator(paginator)}
+            </HStack>
+
             <Box
                 w={'100%'}
                 h={'90%'}
@@ -180,8 +304,8 @@ export default function PatientList({ selectManager, medicalInfo }) {
                 overflowY={'scroll'}
             >
                 <Stack spacing={3}>
-                    {filteredData.length > 0 ?
-                        filteredData.map((item) => {
+                    {data.length > 0 ?
+                        data.map((item) => {
                             const patientData = getPatientData(item, auth.doctor)
                             if (patientData) {
                                 const { patientId, name, age, date, startTime, endTime } = patientData

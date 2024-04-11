@@ -64,8 +64,9 @@ class Patient extends Authenticatable implements MustVerifyEmail
             ->using(Appointment::class)
             ->as('appointments')
             ->withPivot('id', 'doctor_id', 'patient_id', 'date', 'start_time', 'end_time')
-            ->orderByPivot('date', 'asc')
-            ->orderByPivot('start_time', 'asc');
+            ->orderByPivot('date', 'desc')
+            ->orderByPivot('start_time', 'asc')
+            ->limit(20);
     }
 
     public function diagnose_doctors(): BelongsToMany
@@ -74,7 +75,7 @@ class Patient extends Authenticatable implements MustVerifyEmail
             ->using(Diagnosis::class)
             ->as('diagnoses')
             ->withPivot('id', 'doctor_id', 'patient_id', 'date', 'icd_code')
-            ->orderByPivot('date', 'asc');
+            ->orderByPivot('date', 'desc');
     }
 
     public function prescribe_doctors(): BelongsToMany
@@ -83,7 +84,7 @@ class Patient extends Authenticatable implements MustVerifyEmail
             ->using(Prescription::class)
             ->as('prescriptions')
             ->withPivot('id', 'doctor_id', 'patient_id', 'date', 'medication_name', 'dose', 'pill_per_day', 'recommendation')
-            ->orderByPivot('date', 'asc');
+            ->orderByPivot('date', 'desc');
     }
 
     public function test_doctors(): BelongsToMany
@@ -92,6 +93,6 @@ class Patient extends Authenticatable implements MustVerifyEmail
             ->using(Test::class)
             ->as('test_results')
             ->withPivot('id', 'doctor_id', 'patient_id', 'name', 'date', 'result_url')
-            ->orderByPivot('date', 'asc');
+            ->orderByPivot('date', 'desc');
     }
 }

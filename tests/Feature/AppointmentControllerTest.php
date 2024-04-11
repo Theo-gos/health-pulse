@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\CurrentTimeZone;
 use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Icd;
@@ -54,7 +55,7 @@ class AppointmentControllerTest extends TestCase
 
     public function testAppointmentIndex(): void
     {
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        date_default_timezone_set(CurrentTimeZone::TIMEZONE);
         $appointmentList = [];
 
         foreach ($this->appointments as $appointment) {
