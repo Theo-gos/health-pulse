@@ -51,23 +51,6 @@ const getPatientData = (data, user) => {
     return patientData
 }
 
-const getFilteredData = (data, input, key = 'name') => {
-    
-    const filteredData = data.filter((item) => {
-        if (input === '') {
-            return item;
-        }
-        
-        else {
-            const patientFieldToTest = item.patient[key]
-            const regex = new RegExp(input, "i")
-            return regex.test(patientFieldToTest)
-        }
-    })
-
-    return filteredData
-}
-
 const renderPaginator = (paginator) => {
     return <>
         <Box
@@ -168,7 +151,6 @@ export default function PatientList({ selectManager, medicalInfo, paginator }) {
     });
     
     const data = Object.values(medicalInfo)
-    const filteredData = getFilteredData(data, input, filter);
 
     const handleSearch = (query) => {
         formData[filter] = query
@@ -294,7 +276,7 @@ export default function PatientList({ selectManager, medicalInfo, paginator }) {
 
                         setTypingTimeout(setTimeout(() => {
                             handleSearch(e.target.value)
-                        }, 3000))
+                        }, 1000))
                     }}
                     
                     size={'md'}
@@ -322,8 +304,8 @@ export default function PatientList({ selectManager, medicalInfo, paginator }) {
                 overflowY={'scroll'}
             >
                 <Stack spacing={3}>
-                    {filteredData.length > 0 ?
-                        filteredData.map((item) => {
+                    {data.length > 0 ?
+                        data.map((item) => {
                             const patientData = getPatientData(item, auth.doctor)
                             if (patientData) {
                                 const { patientId, name, age, date, startTime, endTime } = patientData
