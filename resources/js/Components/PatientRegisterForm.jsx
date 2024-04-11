@@ -323,7 +323,7 @@ export default function PatientRegisterForm({formManager, isLoginManager}) {
                 <Stack spacing={2} w={'100%'}>
                     <Button
                         type='submit'
-                        disabled={processing}
+                        isLoading={processing}
                         
                         bg={'blue.400'}
                         color={'white'}
