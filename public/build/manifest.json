@@ -1,0 +1,607 @@
+{
+  "_DashboardSchedule-3-jwTON7.js": {
+    "file": "assets/DashboardSchedule-3-jwTON7.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_chunk-6RTX462E-DC5x0O_b.js",
+      "_dayjs.min-B3bvL0FH.js",
+      "_range-PHbfMuXe.js",
+      "_lodash-C-UiRv_R.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "_chunk-JARCRF6W-D88SptP6.js"
+    ]
+  },
+  "_DoctorLayout-rLg0PifZ.js": {
+    "file": "assets/DoctorLayout-rLg0PifZ.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_iconBase-CsBEadFK.js",
+      "resources/js/Pages/Shared/Logo.jsx",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js"
+    ]
+  },
+  "_DoctorLoginLayout-CO37BrUz.js": {
+    "file": "assets/DoctorLoginLayout-CO37BrUz.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "resources/js/Pages/Shared/Logo.jsx",
+      "_chunk-QINAG4RG-Cx1HeaRA.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js"
+    ]
+  },
+  "_PatientLayout-!~{00M}~.js": {
+    "file": "assets/PatientLayout-D32zUxz1.css",
+    "src": "_PatientLayout-!~{00M}~.js"
+  },
+  "_PatientLayout-D26oNHaV.js": {
+    "file": "assets/PatientLayout-D26oNHaV.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "resources/js/Pages/Shared/Logo.jsx",
+      "_iconBase-CsBEadFK.js",
+      "_chunk-VDHTZURG-CPVFyW9m.js",
+      "_chunk-5FG5SY5K-u14v83Cz.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "_chunk-4FCEGNGT-DpzLOA5m.js",
+      "_chunk-6CVSDS6C-C4rspNSS.js",
+      "_chunk-FKYN3ZGE-BASVSOBX.js",
+      "_chunk-VGESXGVT-Bp8ktNDL.js",
+      "_chunk-RAWN7VJ3-Dd7bd7NX.js",
+      "_chunk-ZHMYA64R-CIq04Wgw.js",
+      "_index-BmDp8JnS.js",
+      "_index-DdrsuNi1.js",
+      "_dayjs.min-B3bvL0FH.js"
+    ],
+    "css": [
+      "assets/PatientLayout-D32zUxz1.css"
+    ]
+  },
+  "_TestResultList-!~{00k}~.js": {
+    "file": "assets/TestResultList-DZw4EYau.css",
+    "src": "_TestResultList-!~{00k}~.js"
+  },
+  "_TestResultList-Cuco7e3Z.js": {
+    "file": "assets/TestResultList-Cuco7e3Z.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_lodash-C-UiRv_R.js",
+      "_chunk-7JBTTEVG-CejRbn_u.js",
+      "_chunk-4FCEGNGT-DpzLOA5m.js",
+      "_chunk-5FG5SY5K-u14v83Cz.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js"
+    ],
+    "css": [
+      "assets/TestResultList-DZw4EYau.css"
+    ]
+  },
+  "_chunk-3ASUQ6PA-B1h8S_Vb.js": {
+    "file": "assets/chunk-3ASUQ6PA-B1h8S_Vb.js",
+    "imports": [
+      "_chunk-ZHMYA64R-CIq04Wgw.js",
+      "resources/js/app.jsx"
+    ]
+  },
+  "_chunk-3RSXBRAN-uzdinh3A.js": {
+    "file": "assets/chunk-3RSXBRAN-uzdinh3A.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_chunk-6CVSDS6C-C4rspNSS.js"
+    ]
+  },
+  "_chunk-4FCEGNGT-DpzLOA5m.js": {
+    "file": "assets/chunk-4FCEGNGT-DpzLOA5m.js",
+    "imports": [
+      "_defineProperty-DmAPQKcv.js",
+      "resources/js/app.jsx",
+      "_iconBase-CsBEadFK.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js"
+    ]
+  },
+  "_chunk-5FG5SY5K-u14v83Cz.js": {
+    "file": "assets/chunk-5FG5SY5K-u14v83Cz.js",
+    "imports": [
+      "_chunk-4FCEGNGT-DpzLOA5m.js",
+      "resources/js/app.jsx"
+    ]
+  },
+  "_chunk-6CVSDS6C-C4rspNSS.js": {
+    "file": "assets/chunk-6CVSDS6C-C4rspNSS.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js"
+    ]
+  },
+  "_chunk-6RTX462E-DC5x0O_b.js": {
+    "file": "assets/chunk-6RTX462E-DC5x0O_b.js",
+    "imports": [
+      "_chunk-KRPLQIP4-Dz1C-LH0.js"
+    ]
+  },
+  "_chunk-7JBTTEVG-CejRbn_u.js": {
+    "file": "assets/chunk-7JBTTEVG-CejRbn_u.js",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "_chunk-CWVAJCXJ-BlufH86A.js": {
+    "file": "assets/chunk-CWVAJCXJ-BlufH86A.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_chunk-6CVSDS6C-C4rspNSS.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "_index-DdrsuNi1.js"
+    ]
+  },
+  "_chunk-FKYN3ZGE-BASVSOBX.js": {
+    "file": "assets/chunk-FKYN3ZGE-BASVSOBX.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js"
+    ]
+  },
+  "_chunk-JARCRF6W-D88SptP6.js": {
+    "file": "assets/chunk-JARCRF6W-D88SptP6.js",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "_chunk-KRPLQIP4-Dz1C-LH0.js": {
+    "file": "assets/chunk-KRPLQIP4-Dz1C-LH0.js",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "_chunk-NEK3OOAM-DSx33MUS.js": {
+    "file": "assets/chunk-NEK3OOAM-DSx33MUS.js",
+    "imports": [
+      "_chunk-JARCRF6W-D88SptP6.js",
+      "resources/js/app.jsx",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js"
+    ]
+  },
+  "_chunk-Q6Q7I7E5-BsSFYtl-.js": {
+    "file": "assets/chunk-Q6Q7I7E5-BsSFYtl-.js",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "_chunk-QINAG4RG-Cx1HeaRA.js": {
+    "file": "assets/chunk-QINAG4RG-Cx1HeaRA.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js"
+    ]
+  },
+  "_chunk-RAWN7VJ3-Dd7bd7NX.js": {
+    "file": "assets/chunk-RAWN7VJ3-Dd7bd7NX.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_chunk-4FCEGNGT-DpzLOA5m.js"
+    ]
+  },
+  "_chunk-VDHTZURG-CPVFyW9m.js": {
+    "file": "assets/chunk-VDHTZURG-CPVFyW9m.js",
+    "imports": [
+      "_chunk-FKYN3ZGE-BASVSOBX.js",
+      "resources/js/app.jsx",
+      "_chunk-ZHMYA64R-CIq04Wgw.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js"
+    ]
+  },
+  "_chunk-VGESXGVT-Bp8ktNDL.js": {
+    "file": "assets/chunk-VGESXGVT-Bp8ktNDL.js",
+    "imports": [
+      "_chunk-6CVSDS6C-C4rspNSS.js",
+      "resources/js/app.jsx"
+    ]
+  },
+  "_chunk-ZHMYA64R-CIq04Wgw.js": {
+    "file": "assets/chunk-ZHMYA64R-CIq04Wgw.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js"
+    ]
+  },
+  "_chunk-ZPFGWTBB-f5d9UIkk.js": {
+    "file": "assets/chunk-ZPFGWTBB-f5d9UIkk.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js"
+    ]
+  },
+  "_dayjs.min-B3bvL0FH.js": {
+    "file": "assets/dayjs.min-B3bvL0FH.js",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "_defineProperty-DmAPQKcv.js": {
+    "file": "assets/defineProperty-DmAPQKcv.js"
+  },
+  "_iconBase-CsBEadFK.js": {
+    "file": "assets/iconBase-CsBEadFK.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js"
+    ]
+  },
+  "_index-BmDp8JnS.js": {
+    "file": "assets/index-BmDp8JnS.js",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "_index-DdrsuNi1.js": {
+    "file": "assets/index-DdrsuNi1.js"
+  },
+  "_index-Dhf6tr8w.js": {
+    "file": "assets/index-Dhf6tr8w.js",
+    "imports": [
+      "resources/js/app.jsx",
+      "_index-BmDp8JnS.js",
+      "_defineProperty-DmAPQKcv.js"
+    ]
+  },
+  "_lodash-C-UiRv_R.js": {
+    "file": "assets/lodash-C-UiRv_R.js",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "_range-PHbfMuXe.js": {
+    "file": "assets/range-PHbfMuXe.js"
+  },
+  "_weekOfYear-DqWFZhPa.js": {
+    "file": "assets/weekOfYear-DqWFZhPa.js",
+    "imports": [
+      "resources/js/app.jsx"
+    ]
+  },
+  "resources/js/Assets/imgs/logo.svg": {
+    "file": "assets/logo-B4anD0Yd.svg",
+    "src": "resources/js/Assets/imgs/logo.svg"
+  },
+  "resources/js/Pages/Auth/Doctor/AppointmentNote.jsx": {
+    "file": "assets/AppointmentNote-3fmXLMMF.js",
+    "src": "resources/js/Pages/Auth/Doctor/AppointmentNote.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_iconBase-CsBEadFK.js",
+      "_dayjs.min-B3bvL0FH.js",
+      "_chunk-4FCEGNGT-DpzLOA5m.js",
+      "_DoctorLayout-rLg0PifZ.js",
+      "_TestResultList-Cuco7e3Z.js",
+      "_lodash-C-UiRv_R.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "_chunk-3ASUQ6PA-B1h8S_Vb.js",
+      "_chunk-ZHMYA64R-CIq04Wgw.js",
+      "_chunk-6CVSDS6C-C4rspNSS.js",
+      "_chunk-VGESXGVT-Bp8ktNDL.js",
+      "_chunk-FKYN3ZGE-BASVSOBX.js",
+      "_chunk-3RSXBRAN-uzdinh3A.js",
+      "_chunk-CWVAJCXJ-BlufH86A.js",
+      "_index-Dhf6tr8w.js",
+      "_chunk-RAWN7VJ3-Dd7bd7NX.js",
+      "_chunk-5FG5SY5K-u14v83Cz.js",
+      "_chunk-7JBTTEVG-CejRbn_u.js",
+      "_defineProperty-DmAPQKcv.js",
+      "resources/js/Pages/Shared/Logo.jsx",
+      "_index-DdrsuNi1.js",
+      "_index-BmDp8JnS.js"
+    ]
+  },
+  "resources/js/Pages/Auth/Doctor/Appointments.jsx": {
+    "file": "assets/Appointments-BOZ3TSbK.js",
+    "src": "resources/js/Pages/Auth/Doctor/Appointments.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_chunk-6RTX462E-DC5x0O_b.js",
+      "_dayjs.min-B3bvL0FH.js",
+      "_weekOfYear-DqWFZhPa.js",
+      "_DoctorLayout-rLg0PifZ.js",
+      "_iconBase-CsBEadFK.js",
+      "_chunk-JARCRF6W-D88SptP6.js",
+      "_chunk-ZPFGWTBB-f5d9UIkk.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "_chunk-Q6Q7I7E5-BsSFYtl-.js",
+      "resources/js/Pages/Shared/Logo.jsx"
+    ]
+  },
+  "resources/js/Pages/Auth/Doctor/Dashboard.jsx": {
+    "file": "assets/Dashboard-DhArs_vO.js",
+    "src": "resources/js/Pages/Auth/Doctor/Dashboard.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_DashboardSchedule-3-jwTON7.js",
+      "_chunk-6RTX462E-DC5x0O_b.js",
+      "_DoctorLayout-rLg0PifZ.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "_dayjs.min-B3bvL0FH.js",
+      "_lodash-C-UiRv_R.js",
+      "_TestResultList-Cuco7e3Z.js",
+      "_chunk-JARCRF6W-D88SptP6.js",
+      "_chunk-Q6Q7I7E5-BsSFYtl-.js",
+      "_chunk-ZPFGWTBB-f5d9UIkk.js",
+      "_chunk-ZHMYA64R-CIq04Wgw.js",
+      "_chunk-4FCEGNGT-DpzLOA5m.js",
+      "_chunk-3ASUQ6PA-B1h8S_Vb.js",
+      "_range-PHbfMuXe.js",
+      "_iconBase-CsBEadFK.js",
+      "resources/js/Pages/Shared/Logo.jsx",
+      "_chunk-7JBTTEVG-CejRbn_u.js",
+      "_chunk-5FG5SY5K-u14v83Cz.js",
+      "_defineProperty-DmAPQKcv.js"
+    ]
+  },
+  "resources/js/Pages/Auth/Doctor/DoctorProfile.jsx": {
+    "file": "assets/DoctorProfile-DW1pd34I.js",
+    "src": "resources/js/Pages/Auth/Doctor/DoctorProfile.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_lodash-C-UiRv_R.js",
+      "_DoctorLayout-rLg0PifZ.js",
+      "_index-Dhf6tr8w.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "_chunk-ZHMYA64R-CIq04Wgw.js",
+      "_iconBase-CsBEadFK.js",
+      "resources/js/Pages/Shared/Logo.jsx",
+      "_index-BmDp8JnS.js",
+      "_defineProperty-DmAPQKcv.js"
+    ]
+  },
+  "resources/js/Pages/Auth/Doctor/Login.jsx": {
+    "file": "assets/Login-HlGCOlcZ.js",
+    "src": "resources/js/Pages/Auth/Doctor/Login.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_chunk-VDHTZURG-CPVFyW9m.js",
+      "_DoctorLoginLayout-CO37BrUz.js",
+      "_chunk-FKYN3ZGE-BASVSOBX.js",
+      "_chunk-6CVSDS6C-C4rspNSS.js",
+      "_chunk-VGESXGVT-Bp8ktNDL.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "_chunk-ZHMYA64R-CIq04Wgw.js",
+      "resources/js/Pages/Shared/Logo.jsx",
+      "_chunk-QINAG4RG-Cx1HeaRA.js"
+    ]
+  },
+  "resources/js/Pages/Auth/Doctor/Notification.jsx": {
+    "file": "assets/Notification-q4Ez1vQ-.js",
+    "src": "resources/js/Pages/Auth/Doctor/Notification.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_DoctorLayout-rLg0PifZ.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "_chunk-ZHMYA64R-CIq04Wgw.js",
+      "_iconBase-CsBEadFK.js",
+      "resources/js/Pages/Shared/Logo.jsx"
+    ]
+  },
+  "resources/js/Pages/Auth/Doctor/Records.jsx": {
+    "file": "assets/Records-B5rBxRm3.js",
+    "src": "resources/js/Pages/Auth/Doctor/Records.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_dayjs.min-B3bvL0FH.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "_chunk-6CVSDS6C-C4rspNSS.js",
+      "_chunk-ZHMYA64R-CIq04Wgw.js",
+      "_lodash-C-UiRv_R.js",
+      "_TestResultList-Cuco7e3Z.js",
+      "_chunk-NEK3OOAM-DSx33MUS.js",
+      "_chunk-Q6Q7I7E5-BsSFYtl-.js",
+      "_DoctorLayout-rLg0PifZ.js",
+      "_chunk-7JBTTEVG-CejRbn_u.js",
+      "_chunk-4FCEGNGT-DpzLOA5m.js",
+      "_defineProperty-DmAPQKcv.js",
+      "_iconBase-CsBEadFK.js",
+      "_chunk-5FG5SY5K-u14v83Cz.js",
+      "_chunk-JARCRF6W-D88SptP6.js",
+      "resources/js/Pages/Shared/Logo.jsx"
+    ]
+  },
+  "resources/js/Pages/Auth/Doctor/Register.jsx": {
+    "file": "assets/Register-DOsa65hw.js",
+    "src": "resources/js/Pages/Auth/Doctor/Register.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_chunk-VDHTZURG-CPVFyW9m.js",
+      "_DoctorLoginLayout-CO37BrUz.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "_chunk-6CVSDS6C-C4rspNSS.js",
+      "_chunk-FKYN3ZGE-BASVSOBX.js",
+      "_chunk-VGESXGVT-Bp8ktNDL.js",
+      "_chunk-CWVAJCXJ-BlufH86A.js",
+      "_chunk-ZHMYA64R-CIq04Wgw.js",
+      "resources/js/Pages/Shared/Logo.jsx",
+      "_chunk-QINAG4RG-Cx1HeaRA.js",
+      "_index-DdrsuNi1.js"
+    ]
+  },
+  "resources/js/Pages/Auth/Doctor/Schedule.jsx": {
+    "file": "assets/Schedule-D8WMzYBs.js",
+    "src": "resources/js/Pages/Auth/Doctor/Schedule.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_DashboardSchedule-3-jwTON7.js",
+      "_dayjs.min-B3bvL0FH.js",
+      "_weekOfYear-DqWFZhPa.js",
+      "_lodash-C-UiRv_R.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "_chunk-JARCRF6W-D88SptP6.js",
+      "_chunk-ZPFGWTBB-f5d9UIkk.js",
+      "_chunk-Q6Q7I7E5-BsSFYtl-.js",
+      "_chunk-7JBTTEVG-CejRbn_u.js",
+      "_chunk-6CVSDS6C-C4rspNSS.js",
+      "_chunk-VGESXGVT-Bp8ktNDL.js",
+      "_chunk-3RSXBRAN-uzdinh3A.js",
+      "_chunk-4FCEGNGT-DpzLOA5m.js",
+      "_chunk-RAWN7VJ3-Dd7bd7NX.js",
+      "_DoctorLayout-rLg0PifZ.js",
+      "_chunk-6RTX462E-DC5x0O_b.js",
+      "_range-PHbfMuXe.js",
+      "_defineProperty-DmAPQKcv.js",
+      "_iconBase-CsBEadFK.js",
+      "resources/js/Pages/Shared/Logo.jsx"
+    ]
+  },
+  "resources/js/Pages/Auth/Patient/AppointmentBooking.jsx": {
+    "file": "assets/AppointmentBooking-C2kVada5.js",
+    "src": "resources/js/Pages/Auth/Patient/AppointmentBooking.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_PatientLayout-D26oNHaV.js",
+      "_chunk-QINAG4RG-Cx1HeaRA.js",
+      "_chunk-ZHMYA64R-CIq04Wgw.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "_lodash-C-UiRv_R.js",
+      "_dayjs.min-B3bvL0FH.js",
+      "_iconBase-CsBEadFK.js",
+      "_chunk-6RTX462E-DC5x0O_b.js",
+      "_range-PHbfMuXe.js",
+      "_chunk-JARCRF6W-D88SptP6.js",
+      "_chunk-7JBTTEVG-CejRbn_u.js",
+      "_chunk-NEK3OOAM-DSx33MUS.js",
+      "_chunk-4FCEGNGT-DpzLOA5m.js",
+      "_chunk-RAWN7VJ3-Dd7bd7NX.js",
+      "_chunk-5FG5SY5K-u14v83Cz.js",
+      "_chunk-6CVSDS6C-C4rspNSS.js",
+      "_chunk-VGESXGVT-Bp8ktNDL.js",
+      "resources/js/Pages/Shared/Logo.jsx",
+      "_chunk-VDHTZURG-CPVFyW9m.js",
+      "_chunk-FKYN3ZGE-BASVSOBX.js",
+      "_index-BmDp8JnS.js",
+      "_index-DdrsuNi1.js",
+      "_defineProperty-DmAPQKcv.js"
+    ]
+  },
+  "resources/js/Pages/Auth/Patient/PatientList.jsx": {
+    "file": "assets/PatientList-BfJ90Tm_.js",
+    "src": "resources/js/Pages/Auth/Patient/PatientList.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_PatientLayout-D26oNHaV.js",
+      "_lodash-C-UiRv_R.js",
+      "_dayjs.min-B3bvL0FH.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "_chunk-NEK3OOAM-DSx33MUS.js",
+      "_TestResultList-Cuco7e3Z.js",
+      "_chunk-ZHMYA64R-CIq04Wgw.js",
+      "resources/js/Pages/Shared/Logo.jsx",
+      "_iconBase-CsBEadFK.js",
+      "_chunk-VDHTZURG-CPVFyW9m.js",
+      "_chunk-FKYN3ZGE-BASVSOBX.js",
+      "_chunk-5FG5SY5K-u14v83Cz.js",
+      "_chunk-4FCEGNGT-DpzLOA5m.js",
+      "_defineProperty-DmAPQKcv.js",
+      "_chunk-6CVSDS6C-C4rspNSS.js",
+      "_chunk-VGESXGVT-Bp8ktNDL.js",
+      "_chunk-RAWN7VJ3-Dd7bd7NX.js",
+      "_index-BmDp8JnS.js",
+      "_index-DdrsuNi1.js",
+      "_chunk-JARCRF6W-D88SptP6.js",
+      "_chunk-7JBTTEVG-CejRbn_u.js"
+    ]
+  },
+  "resources/js/Pages/Auth/Patient/PatientProfile.jsx": {
+    "file": "assets/PatientProfile-Curr7x6H.js",
+    "src": "resources/js/Pages/Auth/Patient/PatientProfile.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_PatientLayout-D26oNHaV.js",
+      "_lodash-C-UiRv_R.js",
+      "_index-Dhf6tr8w.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "_chunk-ZHMYA64R-CIq04Wgw.js",
+      "_iconBase-CsBEadFK.js",
+      "resources/js/Pages/Shared/Logo.jsx",
+      "_chunk-VDHTZURG-CPVFyW9m.js",
+      "_chunk-FKYN3ZGE-BASVSOBX.js",
+      "_chunk-5FG5SY5K-u14v83Cz.js",
+      "_chunk-4FCEGNGT-DpzLOA5m.js",
+      "_defineProperty-DmAPQKcv.js",
+      "_chunk-6CVSDS6C-C4rspNSS.js",
+      "_chunk-VGESXGVT-Bp8ktNDL.js",
+      "_chunk-RAWN7VJ3-Dd7bd7NX.js",
+      "_index-BmDp8JnS.js",
+      "_index-DdrsuNi1.js",
+      "_dayjs.min-B3bvL0FH.js"
+    ]
+  },
+  "resources/js/Pages/Home.jsx": {
+    "file": "assets/Home-CmKecHi9.js",
+    "src": "resources/js/Pages/Home.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx",
+      "_chunk-6RTX462E-DC5x0O_b.js",
+      "_PatientLayout-D26oNHaV.js",
+      "_chunk-4FCEGNGT-DpzLOA5m.js",
+      "_index-BmDp8JnS.js",
+      "_chunk-7JBTTEVG-CejRbn_u.js",
+      "_chunk-KRPLQIP4-Dz1C-LH0.js",
+      "resources/js/Pages/Shared/Logo.jsx",
+      "_iconBase-CsBEadFK.js",
+      "_chunk-VDHTZURG-CPVFyW9m.js",
+      "_chunk-FKYN3ZGE-BASVSOBX.js",
+      "_chunk-ZHMYA64R-CIq04Wgw.js",
+      "_chunk-5FG5SY5K-u14v83Cz.js",
+      "_chunk-6CVSDS6C-C4rspNSS.js",
+      "_chunk-VGESXGVT-Bp8ktNDL.js",
+      "_chunk-RAWN7VJ3-Dd7bd7NX.js",
+      "_index-DdrsuNi1.js",
+      "_dayjs.min-B3bvL0FH.js",
+      "_defineProperty-DmAPQKcv.js"
+    ],
+    "css": [
+      "assets/Home-Ct_b_wpU.css"
+    ]
+  },
+  "resources/js/Pages/Shared/Logo.jsx": {
+    "file": "assets/Logo-lwkzWSUZ.js",
+    "src": "resources/js/Pages/Shared/Logo.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx"
+    ],
+    "assets": [
+      "assets/logo-B4anD0Yd.svg"
+    ]
+  },
+  "resources/js/app.jsx": {
+    "file": "assets/app-3mzWtfnt.js",
+    "src": "resources/js/app.jsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/Pages/Auth/Doctor/AppointmentNote.jsx",
+      "resources/js/Pages/Auth/Doctor/Appointments.jsx",
+      "resources/js/Pages/Auth/Doctor/Dashboard.jsx",
+      "resources/js/Pages/Auth/Doctor/DoctorProfile.jsx",
+      "resources/js/Pages/Auth/Doctor/Login.jsx",
+      "resources/js/Pages/Auth/Doctor/Notification.jsx",
+      "resources/js/Pages/Auth/Doctor/Records.jsx",
+      "resources/js/Pages/Auth/Doctor/Register.jsx",
+      "resources/js/Pages/Auth/Doctor/Schedule.jsx",
+      "resources/js/Pages/Auth/Patient/AppointmentBooking.jsx",
+      "resources/js/Pages/Auth/Patient/PatientList.jsx",
+      "resources/js/Pages/Auth/Patient/PatientProfile.jsx",
+      "resources/js/Pages/Home.jsx",
+      "resources/js/Pages/Shared/Logo.jsx"
+    ],
+    "css": [
+      "assets/app-CcvUbppF.css"
+    ]
+  }
+}
