@@ -35,29 +35,18 @@ class PatientBookingController extends Controller
     public function store(AppointmentBookingRequest $request)
     {
         $patient = $this->patientService->getById(Auth::guard('patient')->user()->id);
-        $appointment = $this->bookingService->storeAppointment($patient->id, $request->all());
-        $doctor = $appointment->doctor;
-        $message = [];
+        $message = $this->bookingService->storeAppointment($patient->id, $request->all());
 
-        if ($appointment) {
-            $message = [
-                'message' => 'Stored to database',
-                'type' => 'success',
-                'appointment' => $appointment->only('date', 'doctor_id', 'end_time', 'patient_name', 'start_time', 'id'),
-            ];
+        if ($message['type'] === 'success') {
+            $doctor = $message['appointment']->doctor;
 
-            $patient->notify(new AppointmentBookedForPatient($appointment));
-            $doctor->notify(new AppointmentBookedForDoctor($appointment));
+            $patient->notify(new AppointmentBookedForPatient($message['appointment']));
+            $doctor->notify(new AppointmentBookedForDoctor($message['appointment']));
 
             event(new AppointmentBookedEvent([
-                'doctor_id' => $appointment->doctor_id,
+                'doctor_id' => $message['appointment']->doctor_id,
                 'message' => 'There is a new appointment',
             ]));
-        } else {
-            $message = [
-                'message' => 'Failed to store',
-                'type' => 'error',
-            ];
         }
 
         return redirect()->back()->with('message', $message);

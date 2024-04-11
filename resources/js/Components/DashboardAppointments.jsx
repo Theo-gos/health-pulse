@@ -8,6 +8,7 @@ import {
     Text,
     Stack,
     calc,
+    Button,
 } from "@chakra-ui/react";
 import { BsArrowUpRight, BsCalendar2Event } from "react-icons/bs";
 import Timeline from "./Timeline";
@@ -149,6 +150,10 @@ export default function DashboardAppointments({ appointments, current_appointmen
             }
         })
     }
+    
+    const handleAppointmentClick = (id) => (
+        get(route('appointment.note', {appointment: id}))
+    )
 
     const handleNext = () => {
         get(route('doctor.dashboard.appointment', date.add(1, 'day').format('YYYY-MM-DD')), {
@@ -267,8 +272,7 @@ export default function DashboardAppointments({ appointments, current_appointmen
                                         gridTemplateRows={'auto auto 1fr'}
                                         gridTemplateColumns={'20% 1fr'}
                                         gap={3}
-                                        
-                                        h='100%'
+                                        h='90%'
                                         overflowY={'scroll'}
                                     >
                                         <GridItem area={'visit'}>
@@ -342,6 +346,22 @@ export default function DashboardAppointments({ appointments, current_appointmen
                                             </Stack>
                                         </GridItem>
                                     </Grid>
+                                    <Button
+                                        mt={'25px'}
+                                        mx={'5%'}
+                                        w={'90%'}
+                                        p={'12px'}
+
+                                        onClick={() => handleAppointmentClick(curData.id)}
+
+                                        borderRadius={'30px'}
+
+                                        fontSize={'14px'}
+
+                                        colorScheme={'green'}
+                                    >
+                                        Go To Appointment
+                                    </Button>
                                 </Box>
                             </>
                             :

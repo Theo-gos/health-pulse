@@ -44,7 +44,7 @@ export default function DoctorCard({ data, selectedManager, dataManager, modalMa
                         bg={'blue.100'}
                         p={'4px'}
                     >
-                        <Box fontSize={'12px'}>Available</Box>
+                        <Box fontSize={'12px'} fontWeight={'bold'}>Available</Box>
                         <Box fontSize={'12px'} color={'#1366DE'} fontWeight={'bold'}>Today</Box>
                     </Stack>
                 </Stack>

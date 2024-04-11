@@ -24,6 +24,11 @@ class Prescription extends Pivot
         'recommendation',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class);

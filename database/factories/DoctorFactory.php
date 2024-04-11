@@ -23,6 +23,7 @@ class DoctorFactory extends Factory
     public function definition(): array
     {
         return [
+            'service_id' => 1,
             'avatar' => url('https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg'),
             'phone' => fake()->phoneNumber(),
             'email' => fake()->unique()->safeEmail(),

@@ -48,12 +48,48 @@ class BookingService extends BaseService
 
     public function storeAppointment($patient_id, $data)
     {
-        return $this->appointmentService->store([
-            'doctor_id' => $data['doctor'],
-            'patient_id' => $patient_id,
-            'date' => $data['date'],
-            'start_time' => $data['time']['start_time'],
-            'end_time' => $data['time']['end_time'],
-        ]);
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+
+        if (strtotime($data['date']) < strtotime(date('Y-m-d'))) {
+            return [
+                'message' => 'Invalid date selected',
+                'type' => 'error',
+            ];
+        } elseif (strtotime($data['date']) == strtotime(date('Y-m-d'))) {
+            if (
+                strtotime($data['time']['start_time']) < strtotime(date('H:i:s')) ||
+                strtotime('-30 minutes', strtotime($data['time']['start_time'])) <= strtotime(date('H:i:s'))
+            ) {
+                dd('Invalid time selected');
+
+                return [
+                    'message' => 'Invalid time selected',
+                    'type' => 'error',
+                ];
+            }
+        }
+
+        $nextBookedAppointment = $this->appointmentService->getNextBookedAppointmentFromHour($data['time']['start_time'], $data['date'], $data['doctor'], null)->all();
+
+        if ($nextBookedAppointment && strtotime($data['time']['start_time']) == strtotime($nextBookedAppointment[0]->start_time)) {
+            return [
+                'message' => 'Appointment Is Already Booked!',
+                'type' => 'error',
+            ];
+        } else {
+            $appointment = $this->appointmentService->store([
+                'doctor_id' => $data['doctor'],
+                'patient_id' => $patient_id,
+                'date' => $data['date'],
+                'start_time' => $data['time']['start_time'],
+                'end_time' => $data['time']['end_time'],
+            ]);
+
+            return [
+                'message' => 'Booked appointment successfully!',
+                'type' => 'success',
+                'appointment' => $appointment,
+            ];
+        }
     }
 }

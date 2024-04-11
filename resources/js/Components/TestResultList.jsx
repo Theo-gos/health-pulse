@@ -67,6 +67,7 @@ export default function testResultList({ data, width = '50%' }) {
                             <DrawerBody>
                                 <Box
                                     w={'100%'}
+                                    overflowY={'scroll'}
                                 >
                                     <Viewer fileUrl={pdfUrl}/>
                                 </Box>

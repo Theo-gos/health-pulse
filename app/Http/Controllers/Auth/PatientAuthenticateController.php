@@ -61,9 +61,14 @@ class PatientAuthenticateController extends Controller
 
     public function register(PatientRegisterRequest $request): RedirectResponse
     {
-        $this->patientService->store($request->validated());
+        $newPatient = $this->patientService->store($request->validated());
 
-        return redirect()->route('home');
+        Auth::guard('patient')->login($newPatient);
+
+        return redirect()->route('patient.profile')->with('message', [
+            'message' => 'Registered successfully',
+            'type' => 'success',
+        ]);
     }
 
     public function destroy(Request $request): RedirectResponse

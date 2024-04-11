@@ -19,6 +19,11 @@ class Note extends Model
         'signature',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     protected $casts = [
         'image_url' => 'array',
         'test_results' => 'array',

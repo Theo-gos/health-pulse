@@ -19,6 +19,11 @@ class Schedule extends Model
         'end_time',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     public function doctor(): BelongsTo
     {
         return $this->belongsTo(Doctor::class);
