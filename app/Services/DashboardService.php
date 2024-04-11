@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
+use App\Enums\CurrentTimeZone;
 use App\Enums\GenderType;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardService
 {
-    protected $timezone = 'Asia/Ho_Chi_Minh';
+    protected $timezone = CurrentTimeZone::TIMEZONE;
 
     private $appointmentService;
 

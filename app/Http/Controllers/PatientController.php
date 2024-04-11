@@ -26,7 +26,8 @@ class PatientController extends Controller
         }
 
         $patient = Auth::guard('patient')->user();
-        $medicalInfo = $this->patientService->getMedicalInformationById([$patient->id]);
+        $medicalInfosAndPaginator = $this->patientService->getMedicalInformationById([$patient->id]);
+        $medicalInfo = $medicalInfosAndPaginator['medicalInfos'];
         $icd = $this->icdService->getAll();
 
         return Inertia::render('Auth/Patient/PatientList', [

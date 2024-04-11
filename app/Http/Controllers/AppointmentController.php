@@ -45,7 +45,8 @@ class AppointmentController extends Controller
 
     public function showAppointmentNote(Appointment $appointment)
     {
-        $medicalInfo = $this->patientService->getMedicalInformationById([$appointment->patient_id]);
+        $medicalInfosAndPaginator = $this->patientService->getMedicalInformationById([$appointment->patient_id]);
+        $medicalInfo = $medicalInfosAndPaginator['medicalInfos'];
         $icd = $this->icdService->getAll();
 
         $note = $this->appointmentService->getAppointmentNoteById($appointment->id);

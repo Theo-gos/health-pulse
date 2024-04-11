@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\CurrentTimeZone;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,7 +17,7 @@ class AppointmentFactory extends Factory
      */
     public function definition(): array
     {
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        date_default_timezone_set(CurrentTimeZone::TIMEZONE);
 
         return [
             'doctor_id' => 71,

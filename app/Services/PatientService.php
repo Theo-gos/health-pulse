@@ -27,12 +27,28 @@ class PatientService extends BaseService
         );
     }
 
-    public function getMedicalInformationById($patient_id)
+    public function getMedicalInformationById($patient_id, $request = null)
     {
-        $patients = $this->model->whereIn('id', $patient_id)
-            ->with(['allergies', 'appointed_doctors', 'diagnose_doctors', 'prescribe_doctors', 'appointed_doctors.service', 'test_doctors'])
-            ->get()
-            ->all();
+        $patients = null;
+        if ($request->query('name') || $request->query('age')) {
+            if ($request->query('name')) {
+                $patients = $this->model->whereIn('id', $patient_id)
+                    ->whereRaw('LOWER(name) LIKE ?', [strtolower($request->query('name')).'%'])
+                    ->with(['allergies', 'appointed_doctors', 'diagnose_doctors', 'prescribe_doctors', 'appointed_doctors.service', 'test_doctors'])
+                    ->paginate(10);
+            } else {
+                $patients = $this->model->whereIn('id', $patient_id)
+                    ->where('age', $request->query('age'))
+                    ->with(['allergies', 'appointed_doctors', 'diagnose_doctors', 'prescribe_doctors', 'appointed_doctors.service', 'test_doctors'])
+                    ->paginate(10);
+            }
+        } else {
+            $patients = $this->model->whereIn('id', $patient_id)
+                ->with(['allergies', 'appointed_doctors', 'diagnose_doctors', 'prescribe_doctors', 'appointed_doctors.service', 'test_doctors'])
+                ->paginate(10);
+        }
+
+        // dd($patients);
 
         $patientMedicalInfos = [];
 
@@ -89,7 +105,12 @@ class PatientService extends BaseService
             }
         }
 
-        return $patientMedicalInfos;
+        // dd($patientMedicalInfos);
+
+        return [
+            'medicalInfos' => $patientMedicalInfos,
+            'paginator' => $patients->onEachSide(1),
+        ];
     }
 
     public function store($data)
