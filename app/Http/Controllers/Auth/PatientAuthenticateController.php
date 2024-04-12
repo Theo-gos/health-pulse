@@ -12,13 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
-// use App\Providers\RouteServiceProvider;
-// use Exception;
-// use Illuminate\Auth\Events\Registered;
-// use Illuminate\Support\Facades\Auth;
-// use Illuminate\Support\Facades\Hash;
-// use Illuminate\Validation\Rules;
-
 class PatientAuthenticateController extends Controller
 {
     private $patientService;
@@ -74,7 +67,7 @@ class PatientAuthenticateController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
 
-        Auth::guard('web')->logout();
+        Auth::guard('patient')->logout();
 
         $request->session()->invalidate();
 

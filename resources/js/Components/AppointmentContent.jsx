@@ -4,12 +4,19 @@ import {
     Grid,
     GridItem,
     Text,
+    Stack,
 } from "@chakra-ui/react";
 import { useForm } from "@inertiajs/react";
 import dayjs from "dayjs";
 import { MdOutlineArrowOutward } from "react-icons/md";
 
 const today = dayjs()
+
+const color = {
+    active: 'blue.100',
+    done: 'green.100',
+    canceled: 'red.100',
+}
 
 const rowSpanExchange = (number) => {
     let result = 0
@@ -37,6 +44,7 @@ const getSpan = (start, end) => {
 
 const renderItem = (data, handleClick, initialTime = '8:00') => {
     let anchor = initialTime
+    console.log(data);
 
     return data.map((item, index) => {
         const ret = []
@@ -58,31 +66,41 @@ const renderItem = (data, handleClick, initialTime = '8:00') => {
                 
                 borderRadius={'md'}
                 
-                bg={duration > 1 ? 'purple.100' : 'orange.100'}
+                bg={color[item.status]}
 
                 p={'4px 4px'}
 
                 rowSpan={duration}
             >
                 {duration === 1 ?
-                    <Flex justify={'space-between'}>
-                        <Box
-                            color={'black'}
-                            fontWeight={'bold'}
-                        >
-                            {`${name[0].charAt(0).toUpperCase()}. ${name[1]}`}
-                        </Box>
-                        <Box>{`${startTime[0]}:${startTime[1]}`}</Box>
-                    </Flex>
+                    ( item.status === 'active' ?
+                        <Flex justify={'space-between'}>
+                            <Box
+                                color={'black'}
+                                fontWeight={'bold'}
+                            >
+                                {`${name[0].charAt(0).toUpperCase()}. ${name[1]}`}
+                            </Box>
+                            <Box>{`${startTime[0]}:${startTime[1]}`}</Box>
+                        </Flex>
+                        :
+                        <Flex justify={'space-between'}>
+                            <Box
+                                color={'black'}
+                                fontWeight={'bold'}
+                            >
+                                {item.status}
+                            </Box>
+                            <Box>{`${startTime[0]}:${startTime[1]}`}</Box>
+                        </Flex>
+                    )
                     :
-                    <Flex
-                        direction={'column'}
+                    <Stack
+                        spacing={2}
 
                         h={'100%'}
 
                         p={'4px 4px'}
-
-                        justify={'space-between'}
                     >
                         <Flex
                             w={'100%'}
@@ -90,11 +108,15 @@ const renderItem = (data, handleClick, initialTime = '8:00') => {
                             justify={'space-between'}
                             align={'center'}
                         >
-                            <Box color={'black'} fontWeight={'bold'} fontSize={'13px'}>{item.patient.name}</Box>
-                            <MdOutlineArrowOutward style={{cursor: 'pointer'}} title="Go to appointment note" onClick={() => handleClick(item.id)} />
+                            <Box color={'black'} fontWeight={'bold'} fontSize={'13px'}>{`${item.patient.name} (${item.status})`}</Box>
+                            {item.status !== 'canceled' ? 
+                                <MdOutlineArrowOutward style={{cursor: 'pointer'}} title="Go to appointment note" onClick={() => handleClick(item.id)} />
+                                :
+                                <></>
+                            }
                         </Flex>
                         <Box>{`${startTime[0]}:${startTime[1]} > ${endTime[0]}:${endTime[1]}`}</Box>
-                    </Flex>
+                    </Stack>
                 }
             </GridItem>
         )

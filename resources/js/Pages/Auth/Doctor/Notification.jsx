@@ -168,18 +168,13 @@ export default function Notification({ notifications, unreadNotifications }) {
                                                 w={'100%'}
                                                 p={'16px'}
 
-                                                border={notification.read_at ? '1px solid #EDEEF3' : '1px solid #1366DE'}
+                                                border={notification.read_at ? '1px solid #EDEEF3' : (notification.data.status ? '1px solid red' : '1px solid #1366DE')}
                                                 borderRadius={'xl'}
 
-                                                bg={notification.read_at ? 'white' : 'blue.100'}
-                                                color={notification.read_at ? 'gray' : '#1466DE'}
+                                                bg={notification.read_at ? 'white' : (notification.data.status ? 'red.100' : 'blue.100')}
+                                                color={notification.read_at ? 'gray' : (notification.data.status ? 'red.500' : '#1466DE')}
                                                 style={notification.read_at ? { cursor: 'default' } : { cursor: 'pointer' }}
-                                                _hover={notification.read_at ? '' : { color: 'blue' }}
-                                                onClick={() => {
-                                                    if (!notification.read_at) { 
-
-                                                    }
-                                                }}
+                                                _hover={notification.read_at ? '' : (notification.data.status ? {color: 'red'} : { color: 'blue' })}
 
                                                 fontSize={'14px'}
                                             >
@@ -189,10 +184,23 @@ export default function Notification({ notifications, unreadNotifications }) {
                                                     justify={'space-between'}
                                                     align={'center'}
                                                 >
-                                                    <Box>You've got an appointment with {`${TITLE[patient.sex]}${patient.name}`}</Box>
-                                                    {notification.read_at ? <></> : <Box bg={'#1366DE'} w={'10px'} h={'10px'} borderRadius={'50%'} />}
+                                                    {notification.data.status ? 
+                                                     <Box>Your appointment with {`${TITLE[patient.sex]}${patient.name} On ${dateFormatter(appointment.date)} at ${appointment.start_time}.`}</Box>
+                                                     :
+                                                     <Box>You've got an appointment with {`${TITLE[patient.sex]}${patient.name}`}</Box>
+                                                    }
+                                                    {notification.read_at ? <></> : (notification.data.status ?
+                                                        <Box bg={'red.500'} w={'10px'} h={'10px'} borderRadius={'50%'} />
+                                                        :
+                                                        <Box bg={'#1366DE'} w={'10px'} h={'10px'} borderRadius={'50%'} />)
+                                                    }
                                                 </Flex>
-                                                <Box>On {dateFormatter(appointment.date)} at {appointment.start_time}</Box>
+
+                                                {notification.data.status ? 
+                                                     <Box>Has been canceled.</Box>
+                                                     :
+                                                     <Box>On {dateFormatter(appointment.date)} at {appointment.start_time}.</Box>
+                                                }
                                             </Box>
                                         </Link>
                                     })  
@@ -214,30 +222,33 @@ export default function Notification({ notifications, unreadNotifications }) {
                                                 <Box
                                                     w={'100%'}
                                                     p={'16px'}
-        
-                                                    border={notification.read_at ? '1px solid #EDEEF3' : '1px solid #1366DE'}
+
+                                                    border={notification.read_at ? '1px solid #EDEEF3' : (notification.data.status ? '1px solid red' : '1px solid #1366DE')}
                                                     borderRadius={'xl'}
-        
-                                                    bg={notification.read_at ? 'white' : 'blue.100'}
-                                                    color={notification.read_at ? 'gray' : '#1466DE'}
+
+                                                    bg={notification.read_at ? 'white' : (notification.data.status ? 'red.100' : 'blue.100')}
+                                                    color={notification.read_at ? 'gray' : (notification.data.status ? 'red.500' : '#1466DE')}
                                                     style={notification.read_at ? { cursor: 'default' } : { cursor: 'pointer' }}
-                                                    _hover={notification.read_at ? '' : { color: 'blue' }}
-                                                    onClick={() => {
-                                                        if (!notification.read_at) { 
-        
-                                                        }
-                                                    }}
-        
+                                                    _hover={notification.read_at ? '' : (notification.data.status ? {color: 'red'} : { color: 'blue' })}
+
                                                     fontSize={'14px'}
                                                 >
                                                     <Flex
                                                         w={'100%'}
-        
+
                                                         justify={'space-between'}
                                                         align={'center'}
                                                     >
+                                                        {notification.data.status ? 
+                                                        <Box>Your appointment with {`${TITLE[patient.sex]}${patient.name} has been canceled.`}</Box>
+                                                        :
                                                         <Box>You've got an appointment with {`${TITLE[patient.sex]}${patient.name}`}</Box>
-                                                        {notification.read_at ? <></> : <Box bg={'#1366DE'} w={'10px'} h={'10px'} borderRadius={'50%'} />}
+                                                        }
+                                                        {notification.read_at ? <></> : (notification.data.status ?
+                                                            <Box bg={'red.500'} w={'10px'} h={'10px'} borderRadius={'50%'} />
+                                                            :
+                                                            <Box bg={'#1366DE'} w={'10px'} h={'10px'} borderRadius={'50%'} />)
+                                                        }
                                                     </Flex>
                                                     <Box>On {dateFormatter(appointment.date)} at {appointment.start_time}</Box>
                                                 </Box>

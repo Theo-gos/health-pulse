@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\CurrentTimeZone;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,11 +17,13 @@ class ScheduleFactory extends Factory
      */
     public function definition(): array
     {
+        date_default_timezone_set(CurrentTimeZone::TIMEZONE);
+
         return [
             'doctor_id' => 71,
             'task' => 'Some task',
             'location' => 'North Office, floor 1, room C206',
-            'date' => '2024-04-01',
+            'date' => date('Y-m-d'),
             'end_time' => '09:00:00',
             'start_time' => '08:00:00',
         ];

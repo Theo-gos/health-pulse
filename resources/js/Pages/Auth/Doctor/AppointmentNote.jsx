@@ -288,6 +288,21 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
         post(route('appointment.note', {appointment: appointment.id}))
     }
 
+    const isUneditable = () => {
+        const splitStartTime = appointment.start_time.split(':')
+        const splitEndTime = appointment.end_time.split(':')
+        const isToday = (dayjs(appointment.date).diff(today.hour(0).minute(0)) === 0)
+        const isInEarlierHours = (dayjs(appointment.date).hour(splitEndTime[0]).minute(splitEndTime[1]).diff(today) < 0)
+        const isInLaterHours = (dayjs(appointment.date).hour(splitStartTime[0]).minute(splitStartTime[1]).diff(today) > 0)
+        const isAnHoursAfter = (dayjs(appointment.date).hour(splitEndTime[0]).minute(splitEndTime[1]).add(1, 'hour').diff(today) < 0)
+        const isCanceled = appointment.status === 'canceled'
+        return isSigned ||
+            isCanceled ||
+            !isToday ||
+            isInEarlierHours && isToday && isAnHoursAfter ||
+            isInLaterHours && isToday
+    }
+
     return (
         <DoctorLayout state={'none'}>
             <Box
@@ -310,7 +325,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                     >
                         <Box fontSize={'24px'} fontWeight={'bold'}>Office visit / {appointment.id}</Box>
 
-                        {!isSigned ? 
+                        {!isUneditable() ? 
                             <Box>
                                 <Button
                                     type='submit'
@@ -608,12 +623,12 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                             <FormControl isInvalid={errors.main_complaint}>
                                 <Box fontWeight={'bold'} mb={'8px'}>Main complaint</Box>
                                 <Textarea
-                                    disabled={isSigned}
+                                    disabled={isUneditable()}
                                     variant={'filled'}
                                     borderRadius={'md'}
                                     placeholder='Main complaint'
                                     size='sm'
-                                    resize={isSigned ? 'none' : 'vertical'}
+                                    resize={isUneditable() || dayjs(appointment.date).diff(today.hour(0).minute(0)) !== 0 ? 'none' : 'vertical'}
                                     value={data.main_complaint}
                                     onChange={(e) => {
                                         setData('main_complaint', e.target.value)
@@ -634,7 +649,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                             <FormControl isInvalid={errors.objective_note}>
                                 <Box fontWeight={'bold'} mb={'8px'}>Objective note</Box>
                                 <Textarea
-                                    disabled={isSigned}
+                                    disabled={isUneditable()}
                                     variant={'filled'}
                                     borderRadius={'md'}
                                     placeholder='Objective note'
@@ -642,7 +657,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                                     h={'160px'}
                                     
                                     fontSize={'14px'}
-                                    resize={isSigned ? 'none' : 'vertical'}
+                                    resize={isUneditable() ? 'none' : 'vertical'}
                                     value={data.objective_note}
                                     onChange={(e) => {
                                         setData('objective_note', e.target.value)
@@ -653,161 +668,164 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                             </FormControl>
                         </Box>
 
-                        <Box
-                            w={'100%'}
-                            p={'16px'}
-                            
-                            bg={'white'}
-                            borderRadius={'xl'}
-                        >
-                            <Box fontWeight={'bold'} mb={'8px'}>Test results</Box>
-
-                            <Stack
+                        {isSigned ? 
+                            <Box
                                 w={'100%'}
-                                pb={'8px'}
-
-                                spacing={1}
-                                borderBottom={'1px solid #ECEDED'}
-                            >
-                                {!isSigned ? 
+                                p={'16px'}
                                 
-                                    (testKey.length > 0 ? 
-                                        testKey.map((key, index) => {
-                                            return <Flex
-                                                key={index}
-                                                align={'center'}
-                                                py={'8px'}
-                                            >
-                                                <Box w={'5%'} style={{cursor: 'pointer'}} onClick={() => handleRemovingTest(key)}>
-                                                    <RxCrossCircled />
-                                                </Box>
-                                                <HStack
-                                                    w={'95%'}
-                                                    spacing={3}
-                                                    ml={'16px'}
-                                                >
-                                                    <Box w={'30%'}>{key}</Box>
-                                                        
-                                                    <Box w={'70%'} fontSize={'12px'}>{data.tests[key]}</Box>
-                                                </HStack>
-                                            </Flex>
-                                        })
-                                        :
-                                        ''
-                                    )
-                                    :
-                                    <>
-                                        <Flex
-                                            w={'100%'}
-                                            h={'100%'}
+                                bg={'white'}
+                                borderRadius={'xl'}
+                            >
+                                <Box fontWeight={'bold'} mb={'8px'}>Test results</Box>
 
-                                            p={'8px'}
+                                <Stack
+                                    w={'100%'}
+                                    pb={'8px'}
 
-                                            align={'center'}
-                                        >
-                                            <Box w={'30%'} p={'8px'} borderBottom={'1px solid #ECEDED'}>Test name</Box>
-                                            <Box w={'70%'} p={'8px'} borderBottom={'1px solid #ECEDED'}>Test results</Box>
-                                        </Flex>
-
-                                        {testKey.length > 0 ? 
+                                    spacing={1}
+                                    borderBottom={'1px solid #ECEDED'}
+                                >
+                                    {!isUneditable() ?                          
+                                        (testKey.length > 0 ? 
                                             testKey.map((key, index) => {
                                                 return <Flex
-                                                    key={key}
-                                                    w={'100%'}
-                                                    h={'100%'}
-        
-                                                    p={'8px'}
-        
+                                                    key={index}
                                                     align={'center'}
-                                                >   
-                                                    <Box w={'30%'} p={'8px'}>{key}</Box>
-                                                    <Box w={'70%'} p={'8px'}>{data.tests[key]}</Box>
+                                                    py={'8px'}
+                                                >
+                                                    <Box w={'5%'} style={{cursor: 'pointer'}} onClick={() => handleRemovingTest(key)}>
+                                                        <RxCrossCircled />
+                                                    </Box>
+                                                    <HStack
+                                                        w={'95%'}
+                                                        spacing={3}
+                                                        ml={'16px'}
+                                                    >
+                                                        <Box w={'30%'}>{key}</Box>
+                                                            
+                                                        <Box w={'70%'} fontSize={'12px'}>{data.tests[key]}</Box>
+                                                    </HStack>
                                                 </Flex>
                                             })
                                             :
                                             ''
-                                        }
-                                    </>
+                                        )
+                                        :
+                                        <>
+                                            <Flex
+                                                w={'100%'}
+                                                h={'100%'}
+
+                                                p={'8px'}
+
+                                                align={'center'}
+                                            >
+                                                <Box w={'30%'} p={'8px'} borderBottom={'1px solid #ECEDED'}>Test name</Box>
+                                                <Box w={'70%'} p={'8px'} borderBottom={'1px solid #ECEDED'}>Test results</Box>
+                                            </Flex>
+
+                                            {testKey.length > 0 ? 
+                                                testKey.map((key, index) => {
+                                                    return <Flex
+                                                        key={key}
+                                                        w={'100%'}
+                                                        h={'100%'}
+            
+                                                        p={'8px'}
+            
+                                                        align={'center'}
+                                                    >   
+                                                        <Box w={'30%'} p={'8px'}>{key}</Box>
+                                                        <Box w={'70%'} p={'8px'}>{data.tests[key]}</Box>
+                                                    </Flex>
+                                                })
+                                                :
+                                                ''
+                                            }
+                                        </>
+                                    }
+                                </Stack>
+
+                                {!isUneditable() ? 
+                                    <Flex
+                                        w={'100%'}
+                                        mt={'8px'}
+
+                                        justify={'space-between'}
+                                        align={'center'}
+                                    >
+                                        <FormControl isInvalid={errors.test_name} w={'45%'}>
+                                            <Box fontSize={'12px'} color={'gray'} fontWeight={'bold'} mb={'6px'}>Test Name</Box>
+                                            <Input 
+                                                size={'sm'}  
+                                                fontSize={'11px'}
+                                                
+                                                variant='filled' 
+                                                
+                                                borderRadius={'md'} 
+                                                placeholder='Test name'
+                                            
+                                                value={data.test_name}
+                                                onChange={e => {
+                                                    setData('test_name', e.target.value)
+                                                    clearErrors('test_name')
+                                                }}
+                                            />
+                                            <FormErrorMessage>{errors.test_name}</FormErrorMessage>
+                                        </FormControl>
+
+                                        <FormControl isInvalid={errors.test_result} w={'35%'} ml={'18px'}>
+                                            <Box fontSize={'12px'} color={'gray'} fontWeight={'bold'} mb={'6px'}>Result</Box>
+                                            <Input 
+                                                size={'sm'}  
+                                                fontSize={'11px'}
+                                                
+                                                variant='filled' 
+                                                
+                                                borderRadius={'md'} 
+                                                placeholder='Result'
+                                            
+                                                value={data.test_result}
+                                                onChange={e => {
+                                                    setData('test_result', e.target.value)
+                                                    clearErrors('test_result')
+                                                }}
+                                            />
+                                            <FormErrorMessage>{errors.test_result}</FormErrorMessage>
+                                        </FormControl>
+
+                                        <FormControl isInvalid={errors.unit} w={'10%'} ml={'8px'}>
+                                            <Box fontSize={'12px'} color={'gray'} fontWeight={'bold'} mb={'6px'}>Unit</Box>
+                                            <Input 
+                                                size={'sm'}  
+                                                fontSize={'11px'}
+                                                
+                                                variant='filled' 
+                                                
+                                                borderRadius={'md'} 
+                                                placeholder='Unit'
+                                            
+                                                value={data.unit}
+                                                onChange={e => {
+                                                    setData('unit', e.target.value)
+                                                    clearErrors('unit')
+                                                }}
+                                            />
+                                            <FormErrorMessage>{errors.unit}</FormErrorMessage>
+                                        </FormControl>
+
+
+                                        <Button alignSelf={'flex-end'} colorScheme={'blue'} ml={'8px'} size={'sm'} onClick={handleAddingTest}>Add</Button>
+                                    </Flex>
+                                    :
+                                    <></>
                                 }
-                            </Stack>
+                            </Box>
+                            :
+                            <></>
+                        }
 
-                            {!isSigned ? 
-                                <Flex
-                                    w={'100%'}
-                                    mt={'8px'}
-
-                                    justify={'space-between'}
-                                    align={'center'}
-                                >
-                                    <FormControl isInvalid={errors.test_name} w={'45%'}>
-                                        <Box fontSize={'12px'} color={'gray'} fontWeight={'bold'} mb={'6px'}>Test Name</Box>
-                                        <Input 
-                                            size={'sm'}  
-                                            fontSize={'11px'}
-                                            
-                                            variant='filled' 
-                                            
-                                            borderRadius={'md'} 
-                                            placeholder='Test name'
-                                        
-                                            value={data.test_name}
-                                            onChange={e => {
-                                                setData('test_name', e.target.value)
-                                                clearErrors('test_name')
-                                            }}
-                                        />
-                                        <FormErrorMessage>{errors.test_name}</FormErrorMessage>
-                                    </FormControl>
-
-                                    <FormControl isInvalid={errors.test_result} w={'35%'} ml={'18px'}>
-                                        <Box fontSize={'12px'} color={'gray'} fontWeight={'bold'} mb={'6px'}>Result</Box>
-                                        <Input 
-                                            size={'sm'}  
-                                            fontSize={'11px'}
-                                            
-                                            variant='filled' 
-                                            
-                                            borderRadius={'md'} 
-                                            placeholder='Result'
-                                        
-                                            value={data.test_result}
-                                            onChange={e => {
-                                                setData('test_result', e.target.value)
-                                                clearErrors('test_result')
-                                            }}
-                                        />
-                                        <FormErrorMessage>{errors.test_result}</FormErrorMessage>
-                                    </FormControl>
-
-                                    <FormControl isInvalid={errors.unit} w={'10%'} ml={'8px'}>
-                                        <Box fontSize={'12px'} color={'gray'} fontWeight={'bold'} mb={'6px'}>Unit</Box>
-                                        <Input 
-                                            size={'sm'}  
-                                            fontSize={'11px'}
-                                            
-                                            variant='filled' 
-                                            
-                                            borderRadius={'md'} 
-                                            placeholder='Unit'
-                                        
-                                            value={data.unit}
-                                            onChange={e => {
-                                                setData('unit', e.target.value)
-                                                clearErrors('unit')
-                                            }}
-                                        />
-                                        <FormErrorMessage>{errors.unit}</FormErrorMessage>
-                                    </FormControl>
-
-
-                                    <Button alignSelf={'flex-end'} colorScheme={'blue'} ml={'8px'} size={'sm'} onClick={handleAddingTest}>Add</Button>
-                                </Flex>
-                                :
-                                <></>
-                            }
-                        </Box>
-
-                        {!isSigned ? 
+                        {!isUneditable() ? 
                             <>
                                 <Box
                                     w={'100%'}
@@ -1103,7 +1121,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
 
                                                 placeholder='Recommendation'
                                                 size='sm'
-                                                resize={isSigned ? 'none' : 'vertical'}
+                                                resize={isUneditable() ? 'none' : 'vertical'}
 
                                                 value={data.recommendation}
                                                 onChange={e => {
@@ -1130,7 +1148,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                             <></>
                         }
 
-                        {!isSigned ? 
+                        {!isUneditable() ? 
                             <Box
                                 w={'100%'}
                                 p={'16px'}
@@ -1160,7 +1178,7 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                             ''
                         }
 
-                        {!isSigned ? 
+                        {!isUneditable() ? 
                             <Button
                                 onClick={onOpen}
                                 type='submit'
@@ -1178,18 +1196,22 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, note })
                                 Sign & Save
                             </Button>
                             :
-                            <Box
-                                bg={'white'}
-                                borderRadius={'md'}
-                                
-                                w={'100%'}
-                                p={'16px'}
-                            >
-                                <Box fontWeight={'bold'} mb={'8px'}>Signature</Box>
-                                <Flex w={'100%'} justify={'center'}>
-                                    <img src={note[0].signature} alt="signature" width={'50%'} />
-                                </Flex>
-                            </Box>
+                            (isSigned ? 
+                                <Box
+                                    bg={'white'}
+                                    borderRadius={'md'}
+                                    
+                                    w={'100%'}
+                                    p={'16px'}
+                                >
+                                    <Box fontWeight={'bold'} mb={'8px'}>Signature</Box>
+                                    <Flex w={'100%'} justify={'center'}>
+                                        <img src={note[0].signature} alt="signature" width={'50%'} />
+                                    </Flex>
+                                </Box>
+                                :
+                                <></>
+                            )
                         }
                     </Stack>
                 </HStack>
