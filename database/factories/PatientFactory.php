@@ -16,6 +16,8 @@ class PatientFactory extends Factory
      */
     protected static ?string $password;
 
+    protected static $index = 0;
+
     /**
      * Define the model's default state.
      *
@@ -32,7 +34,7 @@ class PatientFactory extends Factory
             'address' => fake()->address(),
             'phone' => fake()->phoneNumber(),
             'password' => static::$password ??= Hash::make('password'),
-            'email' => fake()->email(),
+            'email' => 'patient'.static::$index++.'@example.com',
             'date_of_birth' => fake()->date('Y-m-d'),
             'sex' => $sex,
             'age' => fake()->numberBetween(13, 90),

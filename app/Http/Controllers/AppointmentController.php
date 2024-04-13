@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CurrentTimeZone;
 use App\Http\Requests\AppointmentNoteRequest;
 use App\Models\Appointment;
 use App\Services\AppointmentService;
 use App\Services\IcdService;
 use App\Services\PatientService;
 use App\Services\TestResultService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -38,7 +40,7 @@ class AppointmentController extends Controller
         $user = Auth::user();
         $appointments = $this->appointmentService->getAllBetweenDates($date_start, $date_end, $user->id, null);
 
-        return redirect()->back()->with('appointment', [
+        return redirect()->route('doctor.appointments')->with('appointment', [
             'list' => $appointments,
         ]);
     }
@@ -103,10 +105,12 @@ class AppointmentController extends Controller
             ]);
         }
 
+        $this->appointmentService->setAppointmentAsDone($appointment);
+
         $test = $this->testResultService->storeTestResult($user, $request->all());
 
         if ($test) {
-            return redirect(route('doctor.appointments'))->with('message', [
+            return redirect()->back()->with('message', [
                 'message' => 'Stored to database successfully',
                 'type' => 'success',
             ]);
@@ -118,12 +122,22 @@ class AppointmentController extends Controller
         }
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $appointments = $this->appointmentService->getAllOfThisWeek();
+        date_default_timezone_set(CurrentTimeZone::TIMEZONE);
+        $appointments = [];
+        $start_date = date('Y-m-d');
+        if ($request->query('start_date')) {
+            $doctor_id = Auth::user()->id;
+            $start_date = $request->query('start_date');
+            $appointments = $this->appointmentService->getAllBetweenDates($request->query('start_date'), $request->query('end_date'), $doctor_id, null);
+        } else {
+            $appointments = $this->appointmentService->getAllOfThisWeek();
+        }
 
         return Inertia::render('Auth/Doctor/Appointments', [
             'appointments' => $appointments,
+            'startDate' => $start_date,
         ]);
     }
 }

@@ -58,7 +58,7 @@ const getTimeline = (bookedAppointmentsOfSingleDay, anchorDate, duration) => {
                 index++;
             } else {
                 const todayObj = dayjs()
-                if (todayObj.diff(anchor) > 0) {
+                if (todayObj.add(30, 'minute').diff(anchor) >= 0) {
                     timeline.push({
                         start_time: anchor.format('HH:mm:ss'),
                         end_time: anchor.add(timeValue, timeType).format('HH:mm:ss'),
@@ -79,7 +79,7 @@ const getTimeline = (bookedAppointmentsOfSingleDay, anchorDate, duration) => {
             }
         } else {
             const todayObj = dayjs().millisecond(0)
-            if (todayObj.diff(anchor) > 0) {
+            if (todayObj.add(30, 'minute').diff(anchor) >= 0) {
                 timeline.push({
                     start_time: anchor.format('HH:mm:ss'),
                     end_time: anchor.add(timeValue, timeType).format('HH:mm:ss'),

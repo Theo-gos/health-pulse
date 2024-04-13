@@ -8,7 +8,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class AppointmentBookedEvent implements ShouldBroadcast
+class AppointmentEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -22,12 +22,12 @@ class AppointmentBookedEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('appointment-booking-channel.'.$this->data['doctor_id']),
+            new Channel('appointment-channel.'.$this->data['doctor_id']),
         ];
     }
 
     public function broadcastAs()
     {
-        return 'appointment-booked-event';
+        return 'appointment-event';
     }
 }

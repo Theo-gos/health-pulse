@@ -21,6 +21,7 @@ class Appointment extends Pivot
         'date',
         'start_time',
         'end_time',
+        'status',
     ];
 
     protected $hidden = [

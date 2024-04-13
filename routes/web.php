@@ -44,6 +44,7 @@ Route::post('/patient/login', [PatientAuthenticateController::class, 'login'])->
 Route::post('/patient/register', [PatientAuthenticateController::class, 'register'])->name('patient.register');
 
 Route::get('/patient/booking', [PatientBookingController::class, 'booking'])->name('patient.booking');
+Route::get('/patient/booking/cancel/{appointment}', [PatientBookingController::class, 'cancel'])->name('patient.booking.cancel');
 Route::post('/patient/booking', [PatientBookingController::class, 'store'])->name('patient.booking.store');
 
 Route::get('patient/lists/{state}', [PatientController::class, 'show'])->name('patient.lists.show');

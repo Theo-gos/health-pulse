@@ -52,6 +52,7 @@ export default function Home() {
                     <Carousel
                         width={'100%'}
                         
+                        interval={7000}
                         autoPlay
                         showThumbs={false}
                         showStatus={false}
@@ -127,6 +128,7 @@ export default function Home() {
                     >
                         <Box
                             width={'80%'}
+                            height={'700px'}
                             mx={'auto'}
                             mt={'40px'}
                         >
@@ -134,13 +136,15 @@ export default function Home() {
                                 style={{
                                     borderRadius: '50px',
                                 }}
+                                height={'700px'}
                                 width={'50%'}
                                 alt=""
-                                src="https://nursesgroup.co.uk/assets/images/blog/healthcare-technology.jpg"
+                                src="https://res.cloudinary.com/dg2t3lprx/image/upload/v1712889826/im-e-health-the-formula-for-success-in-healthcare_w5zmlj.jpg"
                             />
                         </Box>
                         <Box
                             width={'80%'}
+                            height={'700px'}
                             mx={'auto'}
                             mt={'40px'}
                         >
@@ -150,11 +154,12 @@ export default function Home() {
                                 }}
                                 width={'50%'}
                                 alt=""
-                                src="https://nursesgroup.co.uk/assets/images/blog/healthcare-technology.jpg"
+                                src="https://cdn.jiohealth.com/jio-website/home-page/jio-website-v2.2/assets/images/smart-clinic/banner-03.jpg"
                             />
                         </Box>
                         <Box
                             width={'80%'}
+                            height={'700px'}
                             mx={'auto'}
                             mt={'40px'}
                         >
@@ -164,11 +169,12 @@ export default function Home() {
                                 }}
                                 width={'50%'}
                                 alt=""
-                                src="https://nursesgroup.co.uk/assets/images/blog/healthcare-technology.jpg"
+                                src="https://cdn.jiohealth.com/jio-website/home-page/jio-website-v2.2/assets/images/smart-clinic/banner-02.jpg"
                             />
                         </Box>
                         <Box
                             width={'80%'}
+                            height={'700px'}
                             mx={'auto'}
                             mt={'40px'}
                         >
@@ -178,7 +184,7 @@ export default function Home() {
                                 }}
                                 width={'50%'}
                                 alt=""
-                                src="https://nursesgroup.co.uk/assets/images/blog/healthcare-technology.jpg"
+                                src="https://res.cloudinary.com/dg2t3lprx/image/upload/v1712889843/Healthcare-Management_horizontal_gmipz1.jpg"
                             />
                         </Box>
                     </Carousel>
