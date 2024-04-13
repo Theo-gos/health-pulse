@@ -17,10 +17,9 @@ class Prescription extends Pivot
     protected $fillable = [
         'doctor_id',
         'patient_id',
+        'medication_id',
         'date',
-        'medication_name',
-        'dose',
-        'pill_per_day',
+        'amount',
         'recommendation',
     ];
 
@@ -37,5 +36,10 @@ class Prescription extends Pivot
     public function doctor(): BelongsTo
     {
         return $this->belongsTo(Doctor::class);
+    }
+
+    public function medication(): BelongsTo
+    {
+        return $this->belongsTo(Medication::class);
     }
 }

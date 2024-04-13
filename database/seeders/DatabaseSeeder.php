@@ -71,6 +71,37 @@ class DatabaseSeeder extends Seeder
             ->hasDoctors(10)
             ->create();
 
+        \App\Models\Medication::factory()
+            ->count(5)
+            ->state(new Sequence(
+                [
+                    'medication_name' => 'Antenolol',
+                    'dose' => '200mg',
+                    'type' => 'tablet',
+                ],
+                [
+                    'medication_name' => 'Aciclovir',
+                    'dose' => '100mg',
+                    'type' => 'capsule',
+                ],
+                [
+                    'medication_name' => 'Alogliptin',
+                    'dose' => '200mg',
+                    'type' => 'capsule',
+                ],
+                [
+                    'medication_name' => 'Haloperidol',
+                    'dose' => '100ml',
+                    'type' => 'liquid',
+                ],
+                [
+                    'medication_name' => 'Tramadol',
+                    'dose' => '500mg',
+                    'type' => 'tablet',
+                ],
+            ))
+            ->create();
+
         \App\Models\Doctor::factory()
             ->count(1)
             ->state(new Sequence(
@@ -86,6 +117,7 @@ class DatabaseSeeder extends Seeder
                 ],
             ))
             ->create();
+
         \App\Models\Patient::factory()
             ->count(1)
             ->state(new Sequence(

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->text('objective_note');
             $table->json('test_results');
             $table->json('image_url');
+            $table->string('recurringDate')->nullable();
+            $table->json('recurringTime')->nullable();
             $table->text('signature');
             $table->timestamps();
             $table->primary('appointment_id');

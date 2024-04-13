@@ -15,7 +15,7 @@ const TAB = {
     RECORD: 'record',
 }
 
-export default function PatientList({ medicalInfo, icd }) {
+export default function PatientList({ medicalInfo, icd, medications }) {
     const { data } = usePage().props
     const [tab, setTab] = useState(TAB.APPOINTMENTS)
 
@@ -155,7 +155,7 @@ export default function PatientList({ medicalInfo, icd }) {
                         </Flex>
 
                         {tab !== TAB.RECORD ?
-                            <PatientListing tabManager={tabManager} medicalInfo={medicalInfo} />
+                            <PatientListing tabManager={tabManager} medicalInfo={medicalInfo} medications={medications} />
                             :
                             <PatientListRecord medicalInfo={medicalInfo} icd={icd} />
                         }

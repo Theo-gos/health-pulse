@@ -60,7 +60,7 @@ const filterAppointments = (appointments) => {
     return filteredAppointments
 }
 
-export default function PatientListing({ tabManager, medicalInfo }) {
+export default function PatientListing({ tabManager, medicalInfo, medications }) {
     const [filter, setFilter] = useState(FILTER.DATE)
     const [listData, setListData] = useState({})
     const [appointmentTab, setAppointmentTab] = useState(APPOINTMENT.ACTIVE);
@@ -72,9 +72,10 @@ export default function PatientListing({ tabManager, medicalInfo }) {
 
     const { tab, setTab } = tabManager
 
-    useEffect(() => {
+    useMemo(() => {
         if (!_.isEmpty(medicalInfo) && tab !== TAB.RECORD) {
             if (tab === TAB.APPOINTMENTS) {
+                console.log(tab);
                 const filteredAppointments = filterAppointments(medicalInfo.appointments);
                 setListData(getDataFilteredByKey(filteredAppointments[appointmentTab], filter))
             } else {
@@ -90,14 +91,14 @@ export default function PatientListing({ tabManager, medicalInfo }) {
                     setCurrentTab(<PatientListsAppointments appointmentKeys={dataKeys} appointments={listData} tab={appointmentTab}  />)
                     break
                 case TAB.PRESCRIPTIONS:
-                    setCurrentTab(<PatientListsPrescriptions prescriptionKeys={dataKeys} prescriptions={listData} />)
+                    setCurrentTab(<PatientListsPrescriptions prescriptionKeys={dataKeys} prescriptions={listData} medications={medications}/>)
                     break
                 default:
                     setCurrentTab(<PatientListsAppointments medicalInfo={medicalInfo}/>)
                     break
             }
         }
-    }, [tab, listData])
+    }, [tab, listData]) 
 
     return (
         <>

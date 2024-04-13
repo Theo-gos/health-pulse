@@ -12,11 +12,14 @@ class TestResultService extends BaseService
 
     private $icdService;
 
-    public function __construct(PatientService $patientService, IcdService $icdService)
+    private $medicationService;
+
+    public function __construct(PatientService $patientService, IcdService $icdService, MedicationService $medicationService)
     {
         parent::__construct();
         $this->patientService = $patientService;
         $this->icdService = $icdService;
+        $this->medicationService = $medicationService;
     }
 
     public function getModel()
@@ -30,6 +33,11 @@ class TestResultService extends BaseService
         foreach ($data['diagnoses'] as &$diagnosis) {
             $icd = $this->icdService->getByIcdCode($diagnosis['icd_code'])->all();
             $diagnosis['icd_name'] = $icd[0]->icd_name;
+        }
+        foreach ($data['prescriptions'] as &$prescription) {
+            $medication = $this->medicationService->getByMedicationId($prescription['medication_id'])->all();
+            $prescription['medication_name'] = $medication[0]->medication_name;
+            $prescription['dose'] = $medication[0]->dose;
         }
 
         $payload = [

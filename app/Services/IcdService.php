@@ -13,11 +13,11 @@ class IcdService extends BaseService
 
     public function getAll()
     {
-        return Icd::all();
+        return $this->model->all();
     }
 
     public function getByIcdCode($icdCode)
     {
-        return Icd::where('icd_code', $icdCode)->get();
+        return $this->model->where('icd_code', $icdCode)->get();
     }
 }

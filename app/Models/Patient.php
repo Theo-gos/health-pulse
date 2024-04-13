@@ -83,7 +83,7 @@ class Patient extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Doctor::class, 'prescriptions')
             ->using(Prescription::class)
             ->as('prescriptions')
-            ->withPivot('id', 'doctor_id', 'patient_id', 'date', 'medication_name', 'dose', 'pill_per_day', 'recommendation')
+            ->withPivot('id', 'doctor_id', 'patient_id', 'date', 'medication_id', 'amount', 'recommendation')
             ->orderByPivot('date', 'desc');
     }
 
