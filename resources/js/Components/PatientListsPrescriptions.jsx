@@ -5,8 +5,10 @@ import {
 } from "@chakra-ui/react";
 import _ from "lodash";
 import dayjs from "dayjs";
+import { useMemo } from "react";
 
 const today = dayjs()
+const medicationsObj = {}
 
 function isValidDateString(dateString) {
     return !isNaN(Date.parse(dateString));
@@ -17,7 +19,13 @@ const dateFormatter = (date) => {
     return `${dateArray[2]}.${dateArray[1]}.${dateArray[0]}`
 }
 
-export default function PatientListsPrescriptions({prescriptionKeys, prescriptions}) {
+export default function PatientListsPrescriptions({ prescriptionKeys, prescriptions, medications }) {
+    useMemo(() => {
+        medications.forEach(item => {
+            medicationsObj[item.id] = item
+        })
+    }, [medications])
+
     return (
         prescriptionKeys.length > 0 ? 
             prescriptionKeys.map(key => {
@@ -111,8 +119,14 @@ export default function PatientListsPrescriptions({prescriptionKeys, prescriptio
 
                                         fontSize={'12px'}
                                     >
-                                        <Box fontWeight={'bold'}>{prescription.medication_name}</Box>
-                                        <Box color={'gray'}>{`${prescription.dose}, ${prescription.pill_per_day}`}</Box>
+                                        <Box fontWeight={'bold'}>{medicationsObj[prescription.medication_id].medication_name}</Box>
+                                        <Box color={'gray'}>
+                                            { medicationsObj[prescription.medication_id].type !== 'liquid' ?
+                                                `${medicationsObj[prescription.medication_id].dose}, ${prescription.amount} ${medicationsObj[prescription.medication_id].type}`
+                                                :
+                                                `${medicationsObj[prescription.medication_id].dose}`
+                                            }
+                                        </Box>
                                         <Box fontSize={'10px'} overflow={'hidden'}>{prescription.recommendation}</Box>
                                     </Box>
                                 </Box>

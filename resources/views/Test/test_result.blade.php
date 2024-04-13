@@ -318,7 +318,7 @@
                                 line-height: 14px;
                                 float: left;
                             ">
-                                {{$prescription['medication_name'] . ', ' . $prescription['dose'] . ', ' . $prescription['pill_per_day'] . 'per day.'}}
+                                {{$prescription['medication_name'] . ', ' . $prescription['dose'] . ', ' . $prescription['amount'] . 'per day.'}}
                             </div>
                             <div style='
                                 font-size: 12px;
@@ -437,6 +437,15 @@
                     @endif
                 </div>
             </div>
+
+            @if($data['recurringDate'])
+            <div style='
+                width: 90%;
+                margin-top: 16px;
+            '>
+                Note: Re-visit on {{$data['recurringDate']}} at {{$data['recurringTime']['start_time']}}
+            </div>
+            @endif
 
             <div style="
                 width: 100%;

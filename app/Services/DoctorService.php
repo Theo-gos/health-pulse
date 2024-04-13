@@ -20,7 +20,7 @@ class DoctorService extends BaseService
             ->get();
     }
 
-    public function getAllAppointedPatientsIdForTodayByDoctorId($doctor_id)
+    public function getAllTodayAppointedPatientsIdByDoctorId($doctor_id)
     {
         date_default_timezone_set(CurrentTimeZone::TIMEZONE);
 
@@ -32,7 +32,7 @@ class DoctorService extends BaseService
         $patientsList = [];
 
         foreach ($doctor->appointed_patients as $appointed_patient) {
-            if (strtotime($appointed_patient->appointments->date) >= strtotime(date('Y-m-d'))) {
+            if (strtotime($appointed_patient->appointments->date) === strtotime(date('Y-m-d')) && $appointed_patient->appointments->status !== 'canceled') {
                 array_push($patientsList, $appointed_patient->id);
             }
         }

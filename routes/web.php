@@ -83,6 +83,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('doctor/notifications', [DoctorController::class, 'showNotifications'])->name('doctor.notifications');
     Route::get('doctor/notifications/read', [DoctorController::class, 'markAllNotificationsAsRead'])->name('doctor.notifications.all-read');
     Route::get('doctor/notification/{notification}', [DoctorController::class, 'markNotificationAsRead'])->name('doctor.notification.read');
+
+    // Booking
+    Route::get('doctor/recurring', [AppointmentController::class, 'showRecurringOption'])->name('doctor.recurring');
 });
 
 // Show doctor login page

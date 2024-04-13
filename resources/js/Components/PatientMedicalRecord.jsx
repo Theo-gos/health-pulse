@@ -67,7 +67,7 @@ const getPrescriptionsByKey = (data, key = 'date') => {
     return prescriptionObj
 }
 
-export default function PatientMedicalRecord({ selectManager, medicalInfo, icd }) {
+export default function PatientMedicalRecord({ selectManager, medicalInfo, icd, medications }) {
     const [data, setData] = useState({})
     const [tab, setTab] = useState(TAB.GENERAL)
     const [prescriptions, setPrescriptions] = useState({})
@@ -640,7 +640,7 @@ export default function PatientMedicalRecord({ selectManager, medicalInfo, icd }
                                     </Box>
                                     <Flex
                                         w={'auto'}
-                                        h={'30vh'}
+                                        // h={'30vh'}
                                         p={'8px'}
 
                                         align={'center'}
@@ -713,8 +713,14 @@ export default function PatientMedicalRecord({ selectManager, medicalInfo, icd }
 
                                                         fontSize={'12px'}
                                                     >
-                                                        <Box fontWeight={'bold'}>{prescription.medication_name}</Box>
-                                                        <Box color={'gray'}>{`${prescription.dose}, ${prescription.pill_per_day}`}</Box>
+                                                        <Box fontWeight={'bold'}>{medications[prescription.medication_id].medication_name}</Box>
+                                                        <Box color={'gray'}>
+                                                            { medications[prescription.medication_id].type !== 'liquid' ?
+                                                                `${medications[prescription.medication_id].dose}, ${prescription.amount} ${medications[prescription.medication_id].type}`
+                                                                :
+                                                                `${medications[prescription.medication_id].dose}`
+                                                            }
+                                                        </Box>
                                                         <Box fontSize={'10px'} overflow={'hidden'}>{prescription.recommendation}</Box>
                                                     </Box>
                                                 </Box>

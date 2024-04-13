@@ -36,7 +36,9 @@ class BookingService extends BaseService
         $bookedAppointments = [];
         foreach ($doctors as $doctor) {
             foreach ($doctor->appointed_patients as $patient) {
-                $bookedAppointments[$doctor['id']][$patient->appointments->date][] = $patient->appointments;
+                if ($patient->appointments->status !== 'canceled') {
+                    $bookedAppointments[$doctor['id']][$patient->appointments->date][] = $patient->appointments;
+                }
             }
         }
 
@@ -61,8 +63,6 @@ class BookingService extends BaseService
                 strtotime($data['time']['start_time']) < strtotime(date('H:i:s')) ||
                 strtotime('-30 minutes', strtotime($data['time']['start_time'])) <= strtotime(date('H:i:s'))
             ) {
-                dd('Invalid time selected');
-
                 return [
                     'message' => 'Invalid time selected',
                     'type' => 'error',

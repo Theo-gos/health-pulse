@@ -17,6 +17,8 @@ class Note extends Model
         'objective_note',
         'image_url',
         'signature',
+        'recurringDate',
+        'recurringTime',
     ];
 
     protected $hidden = [
@@ -27,6 +29,7 @@ class Note extends Model
     protected $casts = [
         'image_url' => 'array',
         'test_results' => 'array',
+        'recurringTime' => 'array',
         'appointment_id' => 'integer',
     ];
 

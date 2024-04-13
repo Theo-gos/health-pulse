@@ -1,66 +1,148 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Health Pulse
+A project that aims to help simplify healthcare provider's workload and provide a reliable platform for those who need medical attention.
+  
 
-## About Laravel
+## Architecture Diagram
+```mermaid
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+flowchart TD
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+subgraph DB["DB"]
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+A[("MySql 8.0.36")]
 
-## Learning Laravel
+end
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+subgraph BE["Backend Laravel"]
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+S("Services")
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+M["Model"]
 
-## Laravel Sponsors
+C("Controllers")
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+end
 
-### Premium Partners
+subgraph EX["Third parties"]
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+G("Google")
 
-## Contributing
+ST("Sentry")
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+P("Pusher")
 
-## Code of Conduct
+RE("Redis")
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+CD("Cloudinary")
 
-## Security Vulnerabilities
+end
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+subgraph IN["InertiaJS"]
 
-## License
+RES("Inertia Response")
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+SD("Shared Data")
+
+end
+
+subgraph FE["Frontend ReactJS"]
+
+R("Reactjs")
+
+  
+
+end
+
+subgraph subGraph5["Health Pulse"]
+
+BE
+
+EX
+
+IN
+
+FE
+
+end
+
+A <--> M
+
+M --> S
+
+S --> C
+
+BE --> EX
+
+C --> IN
+
+RES -- Render --> R
+
+SD -- Render --> R
+
+```
+
+  
+
+## Requirements for this project:
+
+  
+
+- Node.js version 18.18.0 or higher is required.
+
+- PHP 8.1 is required
+
+- MySQL 8.0.36 is required
+
+- InertiaJS 1.0.0 required
+
+- Chakra UI 2.8.2 is required
+
+- ReactJS 18.2.0 is required
+
+  
+
+## To run this project locally:
+
+  
+
+- Run composer install to install all dependencies.
+
+- Run npm install to install all dependencies.
+
+- Create a database in mysql.
+
+- Run `php artisan migrate --seed` to run the migration files and seed the database.
+
+- Run `npm run dev`.
+
+- Run `php artisan serve` to start the php web server.
+  
+
+## Directory Structure
+### The root directory
+    .
+    ├── app						# Contains the core code of the application.
+    ├── bootstrap               # Contains the `app.php` file which bootstraps the framework, also houses a `cache` directory.
+    ├── config   				# Contains all of the application's configuration files.
+    ├── database  				# Directory contains your database migrations, model factories, and seeds.
+    ├── public					# Directory contains the `index.php` file, which is the entry point for all requests entering the application and configures autoloading.
+    ├──	resources				# Contains the views as well as the raw, un-compiled assets such as CSS or JavaScript.
+    ├──	routes					# Contains all of the route definitions for your application.
+    ├──	storage					# Contains logs, file based sessions, file caches, and other files generated by the framework.
+    ├── test					# Contains the automated tests.
+    ├── vendor					# Directory contains the Composer dependencies.
+    └── README.md
+   
+   ### The App Directory
+    app
+    ├── Broadcasting			# Contains all of the broadcast channel classes.
+    ├── Console 				# Contains all of the custom Artisan commands.
+    ├── Events 					# Directory houses event classes.
+    ├── Exceptions            	# Directory contains all of the custom exceptions.
+    ├──	Http                    # Contains controllers, middleware, and form requests.
+    ├──	Jobs					# Contains queueable jobs.
+    ├──	Mail                    # Contains all of the classes that represent emails sent by the application.
+    ├── Models					# Contains all Eloquent model classes.
+    ├── Notifications          	# Contains all of the "transactional" notifications that are sent by the application.
+    └── Providers               # Contains all of the service providers for the application.

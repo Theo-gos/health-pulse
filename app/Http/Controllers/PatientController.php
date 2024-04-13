@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\IcdService;
+use App\Services\MedicationService;
 use App\Services\PatientService;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -13,10 +14,13 @@ class PatientController extends Controller
 
     private $patientService;
 
-    public function __construct(PatientService $patientService, IcdService $icdService)
+    private $medicationService;
+
+    public function __construct(PatientService $patientService, IcdService $icdService, MedicationService $medicationService)
     {
         $this->patientService = $patientService;
         $this->icdService = $icdService;
+        $this->medicationService = $medicationService;
     }
 
     public function index()
@@ -29,10 +33,12 @@ class PatientController extends Controller
         $medicalInfosAndPaginator = $this->patientService->getMedicalInformationById([$patient->id]);
         $medicalInfo = $medicalInfosAndPaginator['medicalInfos'];
         $icd = $this->icdService->getAll();
+        $medications = $this->medicationService->getAll();
 
         return Inertia::render('Auth/Patient/PatientList', [
             'medicalInfo' => $medicalInfo[$patient->id],
             'icd' => $icd,
+            'medications' => $medications,
         ]);
     }
 

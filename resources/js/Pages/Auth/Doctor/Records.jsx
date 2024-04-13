@@ -10,8 +10,9 @@ import { usePage } from "@inertiajs/react";
 import { useMemo, useState } from "react";
 
 const icdObj = {}
+const medicationsObj = {}
 
-export default function Records({medical_info, icd, paginator}) {
+export default function Records({medical_info, icd, paginator, medications}) {
     const [selected, setSelected] = useState(0)
     const selectManager = {
         selected: selected,
@@ -22,7 +23,12 @@ export default function Records({medical_info, icd, paginator}) {
         icd.forEach(item => {
             icdObj[item.icd_code] = item
         })
-    }, [icd])
+
+        medications.forEach(item => {
+            medicationsObj[item.id] = item
+        })
+
+    }, [icd, medications])
 
     return (
         <DoctorLayout state={'records'}>
@@ -37,7 +43,7 @@ export default function Records({medical_info, icd, paginator}) {
                 >
                     {selected === 0 ? <PatientList selectManager={selectManager} medicalInfo={medical_info ? medical_info : []} paginator={paginator} />
                         :
-                        <PatientMedicalRecord selectManager={selectManager} medicalInfo={medical_info ? medical_info : []} icd={icdObj} />}
+                        <PatientMedicalRecord selectManager={selectManager} medicalInfo={medical_info ? medical_info : []} icd={icdObj} medications={medicationsObj} />}
                 </Box>
             </Box>
 
