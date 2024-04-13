@@ -343,7 +343,6 @@ export default function AppointmentNote({ medicalInfo, appointment, icd, medicat
             !isToday ||
             isInEarlierHours && isToday && isAnHoursAfter ||
             isInLaterHours && isToday
-        // return false
     }
 
     return (

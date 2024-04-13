@@ -61,6 +61,7 @@ class AppointmentControllerTest extends TestCase
         foreach ($this->appointments as $appointment) {
             $appointmentFields = $appointment;
             $appointmentFields['patient'] = Patient::find($appointment['patient_id'])->toArray();
+            $appointmentFields['status'] = 'active';
             $appointmentList[date('l', strtotime($appointment['date']))][] = $appointmentFields;
         }
 
@@ -70,6 +71,28 @@ class AppointmentControllerTest extends TestCase
             fn (Assert $page) => $page
                 ->component('Auth/Doctor/Appointments')
                 ->where('appointments', $appointmentList)
+        );
+    }
+
+    public function testAppointmentIndex_withQuery(): void
+    {
+        date_default_timezone_set(CurrentTimeZone::TIMEZONE);
+        $appointmentList = [];
+
+        foreach ($this->appointments as $appointment) {
+            $appointmentFields = $appointment;
+            $appointmentFields['patient'] = Patient::find($appointment['patient_id'])->toArray();
+            $appointmentFields['status'] = 'active';
+            $appointmentList[date('l', strtotime($appointment['date']))][] = $appointmentFields;
+        }
+
+        $response = $this->call('GET', route('doctor.appointments'), ['start_date' => date('Y-m-d'), 'end_date' => date('Y-m-d', strtotime('tomorrow'))]);
+
+        $response->assertInertia(
+            fn (Assert $page) => $page
+                ->component('Auth/Doctor/Appointments')
+                ->where('appointments', $appointmentList)
+                ->where('startDate', date('Y-m-d'))
         );
     }
 
@@ -95,9 +118,10 @@ class AppointmentControllerTest extends TestCase
         $appointmentList = [];
 
         foreach ($this->appointments as $appointment) {
-            $appointmentList[date('l', strtotime($appointment['date']))][] = Appointment::select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
+            $appointmentList[date('l', strtotime($appointment['date']))][] = Appointment::select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time', 'status')
                 ->with('patient')
                 ->where('id', $appointment['id'])
+                ->where('status', '!=', 'canceled')
                 ->get()[0];
         }
 
@@ -111,6 +135,50 @@ class AppointmentControllerTest extends TestCase
             'appointment',
             [
                 'list' => $appointmentList,
+            ]
+        );
+    }
+
+    public function testShowRecurringOption()
+    {
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $appointmentList = Appointment::select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time', 'status')
+            ->where('status', '!=', 'canceled')
+            ->where('date', date('Y-m-d'))
+            ->orderBy('start_time', 'asc')
+            ->with('patient')
+            ->get();
+
+        $response = $this->call('GET', route('doctor.recurring'), ['recurringDate' => date('Y-m-d')]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas(
+            'appointment',
+            [
+                'list' => $appointmentList,
+                'service' => $this->doctor->service,
+            ]
+        );
+    }
+
+    public function testShowRecurringOption_Failed()
+    {
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $appointmentList = Appointment::select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time', 'status')
+            ->where('status', '!=', 'canceled')
+            ->where('date', date('Y-m-d'))
+            ->orderBy('start_time', 'asc')
+            ->with('patient')
+            ->get();
+
+        $response = $this->call('GET', route('doctor.recurring'));
+
+        $response->assertRedirect();
+        $response->assertSessionHas(
+            'message',
+            [
+                'message' => 'Something went wrong',
+                'type' => 'error',
             ]
         );
     }
