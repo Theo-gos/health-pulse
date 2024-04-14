@@ -52,8 +52,6 @@ export default function Appointments({appointments, startDate}) {
         get(route('doctor.appointments'))
     }
 
-    console.log(appointments);
-
     return (
         <DoctorLayout state={'appointments'}>
             <Box h={'100%'}>

@@ -23,8 +23,11 @@ class PatientBookingController extends Controller
 
     private $appointmentService;
 
-    public function __construct(PatientService $patientService, BookingService $bookingService, AppointmentService $appointmentService)
-    {
+    public function __construct(
+        PatientService $patientService,
+        BookingService $bookingService,
+        AppointmentService $appointmentService,
+    ) {
         $this->patientService = $patientService;
         $this->bookingService = $bookingService;
         $this->appointmentService = $appointmentService;

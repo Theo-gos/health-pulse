@@ -34,21 +34,40 @@ class PatientService extends BaseService
             if ($request->query('name')) {
                 $patients = $this->model->whereIn('id', $patient_id)
                     ->whereRaw('LOWER(name) LIKE ?', [strtolower($request->query('name')).'%'])
-                    ->with(['allergies', 'appointed_doctors', 'diagnose_doctors', 'prescribe_doctors', 'appointed_doctors.service', 'test_doctors'])
+                    ->with([
+                        'allergies',
+                        'appointedDoctors',
+                        'diagnoseDoctors',
+                        'prescribeDoctors',
+                        'appointedDoctors.service',
+                        'testDoctors',
+                    ])
                     ->paginate(10);
             } else {
                 $patients = $this->model->whereIn('id', $patient_id)
                     ->where('age', $request->query('age'))
-                    ->with(['allergies', 'appointed_doctors', 'diagnose_doctors', 'prescribe_doctors', 'appointed_doctors.service', 'test_doctors'])
+                    ->with([
+                        'allergies',
+                        'appointedDoctors',
+                        'diagnoseDoctors',
+                        'prescribeDoctors',
+                        'appointedDoctors.service',
+                        'testDoctors',
+                    ])
                     ->paginate(10);
             }
         } else {
             $patients = $this->model->whereIn('id', $patient_id)
-                ->with(['allergies', 'appointed_doctors', 'diagnose_doctors', 'prescribe_doctors', 'appointed_doctors.service', 'test_doctors'])
+                ->with([
+                    'allergies',
+                    'appointedDoctors',
+                    'diagnoseDoctors',
+                    'prescribeDoctors',
+                    'appointedDoctors.service',
+                    'testDoctors',
+                ])
                 ->paginate(10);
         }
-
-        // dd($patients);
 
         $patientMedicalInfos = [];
 
@@ -62,9 +81,9 @@ class PatientService extends BaseService
                 $patientMedicalInfos[$patient->id]['allergies'] = [];
             }
 
-            if ($patient->appointed_doctors->count() > 0) {
+            if ($patient->appointedDoctors->count() > 0) {
                 $index = 0;
-                foreach ($patient->appointed_doctors->all() as $ap_doctor) {
+                foreach ($patient->appointedDoctors->all() as $ap_doctor) {
                     $ap_doctor['type'] = $ap_doctor->service->type;
                     $patientMedicalInfos[$patient->id]['appointments'][$index]['doctor'] = $ap_doctor;
                     $patientMedicalInfos[$patient->id]['appointments'][$index]['detail'] = $ap_doctor->appointments;
@@ -74,17 +93,17 @@ class PatientService extends BaseService
                 $patientMedicalInfos[$patient->id]['appointments'] = [];
             }
 
-            if ($patient->diagnose_doctors->count() > 0) {
-                foreach ($patient->diagnose_doctors->all() as $dia_doctor) {
+            if ($patient->diagnoseDoctors->count() > 0) {
+                foreach ($patient->diagnoseDoctors->all() as $dia_doctor) {
                     $patientMedicalInfos[$patient->id]['diagnoses'][] = $dia_doctor->diagnoses;
                 }
             } else {
                 $patientMedicalInfos[$patient->id]['diagnoses'] = [];
             }
 
-            if ($patient->prescribe_doctors->count() > 0) {
+            if ($patient->prescribeDoctors->count() > 0) {
                 $index = 0;
-                foreach ($patient->prescribe_doctors->all() as $pres_doctor) {
+                foreach ($patient->prescribeDoctors->all() as $pres_doctor) {
                     $patientMedicalInfos[$patient->id]['prescriptions'][$index]['doctor'] = $pres_doctor;
                     $patientMedicalInfos[$patient->id]['prescriptions'][$index]['detail'] = $pres_doctor->prescriptions;
                     $index++;
@@ -93,9 +112,9 @@ class PatientService extends BaseService
                 $patientMedicalInfos[$patient->id]['prescriptions'] = [];
             }
 
-            if ($patient->test_doctors->count() > 0) {
+            if ($patient->testDoctors->count() > 0) {
                 $index = 0;
-                foreach ($patient->test_doctors->all() as $test_doctor) {
+                foreach ($patient->testDoctors->all() as $test_doctor) {
                     $patientMedicalInfos[$patient->id]['tests'][$index]['doctor'] = $test_doctor;
                     $patientMedicalInfos[$patient->id]['tests'][$index]['detail'] = $test_doctor->test_results;
                     $index++;

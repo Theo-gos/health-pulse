@@ -13,8 +13,10 @@ import { useForm, usePage } from "@inertiajs/react";
 import { useMemo, useState } from "react";
 import ServiceCard from "../../../Components/ServiceCard";
 import AppointmentBookingContent from "@/Components/AppointmentBookingContent";
+import { useMediaQuery } from "react-responsive";
 
-export default function AppointmentBooking({bookingData}) {
+export default function AppointmentBooking({ bookingData }) {
+    const isMobile = useMediaQuery({ query: '(max-width: 844px)' })
     const { post, data, setData, errors, setError, processing } = useForm({
         service: 0,
         doctor: 0,
@@ -40,48 +42,93 @@ export default function AppointmentBooking({bookingData}) {
 
     return (
         <PatientLayout state={'none'}>
-            <Box mt={'80px'}>
-                <Box
-                    fontSize={'32px'}
-
-                    color={'#1366DE'}
-                    
-                    w={"fit-content"}
-                    mx={'auto'}
-                    my={'36px'}
-                >
-                    Book Appointment
-                </Box>
-
-                <Box
-                    w={'100%'}
-                    h={'auto'}
-                    pt={'10px'}
-
-                    bg={'#E8F0FC'}
-                >
+            {!isMobile ? 
+                <Box mt={'80px'}>
                     <Box
-                        w={'60%'}
-                        h={'100%'}
-                        p={'20px 36px 60px'}
+                        fontSize={'32px'}
 
-                        borderTopRadius={'25px'}
-                        border={'gray.200'}
+                        color={'#1366DE'}
+                        
+                        w={"fit-content"}
                         mx={'auto'}
-
-                        bg={'white'}
+                        my={'36px'}
                     >
-                        <AppointmentBookingContent
-                            data={view == 'Service' && bookingData ? bookingData.services : bookingData.doctors}
-                            bookedAppointments={bookingData ? bookingData.bookedAppointments : {}}
-                            duration={view == 'Doctor' ? bookingData.services[dataManager.data.service - 1].duration : ''}
-                            
-                            viewManager={viewManager}
-                            dataManager={dataManager}
-                        />
+                        Book Appointment
+                    </Box>
+
+                    <Box
+                        w={'100%'}
+                        h={'auto'}
+                        pt={'10px'}
+
+                        bg={'#E8F0FC'}
+                    >
+                        <Box
+                            w={'60%'}
+                            h={'100%'}
+                            p={'20px 36px 60px'}
+
+                            borderTopRadius={'25px'}
+                            border={'gray.200'}
+                            mx={'auto'}
+
+                            bg={'white'}
+                        >
+                            <AppointmentBookingContent
+                                data={view == 'Service' && bookingData ? bookingData.services : bookingData.doctors}
+                                bookedAppointments={bookingData ? bookingData.bookedAppointments : {}}
+                                duration={view == 'Doctor' ? bookingData.services[dataManager.data.service - 1].duration : ''}
+                                
+                                viewManager={viewManager}
+                                dataManager={dataManager}
+                            />
+                        </Box>
                     </Box>
                 </Box>
-            </Box>
+                :
+                <Box mt={'80px'}>
+                    <Box
+                        fontSize={'32px'}
+
+                        color={'#1366DE'}
+                        bg={'#E8F0FC'}
+                        
+                        w={"100%"}
+                        mx={'auto'}
+                        py={'20px'}
+                        textAlign={'center'}
+                    >
+                        Book Appointment
+                    </Box>
+
+                    <Box
+                        w={'100%'}
+                        h={'auto'}
+                        pt={'10px'}
+                    >
+                        <Box
+                            w={isMobile ? '80%' : '60%'}
+                            h={'100%'}
+                            p={'20px 36px 60px'}
+
+                            borderTopRadius={'25px'}
+                            border={'gray.200'}
+                            mx={'auto'}
+
+                            bg={'white'}
+                        >
+                            <AppointmentBookingContent
+                                data={view == 'Service' && bookingData ? bookingData.services : bookingData.doctors}
+                                bookedAppointments={bookingData ? bookingData.bookedAppointments : {}}
+                                duration={view == 'Doctor' ? bookingData.services[dataManager.data.service - 1].duration : ''}
+                                
+                                viewManager={viewManager}
+                                dataManager={dataManager}
+                            />
+                        </Box>
+                    </Box>
+                </Box>
+            }
         </PatientLayout>
     )
 }

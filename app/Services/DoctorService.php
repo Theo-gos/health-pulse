@@ -26,13 +26,15 @@ class DoctorService extends BaseService
 
         $doctor = $this->model
             ->where('id', $doctor_id)
-            ->with('appointed_patients')
+            ->with('appointedPatients')
             ->firstOrFail();
 
         $patientsList = [];
 
-        foreach ($doctor->appointed_patients as $appointed_patient) {
-            if (strtotime($appointed_patient->appointments->date) === strtotime(date('Y-m-d')) && $appointed_patient->appointments->status !== 'canceled') {
+        foreach ($doctor->appointedPatients as $appointed_patient) {
+            if (strtotime($appointed_patient->appointments->date) === strtotime(date('Y-m-d'))
+                && $appointed_patient->appointments->status !== 'canceled'
+            ) {
                 array_push($patientsList, $appointed_patient->id);
             }
         }
@@ -43,7 +45,7 @@ class DoctorService extends BaseService
     public function getAllWithAppointedPatients()
     {
         return $this->model
-            ->with(['appointed_patients', 'service'])
+            ->with(['appointedPatients', 'service'])
             ->get();
     }
 

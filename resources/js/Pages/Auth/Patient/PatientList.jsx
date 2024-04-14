@@ -8,6 +8,7 @@ import { usePage } from "@inertiajs/react";
 import _ from "lodash"
 import PatientListing from "@/Components/PatientListing";
 import PatientListRecord from "@/Components/PatientListRecord";
+import { useMediaQuery } from "react-responsive";
 
 const TAB = {
     APPOINTMENTS: 'appointments',
@@ -18,6 +19,7 @@ const TAB = {
 export default function PatientList({ medicalInfo, icd, medications }) {
     const { data } = usePage().props
     const [tab, setTab] = useState(TAB.APPOINTMENTS)
+    const isMobile = useMediaQuery({ query: '(max-width: 844px)' })
 
     const tabManager = {
         tab: tab,
@@ -36,11 +38,16 @@ export default function PatientList({ medicalInfo, icd, medications }) {
                 <Box
                     fontSize={'32px'}
 
+                    bg={isMobile ? '#E8F0FC' : 'white'}
+
                     color={'#1366DE'}
                     
-                    w={"fit-content"}
+                    w={isMobile ? '100%' : "fit-content"}
+                    py={isMobile ? '20px' : ''}
                     mx={'auto'}
-                    my={'36px'}
+                    my={!isMobile ? '36px' : ''}
+
+                    textAlign={isMobile ? 'center' : ''}
                 >
                     Patient
                 </Box>
@@ -50,10 +57,10 @@ export default function PatientList({ medicalInfo, icd, medications }) {
                     h={'auto'}
                     pt={'10px'}
 
-                    bg={'#E8F0FC'}
+                    bg={isMobile ? 'white' : '#E8F0FC'}
                 >
                     <Box
-                        w={'60%'}
+                        w={isMobile ? '100%' : '60%'}
                         h={'100%'}
                         p={'20px 36px 60px'}
 
@@ -69,18 +76,23 @@ export default function PatientList({ medicalInfo, icd, medications }) {
 
                             fontSize={'34px'}
                         >
-                            <Box fontWeight={'bold'}>Your {tab}</Box>
+                            {isMobile ? 
+                                <></>
+                                :
+                                <Box fontWeight={'bold'}>Your {tab}</Box>
+                            }
                             <Flex
-                                w={'40%'}
+                                w={isMobile ? '100%' : '40%'}
                                 h={'100%'}
 
                                 borderRadius={'20px'}
                                 border={'1px solid #ECEDED'}
                             >
                                 <Box
-                                    w={'50%'}
+                                    w={'34%'}
                                     h={'100%'}
-                                    pt={'2px'}
+                                    pt={!isMobile ? '2px' : ''}
+                                    p={isMobile ? '8px 16px' : ''}
 
                                     borderLeftRadius={'20px'}
                                     _hover={tab !== TAB.APPOINTMENTS ? {
@@ -103,9 +115,10 @@ export default function PatientList({ medicalInfo, icd, medications }) {
                                 </Box>
 
                                 <Box
-                                    w={'50%'}
+                                    w={'34%'}
                                     h={'100%'}
-                                    pt={'2px'}
+                                    pt={!isMobile ? '2px' : ''}
+                                    p={isMobile ? '8px 16px' : ''}
 
                                     _hover={tab !== TAB.PRESCRIPTIONS ? {
                                         backgroundColor: '#EAF1FA',
@@ -127,9 +140,10 @@ export default function PatientList({ medicalInfo, icd, medications }) {
                                 </Box>
 
                                 <Box
-                                    w={'50%'}
+                                    w={'34%'}
                                     h={'100%'}
-                                    pt={'2px'}
+                                    pt={!isMobile ? '2px' : ''}
+                                    p={isMobile ? '8px 16px' : ''}
 
                                     borderRightRadius={'20px'}
 

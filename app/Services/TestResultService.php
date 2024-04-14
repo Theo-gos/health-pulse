@@ -14,8 +14,11 @@ class TestResultService extends BaseService
 
     private $medicationService;
 
-    public function __construct(PatientService $patientService, IcdService $icdService, MedicationService $medicationService)
-    {
+    public function __construct(
+        PatientService $patientService,
+        IcdService $icdService,
+        MedicationService $medicationService,
+    ) {
         parent::__construct();
         $this->patientService = $patientService;
         $this->icdService = $icdService;

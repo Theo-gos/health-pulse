@@ -13,7 +13,8 @@ class DiagnosisService extends BaseService
 
     public function getLatestDiagnosesPerPatient()
     {
-        $latestDiagnosesPerPatient = $this->model->selectRaw('patient_id, icds.icd_code, icds.severity, icds.color, MAX(date) as latest_date')
+        $latestDiagnosesPerPatient = $this->model
+            ->selectRaw('patient_id, icds.icd_code, icds.severity, icds.color, MAX(date) as latest_date')
             ->join('icds', 'diagnoses.icd_code', '=', 'icds.icd_code')
             ->groupByRaw('patient_id, icd_code, icds.severity, icds.color')
             ->get()
