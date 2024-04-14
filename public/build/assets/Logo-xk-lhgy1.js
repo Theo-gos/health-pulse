@@ -1,0 +1,1 @@
+import{j as s}from"./app-B-st9BtI.js";const t="http://ec2-46-137-196-229.ap-southeast-1.compute.amazonaws.com/build/assets/logo-B4anD0Yd.svg";function e({width:o="50px"}){return s.jsx("img",{src:t,width:o})}export{e as default};
