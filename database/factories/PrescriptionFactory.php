@@ -21,8 +21,7 @@ class PrescriptionFactory extends Factory
             'doctor_id' => 71,
             'patient_id' => 1,
             'date' => '2020-03-22',
-            'medication_name' => 'Atenolol',
-            'dose' => '200 mg oral',
+            'medication_id' => 1,
             'amount' => '1 tablet',
             'recommendation' => '1 tablet every morning for 10 days',
         ];
