@@ -45,7 +45,10 @@ class DailyNotificationForDoctor extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->greeting('Hello from Health Pulse!')
-            ->lineIf($this->appointment, "Today, you have an appointment with the patient named {$this->patient->name}.")
+            ->lineIf(
+                $this->appointment,
+                "Today, you have an appointment with the patient named {$this->patient->name}."
+            )
             ->lineIf($this->appointment, "The appointment starts at {$this->appointment->start_time}.")
             ->line('Thank you for your good work!');
     }

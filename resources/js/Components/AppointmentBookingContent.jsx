@@ -21,6 +21,7 @@ import dayjs from "dayjs";
 import { useEffect, useMemo, useReducer, useState } from "react";
 import BookingCalendar from "./BookingCalendar";
 import { usePage } from "@inertiajs/react";
+import { useMediaQuery } from "react-responsive";
 
 const today = dayjs()
 let currentTimeline = []
@@ -105,6 +106,7 @@ const getTimeline = (bookedAppointmentsOfSingleDay, anchorDate, duration) => {
 export default function AppointmentBookingContent({ data, duration, bookedAppointments, viewManager, dataManager }) {
     const [, forceUpdate] = useReducer(x => x + 1, 0)
     const { message } = usePage().props
+    const isMobile = useMediaQuery({ query: '(max-width: 844px)' })
 
     const [date, setDate] = useState(today)
     const dateManager = {
@@ -174,7 +176,11 @@ export default function AppointmentBookingContent({ data, duration, bookedAppoin
 
                 fontSize={'34px'}
             >
-                <Box fontWeight={'bold'}>Choose a {viewManager.view}</Box>
+                {!isMobile ? 
+                    <Box fontWeight={'bold'}>Choose a {viewManager.view}</Box>
+                    :
+                    <></>
+                }
                 {viewManager.view === 'Doctor' ? <Box
                     fontSize={'16px'}
                     color={'#1366DE'}
@@ -224,7 +230,7 @@ export default function AppointmentBookingContent({ data, duration, bookedAppoin
                             <ModalBody>
                                 <Box
                                     w={'100%'}
-                                    h={'350px'}
+                                    h={isMobile ? '500px' : '350px'}
                                 >
                                     <BookingCalendar
                                         width={'100%'}

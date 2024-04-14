@@ -44,8 +44,7 @@ const getSpan = (start, end) => {
 
 const renderItem = (data, handleClick, initialTime = '8:00') => {
     let anchor = initialTime
-    console.log(data);
-
+    
     return data.map((item, index) => {
         const ret = []
         const emptySpan = getSpan(anchor, item.start_time)

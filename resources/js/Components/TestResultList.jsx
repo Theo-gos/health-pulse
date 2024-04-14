@@ -13,11 +13,13 @@ import { useEffect, useMemo, useState } from "react"
 import _ from "lodash"
 import DisplayPdfThumbnail from "./DisplayPdfThumbnail"
 import { Viewer } from "@react-pdf-viewer/core"
+import { useMediaQuery } from "react-responsive"
 
 export default function testResultList({ data, width = '50%' }) {
     const [pdfUrl, setPdfUrl] = useState('')
     const { isOpen, onOpen, onClose } = useDisclosure()
-
+    const isMobile = useMediaQuery({ query: '(max-width: 844px)' })
+    
     const handlePdfClick = (url) => {
         setPdfUrl(url)
         onOpen()
@@ -59,7 +61,7 @@ export default function testResultList({ data, width = '50%' }) {
                         <Box fontWeight={'bold'} fontSize={'13px'}>{test.detail.name}</Box>
                         <Box fontSize={'12px'} color={'gray'}>{test.detail.date}</Box>
                     </Flex>
-                    <Drawer onClose={onClose} isOpen={isOpen} size={'xl'}>
+                    <Drawer onClose={onClose} isOpen={isOpen && !isMobile} size={'xl'}>
                         <DrawerOverlay />
                         <DrawerContent>
                             <DrawerCloseButton />
@@ -69,7 +71,7 @@ export default function testResultList({ data, width = '50%' }) {
                                     w={'100%'}
                                     overflowY={'scroll'}
                                 >
-                                    <Viewer fileUrl={pdfUrl}/>
+                                    <Viewer fileUrl={pdfUrl} />
                                 </Box>
                             </DrawerBody>
                         </DrawerContent>

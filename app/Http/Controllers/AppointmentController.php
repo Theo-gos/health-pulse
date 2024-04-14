@@ -121,7 +121,17 @@ class AppointmentController extends Controller
             }
         }
 
-        $note = $this->appointmentService->storeAppointmentNote($request->only('appointment_id', 'main_complaint', 'objective_note', 'tests', 'files', 'signature', 'recurringDate', 'recurringTime'));
+        $note = $this->appointmentService
+            ->storeAppointmentNote($request->only(
+                'appointment_id',
+                'main_complaint',
+                'objective_note',
+                'tests',
+                'files',
+                'signature',
+                'recurringDate',
+                'recurringTime',
+            ));
 
         if (! $note) {
             return redirect()->back()->with('message', [
@@ -155,7 +165,8 @@ class AppointmentController extends Controller
         if ($request->query('start_date')) {
             $doctor_id = Auth::user()->id;
             $start_date = $request->query('start_date');
-            $appointments = $this->appointmentService->getAllBetweenDates($request->query('start_date'), $request->query('end_date'), $doctor_id, null);
+            $appointments = $this->appointmentService
+                ->getAllBetweenDates($request->query('start_date'), $request->query('end_date'), $doctor_id, null);
         } else {
             $appointments = $this->appointmentService->getAllOfThisWeek();
         }

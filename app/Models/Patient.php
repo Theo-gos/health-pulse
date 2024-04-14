@@ -58,7 +58,7 @@ class Patient extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Allergy::class);
     }
 
-    public function appointed_doctors(): BelongsToMany
+    public function appointedDoctors(): BelongsToMany
     {
         return $this->belongsToMany(Doctor::class, 'appointments')
             ->using(Appointment::class)
@@ -69,7 +69,7 @@ class Patient extends Authenticatable implements MustVerifyEmail
             ->limit(20);
     }
 
-    public function diagnose_doctors(): BelongsToMany
+    public function diagnoseDoctors(): BelongsToMany
     {
         return $this->belongsToMany(Doctor::class, 'diagnoses')
             ->using(Diagnosis::class)
@@ -78,7 +78,7 @@ class Patient extends Authenticatable implements MustVerifyEmail
             ->orderByPivot('date', 'desc');
     }
 
-    public function prescribe_doctors(): BelongsToMany
+    public function prescribeDoctors(): BelongsToMany
     {
         return $this->belongsToMany(Doctor::class, 'prescriptions')
             ->using(Prescription::class)
@@ -87,7 +87,7 @@ class Patient extends Authenticatable implements MustVerifyEmail
             ->orderByPivot('date', 'desc');
     }
 
-    public function test_doctors(): BelongsToMany
+    public function testDoctors(): BelongsToMany
     {
         return $this->belongsToMany(Doctor::class, 'tests')
             ->using(Test::class)

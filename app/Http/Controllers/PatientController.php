@@ -16,8 +16,11 @@ class PatientController extends Controller
 
     private $medicationService;
 
-    public function __construct(PatientService $patientService, IcdService $icdService, MedicationService $medicationService)
-    {
+    public function __construct(
+        PatientService $patientService,
+        IcdService $icdService,
+        MedicationService $medicationService,
+    ) {
         $this->patientService = $patientService;
         $this->icdService = $icdService;
         $this->medicationService = $medicationService;

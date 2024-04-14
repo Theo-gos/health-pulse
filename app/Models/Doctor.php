@@ -61,7 +61,7 @@ class Doctor extends Authenticatable
         return $this->hasMany(Schedule::class);
     }
 
-    public function appointed_patients(): BelongsToMany
+    public function appointedPatients(): BelongsToMany
     {
         return $this->belongsToMany(Patient::class, 'appointments')
             ->using(Appointment::class)
@@ -72,7 +72,7 @@ class Doctor extends Authenticatable
             ->limit(20);
     }
 
-    public function diagnosed_patients(): BelongsToMany
+    public function diagnosedPatients(): BelongsToMany
     {
         return $this->belongsToMany(Patient::class, 'diagnoses')
             ->using(Diagnosis::class)
@@ -81,7 +81,7 @@ class Doctor extends Authenticatable
             ->orderByPivot('date', 'desc');
     }
 
-    public function prescribed_patients(): BelongsToMany
+    public function prescribedPatients(): BelongsToMany
     {
         return $this->belongsToMany(Patient::class, 'prescriptions')
             ->using(Diagnosis::class)
@@ -90,7 +90,7 @@ class Doctor extends Authenticatable
             ->orderByPivot('date', 'desc');
     }
 
-    public function tested_patients(): BelongsToMany
+    public function testedPatients(): BelongsToMany
     {
         return $this->belongsToMany(Patient::class, 'tests')
             ->using(Test::class)

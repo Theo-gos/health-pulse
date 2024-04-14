@@ -1,12 +1,15 @@
 import {
     Box,
     Flex,
+    Stack,
+    Button,
 } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import PatientListsAppointments from "@/Components/PatientListsAppointments";
 import PatientListsPrescriptions from "@/Components/PatientListsPrescriptions";
 import _ from "lodash"
 import dayjs from "dayjs";
+import { useMediaQuery } from "react-responsive";
 
 const TAB = {
     APPOINTMENTS: 'appointments',
@@ -49,7 +52,8 @@ const filterAppointments = (appointments) => {
     }
     appointments.forEach((appointment) => {
         const status = appointment.detail.status
-        if (status === 'active') { 
+        const dateObj = dayjs(appointment.detail.date).hour(0).minute(0).second(0).millisecond(0)
+        if (status === 'active' && dateObj.diff(today) >= 0) { 
             filteredAppointments.activeAppointments.push(appointment)
         } else if (status === 'done') {
             filteredAppointments.doneAppointment.push(appointment)
@@ -64,6 +68,8 @@ export default function PatientListing({ tabManager, medicalInfo, medications })
     const [filter, setFilter] = useState(FILTER.DATE)
     const [listData, setListData] = useState({})
     const [appointmentTab, setAppointmentTab] = useState(APPOINTMENT.ACTIVE);
+    const [showFilter, setShowFilter] = useState(false);
+    const isMobile = useMediaQuery({ query: '(max-width: 844px)' })
 
     const dataKeys = Object.keys(listData)
     
@@ -75,7 +81,6 @@ export default function PatientListing({ tabManager, medicalInfo, medications })
     useMemo(() => {
         if (!_.isEmpty(medicalInfo) && tab !== TAB.RECORD) {
             if (tab === TAB.APPOINTMENTS) {
-                console.log(tab);
                 const filteredAppointments = filterAppointments(medicalInfo.appointments);
                 setListData(getDataFilteredByKey(filteredAppointments[appointmentTab], filter))
             } else {
@@ -100,81 +105,293 @@ export default function PatientListing({ tabManager, medicalInfo, medications })
         }
     }, [tab, listData]) 
 
+    const toggleFilter = () => setShowFilter(!showFilter)
+
     return (
-        <>
-            <Flex
-                align={'center'}
-                justify={'space-between'}
-
-                w={'100%'}
-                h={'20px'}
-
-                mt={'20px'}
-            >
+        !isMobile ? 
+            <>
                 <Flex
-                    w={'100px'}
-                    h={'100%'}
-
-                    borderRadius={'20px'}
-                    border={'1px solid #ECEDED'}
+                    align={'center'}
+                    justify={'space-between'}
+    
+                    w={'100%'}
+                    h={'20px'}
+    
+                    mt={'20px'}
                 >
-                    <Box
-                        w={'50%'}
+                    <Flex
+                        w={'100px'}
                         h={'100%'}
-                        pt={'2px'}
-
-                        borderLeftRadius={'20px'}
-                        _hover={filter == FILTER.DOCTOR ? {
-                            backgroundColor: '#EAF1FA',
-                            color: '#1366DE',
-                            cursor: 'pointer',
-                        } : {
-                            cursor: 'default',
-                        }} 
-                        bg={filter == FILTER.DATE ? 'blue.100' : 'white'}
-                        color={filter == FILTER.DATE ? '#1366DE' : 'gray'}
-                        fontWeight={filter == FILTER.DATE ? 'bold' : ''}
-
-                        fontSize={'10px'}
-                        textAlign={'center'}
-
-                        onClick={() => setFilter(FILTER.DATE)}
+    
+                        borderRadius={'20px'}
+                        border={'1px solid #ECEDED'}
                     >
-                        Date
-                    </Box>
-
-                    <Box
-                        w={'50%'}
-                        h={'100%'}
-                        pt={'2px'}
-
-                        borderRightRadius={'20px'}
-
-                        _hover={filter == FILTER.DATE ? {
-                            backgroundColor: '#EAF1FA',
-                            color: '#1366DE',
-                            cursor: 'pointer',
-                        } : {
-                            cursor: 'default',
-                        }} 
-                        bg={filter == FILTER.DOCTOR ? 'blue.100' : 'white'}
-                        color={filter == FILTER.DOCTOR ? '#1366DE' : 'gray'}
-                        fontWeight={filter == FILTER.DOCTOR ? 'bold' : ''}
-                        
-                        fontSize={'10px'}
-                        textAlign={'center'}
-
-                        onClick={() => setFilter(FILTER.DOCTOR)}
-                    >
-                        Doctor
-                    </Box>
-                </Flex>
-
-                {tab === TAB.APPOINTMENTS ? 
-                        <Flex
-                            w={'300px'}
+                        <Box
+                            w={'50%'}
                             h={'100%'}
-        
+                            pt={'2px'}
+    
+                            borderLeftRadius={'20px'}
+                            _hover={filter == FILTER.DOCTOR ? {
+                                backgroundColor: '#EAF1FA',
+                                color: '#1366DE',
+                                cursor: 'pointer',
+                            } : {
+                                cursor: 'default',
+                            }} 
+                            bg={filter == FILTER.DATE ? 'blue.100' : 'white'}
+                            color={filter == FILTER.DATE ? '#1366DE' : 'gray'}
+                            fontWeight={filter == FILTER.DATE ? 'bold' : ''}
+    
+                            fontSize={'10px'}
+                            textAlign={'center'}
+    
+                            onClick={() => setFilter(FILTER.DATE)}
+                        >
+                            Date
+                        </Box>
+    
+                        <Box
+                            w={'50%'}
+                            h={'100%'}
+                            pt={'2px'}
+    
+                            borderRightRadius={'20px'}
+    
+                            _hover={filter == FILTER.DATE ? {
+                                backgroundColor: '#EAF1FA',
+                                color: '#1366DE',
+                                cursor: 'pointer',
+                            } : {
+                                cursor: 'default',
+                            }} 
+                            bg={filter == FILTER.DOCTOR ? 'blue.100' : 'white'}
+                            color={filter == FILTER.DOCTOR ? '#1366DE' : 'gray'}
+                            fontWeight={filter == FILTER.DOCTOR ? 'bold' : ''}
+                            
+                            fontSize={'10px'}
+                            textAlign={'center'}
+    
+                            onClick={() => setFilter(FILTER.DOCTOR)}
+                        >
+                            Doctor
+                        </Box>
+                    </Flex>
+    
+                    {tab === TAB.APPOINTMENTS ? 
+                            <Flex
+                                w={'300px'}
+                                h={'100%'}
+            
+                                borderRadius={'20px'}
+                                border={'1px solid #ECEDED'}
+                            >
+                                <Box
+                                    w={'50%'}
+                                    h={'100%'}
+                                    pt={'2px'}
+    
+                                    borderLeftRadius={'20px'}
+                                    _hover={appointmentTab != APPOINTMENT.DONE ? {
+                                        backgroundColor: '#EAF1FA',
+                                        color: '#1366DE',
+                                        cursor: 'pointer',
+                                    } : {
+                                        cursor: 'default',
+                                    }} 
+                                    bg={appointmentTab == APPOINTMENT.DONE ? 'blue.100' : 'white'}
+                                    color={appointmentTab == APPOINTMENT.DONE ? '#1366DE' : 'gray'}
+                                    fontWeight={appointmentTab == APPOINTMENT.DONE ? 'bold' : ''}
+    
+                                    fontSize={'10px'}
+                                    textAlign={'center'}
+    
+                                    onClick={() => setAppointmentTab(APPOINTMENT.DONE)}
+                                >
+                                    Done
+                                </Box>
+    
+                                <Box
+                                    w={'50%'}
+                                    h={'100%'}
+                                    pt={'2px'}
+                                
+                                    _hover={appointmentTab != APPOINTMENT.ACTIVE ? {
+                                        backgroundColor: '#EAF1FA',
+                                        color: '#1366DE',
+                                        cursor: 'pointer',
+                                    } : {
+                                        cursor: 'default',
+                                    }} 
+                                    bg={appointmentTab == APPOINTMENT.ACTIVE ? 'blue.100' : 'white'}
+                                    color={appointmentTab == APPOINTMENT.ACTIVE ? '#1366DE' : 'gray'}
+                                    fontWeight={appointmentTab == APPOINTMENT.ACTIVE ? 'bold' : ''}
+                                    
+                                    fontSize={'10px'}
+                                    textAlign={'center'}
+    
+                                    onClick={() => setAppointmentTab(APPOINTMENT.ACTIVE)}
+                                >
+                                    Upcoming
+                                </Box>
+    
+                                <Box
+                                    w={'50%'}
+                                    h={'100%'}
+                                    pt={'2px'}
+    
+                                    borderRightRadius={'20px'}
+    
+                                    _hover={appointmentTab != APPOINTMENT.CANCELED ? {
+                                        backgroundColor: '#EAF1FA',
+                                        color: '#1366DE',
+                                        cursor: 'pointer',
+                                    } : {
+                                        cursor: 'default',
+                                    }} 
+                                    bg={appointmentTab == APPOINTMENT.CANCELED ? 'blue.100' : 'white'}
+                                    color={appointmentTab == APPOINTMENT.CANCELED ? '#1366DE' : 'gray'}
+                                    fontWeight={appointmentTab == APPOINTMENT.CANCELED ? 'bold' : ''}
+                                    
+                                    fontSize={'10px'}
+                                    textAlign={'center'}
+    
+                                    onClick={() => setAppointmentTab(APPOINTMENT.CANCELED)}
+                                >
+                                    Canceled
+                                </Box>
+                            </Flex>
+                        :
+                        <></>
+                    }
+                </Flex>
+    
+                <Box
+                    w={'100%'}
+                    h={'70vh'}
+    
+                    mt={'20px'}
+    
+                    overflowY={'scroll'}
+                    onScroll={(e) => e.stopPropagation()}
+                >
+                    {RenderedContent}
+                </Box>
+            </>
+            :
+            <>
+                <Button
+                    onClick={toggleFilter}
+                    
+                    colorScheme={'blue'}
+                    color={'white'}
+                    size={'sm'}
+                    mt={'16px'}
+                >
+                    Toggle Filter
+                </Button>
+                {showFilter ? 
+                    <Stack
+                        spacing={2}
+
+                        w={'100%'}
+                        h={'20px'}
+
+                        align={'center'}
+
+                        my={'20px'}
+                    >
+                        {tab === TAB.APPOINTMENTS ? 
+                                <Flex
+                                    w={'100%'}
+                                    h={'100%'}
+                
+                                    borderRadius={'20px'}
+                                    border={'1px solid #ECEDED'}
+                                >
+                                    <Box
+                                        w={'50%'}
+                                        h={'100%'}
+                                        pt={'2px'}
+
+                                        borderLeftRadius={'20px'}
+                                        _hover={appointmentTab != APPOINTMENT.DONE ? {
+                                            backgroundColor: '#EAF1FA',
+                                            color: '#1366DE',
+                                            cursor: 'pointer',
+                                        } : {
+                                            cursor: 'default',
+                                        }} 
+                                        bg={appointmentTab == APPOINTMENT.DONE ? 'blue.100' : 'white'}
+                                        color={appointmentTab == APPOINTMENT.DONE ? '#1366DE' : 'gray'}
+                                        fontWeight={appointmentTab == APPOINTMENT.DONE ? 'bold' : ''}
+
+                                        fontSize={'10px'}
+                                        textAlign={'center'}
+
+                                        onClick={() => setAppointmentTab(APPOINTMENT.DONE)}
+                                    >
+                                        Done
+                                    </Box>
+
+                                    <Box
+                                        w={'50%'}
+                                        h={'100%'}
+                                        pt={'2px'}
+                                    
+                                        _hover={appointmentTab != APPOINTMENT.ACTIVE ? {
+                                            backgroundColor: '#EAF1FA',
+                                            color: '#1366DE',
+                                            cursor: 'pointer',
+                                        } : {
+                                            cursor: 'default',
+                                        }} 
+                                        bg={appointmentTab == APPOINTMENT.ACTIVE ? 'blue.100' : 'white'}
+                                        color={appointmentTab == APPOINTMENT.ACTIVE ? '#1366DE' : 'gray'}
+                                        fontWeight={appointmentTab == APPOINTMENT.ACTIVE ? 'bold' : ''}
+                                        
+                                        fontSize={'10px'}
+                                        textAlign={'center'}
+
+                                        onClick={() => setAppointmentTab(APPOINTMENT.ACTIVE)}
+                                    >
+                                        Upcoming
+                                    </Box>
+
+                                    <Box
+                                        w={'50%'}
+                                        h={'100%'}
+                                        pt={'2px'}
+
+                                        borderRightRadius={'20px'}
+
+                                        _hover={appointmentTab != APPOINTMENT.CANCELED ? {
+                                            backgroundColor: '#EAF1FA',
+                                            color: '#1366DE',
+                                            cursor: 'pointer',
+                                        } : {
+                                            cursor: 'default',
+                                        }} 
+                                        bg={appointmentTab == APPOINTMENT.CANCELED ? 'blue.100' : 'white'}
+                                        color={appointmentTab == APPOINTMENT.CANCELED ? '#1366DE' : 'gray'}
+                                        fontWeight={appointmentTab == APPOINTMENT.CANCELED ? 'bold' : ''}
+                                        
+                                        fontSize={'10px'}
+                                        textAlign={'center'}
+
+                                        onClick={() => setAppointmentTab(APPOINTMENT.CANCELED)}
+                                    >
+                                        Canceled
+                                    </Box>
+                                </Flex>
+                            :
+                            <></>
+                        }
+
+                        <Flex
+                            w={'100%'}
+                            h={'100%'}
+
                             borderRadius={'20px'}
                             border={'1px solid #ECEDED'}
                         >
@@ -184,47 +401,23 @@ export default function PatientListing({ tabManager, medicalInfo, medications })
                                 pt={'2px'}
 
                                 borderLeftRadius={'20px'}
-                                _hover={appointmentTab != APPOINTMENT.DONE ? {
+                                _hover={filter == FILTER.DOCTOR ? {
                                     backgroundColor: '#EAF1FA',
                                     color: '#1366DE',
                                     cursor: 'pointer',
                                 } : {
                                     cursor: 'default',
                                 }} 
-                                bg={appointmentTab == APPOINTMENT.DONE ? 'blue.100' : 'white'}
-                                color={appointmentTab == APPOINTMENT.DONE ? '#1366DE' : 'gray'}
-                                fontWeight={appointmentTab == APPOINTMENT.DONE ? 'bold' : ''}
+                                bg={filter == FILTER.DATE ? 'blue.100' : 'white'}
+                                color={filter == FILTER.DATE ? '#1366DE' : 'gray'}
+                                fontWeight={filter == FILTER.DATE ? 'bold' : ''}
 
                                 fontSize={'10px'}
                                 textAlign={'center'}
 
-                                onClick={() => setAppointmentTab(APPOINTMENT.DONE)}
+                                onClick={() => setFilter(FILTER.DATE)}
                             >
-                                Done
-                            </Box>
-
-                            <Box
-                                w={'50%'}
-                                h={'100%'}
-                                pt={'2px'}
-                            
-                                _hover={appointmentTab != APPOINTMENT.ACTIVE ? {
-                                    backgroundColor: '#EAF1FA',
-                                    color: '#1366DE',
-                                    cursor: 'pointer',
-                                } : {
-                                    cursor: 'default',
-                                }} 
-                                bg={appointmentTab == APPOINTMENT.ACTIVE ? 'blue.100' : 'white'}
-                                color={appointmentTab == APPOINTMENT.ACTIVE ? '#1366DE' : 'gray'}
-                                fontWeight={appointmentTab == APPOINTMENT.ACTIVE ? 'bold' : ''}
-                                
-                                fontSize={'10px'}
-                                textAlign={'center'}
-
-                                onClick={() => setAppointmentTab(APPOINTMENT.ACTIVE)}
-                            >
-                                Upcoming
+                                Date
                             </Box>
 
                             <Box
@@ -234,41 +427,42 @@ export default function PatientListing({ tabManager, medicalInfo, medications })
 
                                 borderRightRadius={'20px'}
 
-                                _hover={appointmentTab != APPOINTMENT.CANCELED ? {
+                                _hover={filter == FILTER.DATE ? {
                                     backgroundColor: '#EAF1FA',
                                     color: '#1366DE',
                                     cursor: 'pointer',
                                 } : {
                                     cursor: 'default',
                                 }} 
-                                bg={appointmentTab == APPOINTMENT.CANCELED ? 'blue.100' : 'white'}
-                                color={appointmentTab == APPOINTMENT.CANCELED ? '#1366DE' : 'gray'}
-                                fontWeight={appointmentTab == APPOINTMENT.CANCELED ? 'bold' : ''}
+                                bg={filter == FILTER.DOCTOR ? 'blue.100' : 'white'}
+                                color={filter == FILTER.DOCTOR ? '#1366DE' : 'gray'}
+                                fontWeight={filter == FILTER.DOCTOR ? 'bold' : ''}
                                 
                                 fontSize={'10px'}
                                 textAlign={'center'}
 
-                                onClick={() => setAppointmentTab(APPOINTMENT.CANCELED)}
+                                onClick={() => setFilter(FILTER.DOCTOR)}
                             >
-                                Canceled
+                                Doctor
                             </Box>
                         </Flex>
-                    :
+
+                    </Stack>
+                :
                     <></>
                 }
-            </Flex>
 
-            <Box
-                w={'100%'}
-                h={'70vh'}
+                <Box
+                    w={'100%'}
+                    h={'70vh'}
 
-                mt={'20px'}
+                    mt={'47px'}
 
-                overflowY={'scroll'}
-                onScroll={(e) => e.stopPropagation()}
-            >
-                {RenderedContent}
-            </Box>
+                    overflowY={'scroll'}
+                    onScroll={(e) => e.stopPropagation()}
+                >
+                    {RenderedContent}
+                </Box>
         </>
     )
 }
