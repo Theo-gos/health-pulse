@@ -10,7 +10,6 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientProfileController;
 use App\Http\Controllers\RecordController;
 use App\Http\Controllers\ScheduleController;
-use App\Models\Appointment;
 use App\Models\Patient;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -30,11 +29,6 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
-
-Route::get('/pagination', function () {
-    $appointments = Appointment::paginate(5);
-    dd($appointments->links());
-})->name('pagination');
 
 // Patient
 Route::get('/patient/redirect', [PatientAuthenticateController::class, 'redirect'])->name('patient.google.redirect');

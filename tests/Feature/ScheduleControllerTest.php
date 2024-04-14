@@ -46,7 +46,7 @@ class ScheduleControllerTest extends TestCase
             fn (Assert $page) => $page
                 ->component('Auth/Doctor/Schedule')
                 ->where('calendars', $schedulesList)
-                ->where('aside', [])
+                ->where('aside', $schedulesList)
         );
     }
 
@@ -59,12 +59,12 @@ class ScheduleControllerTest extends TestCase
             'office' => 'North Office',
             'floor' => 'floor 1',
             'room' => 'room C206',
-            'date' => date('Y-m-d'),
+            'date' => date('Y-m-d', strtotime('tomorrow')),
             'time_start' => '08:00',
             'time_end' => '09:00',
         ]);
 
-        $latestSchedule = Schedule::latest()->get()[0];
+        $latestSchedule = Schedule::where('date', date('Y-m-d', strtotime('tomorrow')))->get()[0];
         $latestSchedule->wasRecentlyCreated = true;
 
         $response->assertRedirect();
@@ -81,18 +81,6 @@ class ScheduleControllerTest extends TestCase
     public function testScheduleStore_overlapped(): void
     {
         date_default_timezone_set('Asia/Ho_Chi_Minh');
-
-        $this->schedules = \App\Models\Schedule::factory()
-            ->count(1)
-            ->state([
-                'doctor_id' => 1,
-                'task' => 'Task 1',
-                'location' => 'North Office, floor 1, room C206',
-                'date' => date('Y-m-d'),
-                'start_time' => '08:00:00',
-                'end_time' => '09:00:00',
-            ])
-            ->create();
 
         $response = $this->post(route('schedule.store'), [
             'task' => 'Task 1',
@@ -131,6 +119,30 @@ class ScheduleControllerTest extends TestCase
         );
     }
 
+    public function testScheduleUpdate(): void
+    {
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+
+        $response = $this->patch(route('schedule.update', ['id' => $this->schedules[0]['id']]), [
+            'task' => 'Task 2',
+            'office' => 'North Office',
+            'floor' => 'floor 1',
+            'room' => 'room C206',
+            'date' => date('Y-m-d', strtotime('tomorrow + 1 day')),
+            'time_start' => '08:00',
+            'time_end' => '09:00',
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas(
+            'message',
+            [
+                'message' => 'Item updated successfully',
+                'type' => 'success',
+            ]
+        );
+    }
+
     public function testScheduleUpdate_Overlapped(): void
     {
         date_default_timezone_set('Asia/Ho_Chi_Minh');
@@ -149,8 +161,8 @@ class ScheduleControllerTest extends TestCase
         $response->assertSessionHas(
             'message',
             [
-                'message' => 'Item updated successfully',
-                'type' => 'success',
+                'message' => 'Overlapped schedule',
+                'type' => 'error',
             ]
         );
     }
