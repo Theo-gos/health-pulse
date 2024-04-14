@@ -296,7 +296,7 @@ export default function PatientList({ selectManager, medicalInfo, paginator }) {
 
                 spacing={5}
             >
-                {renderPaginator(paginator)}
+                { paginator.total > paginator.per_page ? renderPaginator(paginator) : ''}
             </HStack>
 
             <Box

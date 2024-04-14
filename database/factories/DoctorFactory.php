@@ -15,6 +15,8 @@ class DoctorFactory extends Factory
      */
     protected static ?string $password;
 
+    protected static $index = 1;
+
     /**
      * Define the model's default state.
      *
@@ -26,7 +28,7 @@ class DoctorFactory extends Factory
             'service_id' => 1,
             'avatar' => url('https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg'),
             'phone' => fake()->phoneNumber(),
-            'email' => fake()->unique()->safeEmail(),
+            'email' => 'doctor'.static::$index++.'@example.com',
             'password' => static::$password ??= Hash::make('password'),
             'age' => fake()->numberBetween(25, 50),
             'sex' => 'M',

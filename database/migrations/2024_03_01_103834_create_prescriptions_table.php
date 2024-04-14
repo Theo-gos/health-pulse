@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('doctor_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('patient_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('medication_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->date('date');
-            $table->string('medication_name');
-            $table->string('dose');
-            $table->string('pill_per_day');
+            $table->string('amount');
             $table->text('recommendation');
             $table->timestamps();
         });

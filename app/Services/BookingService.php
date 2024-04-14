@@ -35,8 +35,10 @@ class BookingService extends BaseService
 
         $bookedAppointments = [];
         foreach ($doctors as $doctor) {
-            foreach ($doctor->appointed_patients as $patient) {
-                $bookedAppointments[$doctor['id']][$patient->appointments->date][] = $patient->appointments;
+            foreach ($doctor->appointedPatients as $patient) {
+                if ($patient->appointments->status !== 'canceled') {
+                    $bookedAppointments[$doctor['id']][$patient->appointments->date][] = $patient->appointments;
+                }
             }
         }
 
@@ -57,12 +59,9 @@ class BookingService extends BaseService
                 'type' => 'error',
             ];
         } elseif (strtotime($data['date']) == strtotime(date('Y-m-d'))) {
-            if (
-                strtotime($data['time']['start_time']) < strtotime(date('H:i:s')) ||
+            if (strtotime($data['time']['start_time']) < strtotime(date('H:i:s')) ||
                 strtotime('-30 minutes', strtotime($data['time']['start_time'])) <= strtotime(date('H:i:s'))
             ) {
-                dd('Invalid time selected');
-
                 return [
                     'message' => 'Invalid time selected',
                     'type' => 'error',
@@ -70,9 +69,13 @@ class BookingService extends BaseService
             }
         }
 
-        $nextBookedAppointment = $this->appointmentService->getNextBookedAppointmentFromHour($data['time']['start_time'], $data['date'], $data['doctor'], null)->all();
+        $nextBookedAppointment = $this->appointmentService
+            ->getNextBookedAppointmentFromHour($data['time']['start_time'], $data['date'], $data['doctor'], null)
+            ->all();
 
-        if ($nextBookedAppointment && strtotime($data['time']['start_time']) == strtotime($nextBookedAppointment[0]->start_time)) {
+        if ($nextBookedAppointment && strtotime($data['time']['start_time'])
+            == strtotime($nextBookedAppointment[0]->start_time)
+        ) {
             return [
                 'message' => 'Appointment Is Already Booked!',
                 'type' => 'error',

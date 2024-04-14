@@ -71,6 +71,37 @@ class DatabaseSeeder extends Seeder
             ->hasDoctors(10)
             ->create();
 
+        \App\Models\Medication::factory()
+            ->count(5)
+            ->state(new Sequence(
+                [
+                    'medication_name' => 'Antenolol',
+                    'dose' => '200mg',
+                    'type' => 'tablet',
+                ],
+                [
+                    'medication_name' => 'Aciclovir',
+                    'dose' => '100mg',
+                    'type' => 'capsule',
+                ],
+                [
+                    'medication_name' => 'Alogliptin',
+                    'dose' => '200mg',
+                    'type' => 'capsule',
+                ],
+                [
+                    'medication_name' => 'Haloperidol',
+                    'dose' => '100ml',
+                    'type' => 'liquid',
+                ],
+                [
+                    'medication_name' => 'Tramadol',
+                    'dose' => '500mg',
+                    'type' => 'tablet',
+                ],
+            ))
+            ->create();
+
         \App\Models\Doctor::factory()
             ->count(1)
             ->state(new Sequence(
@@ -78,7 +109,7 @@ class DatabaseSeeder extends Seeder
                     'service_id' => 1,
                     'avatar' => 'https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg',
                     'phone' => '331-405-7420',
-                    'email' => 'admin@test.com',
+                    'email' => 'doctor71@example.com',
                     'password' => Hash::make('password'),
                     'age' => fake()->numberBetween(25, 50),
                     'sex' => 'M',
@@ -86,6 +117,7 @@ class DatabaseSeeder extends Seeder
                 ],
             ))
             ->create();
+
         \App\Models\Patient::factory()
             ->count(1)
             ->state(new Sequence(
@@ -93,7 +125,7 @@ class DatabaseSeeder extends Seeder
                     'address' => '63835 Obie Extension Reichertland, VT 81218',
                     'avatar' => 'https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg',
                     'phone' => '012-345-6789',
-                    'email' => 'patient@test.com',
+                    'email' => 'patient@example.com',
                     'password' => Hash::make('password'),
                     'age' => fake()->numberBetween(25, 50),
                     'date_of_birth' => '1996-11-15',
@@ -106,7 +138,8 @@ class DatabaseSeeder extends Seeder
             ->create();
 
         \App\Models\Patient::factory(50)->create();
-        \App\Models\Appointment::factory(10)->create();
+        \App\Models\Appointment::factory(1)->create();
+        \App\Models\Schedule::factory(1)->create();
         \App\Models\Icd::factory()
             ->count(5)
             ->state(new Sequence(

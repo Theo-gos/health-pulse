@@ -125,7 +125,8 @@ class ScheduleService extends BaseService
 
         $calendars = $this->getAllBetweenDates($first_day_this_month, $last_day_this_month);
         $aside = array_filter($calendars, function ($k) {
-            return strtotime($k) >= strtotime(date('Y-m-d')) && strtotime($k) <= strtotime(date('Y-m-d', strtotime('tomorrow + 1 day')));
+            return strtotime($k) >= strtotime(date('Y-m-d'))
+                && strtotime($k) <= strtotime(date('Y-m-d', strtotime('tomorrow + 1 day')));
         }, ARRAY_FILTER_USE_KEY);
 
         return [

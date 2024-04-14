@@ -64,6 +64,7 @@ class DoctorDashboardControllerTest extends TestCase
                 'start_time' => $appointment['start_time'],
                 'end_time' => $appointment['end_time'],
                 'patient' => Patient::find($appointment['patient_id'])->toArray(),
+                'status' => 'active',
             ];
         }, $this->appointments);
 
@@ -140,9 +141,10 @@ class DoctorDashboardControllerTest extends TestCase
             if ($appointment['start_time'] < date('H:i:s') && $appointment['end_time'] > date('H:i:s')) {
                 array_push(
                     $current,
-                    Appointment::select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
+                    Appointment::select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time', 'status')
                         ->with('patient')
                         ->where('id', $appointment['id'])
+                        ->where('status', '!=', 'canceled')
                         ->get()[0]
                 );
             }
@@ -155,6 +157,7 @@ class DoctorDashboardControllerTest extends TestCase
                 'start_time' => $appointment['start_time'],
                 'end_time' => $appointment['end_time'],
                 'patient' => Patient::find($appointment['patient_id'])->toArray(),
+                'status' => $appointment['status'],
             ];
         }, $this->appointments);
 

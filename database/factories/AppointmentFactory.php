@@ -23,6 +23,7 @@ class AppointmentFactory extends Factory
             'doctor_id' => 71,
             'patient_id' => 1,
             'date' => date('Y-m-d'),
+            'status' => 'active',
             'end_time' => '09:00:00',
             'start_time' => '08:00:00',
         ];

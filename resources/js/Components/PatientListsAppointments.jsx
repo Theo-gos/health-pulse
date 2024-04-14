@@ -2,11 +2,26 @@ import {
     Box,
     Flex,
     SimpleGrid,
+    Button,
 } from "@chakra-ui/react";
 import _ from "lodash";
 import dayjs from "dayjs";
+import { useState } from "react";
+import { useForm } from "@inertiajs/react";
 
 const today = dayjs()
+
+const APPOINTMENT = {
+    DONE: 'doneAppointment',
+    ACTIVE: 'activeAppointments',
+    CANCELED: 'canceledAppointments',
+}
+
+const color = {
+    active: 'blue.100',
+    done: 'green.100',
+    canceled: 'red.100',
+}
 
 function isValidDateString(dateString) {
     return !isNaN(Date.parse(dateString));
@@ -17,7 +32,14 @@ const dateFormatter = (date) => {
     return `${dateArray[2]}.${dateArray[1]}.${dateArray[0]}`
 }
 
-export default function PatientListsAppointments({ appointmentKeys, appointments }) {
+export default function PatientListsAppointments({ appointmentKeys, appointments, tab }) {
+    const [hovered, setHovered] = useState(0)
+    const { get } = useForm()
+
+    const handleCancel = (id) => {
+        get(route('patient.booking.cancel', {appointment: id}))
+    }
+    
     return (
         appointmentKeys.length > 0 ? 
             appointmentKeys.map(key => {
@@ -47,6 +69,9 @@ export default function PatientListsAppointments({ appointmentKeys, appointments
                     >
                         {appointments[key].map(appointment => {
                             return <Box
+                                position={'relative'}
+                                onMouseEnter={() => setHovered(appointment.id)}
+                                onMouseLeave={() => setHovered(0)}
                                 key={appointment.id}
                                 mr={'8px'}
                                 w={'100%'}
@@ -57,7 +82,7 @@ export default function PatientListsAppointments({ appointmentKeys, appointments
 
                                 borderRadius={'xl'}
 
-                                bg={'blue.100'}
+                                bg={color[appointment.status]}
                             >
                                 <Flex
                                     w={'100%'}
@@ -126,6 +151,34 @@ export default function PatientListsAppointments({ appointmentKeys, appointments
                                         </Flex>
                                     </Box>
                                 </Box>
+
+                                {hovered === appointment.id && tab === APPOINTMENT.ACTIVE ? 
+                                    <Flex
+                                        justify={'center'}
+                                        align={'center'}
+                                        
+                                        position={'absolute'}
+                                        top={0}
+                                        left={0}
+                                        right={0}
+                                        bottom={0}
+
+                                        borderRadius={'xl'}
+
+                                        bg={'linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(255,255,255,0.7591841668307948) 88%)'}
+                                    >
+                                        <Box>
+                                            <Button
+                                                size={'md'}
+                                                colorScheme={'red'}
+                                                onClick={() => handleCancel(appointment.id)}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </Box>
+                                    </Flex>
+                                :
+                                    ''}
                             </Box>       
                         })}
                     </SimpleGrid>

@@ -32,36 +32,24 @@ const getDayName = (dateStr, locale) => {
     return date.toLocaleDateString(locale, { weekday: 'short' });        
 }
 
-export default function Appointments({appointments}) {
-    const [dayObj, setDayObj] = useState(today.weekday(1))
-
+export default function Appointments({appointments, startDate}) {
+    const [dayObj, setDayObj] = useState(dayjs(startDate).weekday(1))
     const [data, setData] = useState(appointments)
-    const { get, processing } = useForm()
-    const { flash, message } = usePage().props
-
-    useEffect(() => {
-        const firstDayOfWeek = dayObj.format('YYYY-MM-DD')
-        const lastDayOfWeek = dayObj.add(6, 'day').format('YYYY-MM-DD')
-        
-        get(route('appointment.show', { date_start: firstDayOfWeek, date_end: lastDayOfWeek }), {
-            preserveState: true,
-        })
-    }, [dayObj])
-    
-    useMemo(() => {
-        if (flash) {
-            if (flash.appointment) {
-                setData(flash.appointment.list)
-            }
-        }
-    }, [flash])
+    const { get, processing, data: query, setData: setQuery } = useForm({
+        start_date: dayObj.format('YYYY-MM-DD'),
+        end_date: dayObj.add(6, 'day').format('YYYY-MM-DD')
+    })
     
     const handlePrev = () => { 
-        setDayObj(dayObj.subtract(1, 'week'))
+        query.start_date = dayjs(query.start_date).subtract(1, 'week').format('YYYY-MM-DD')
+        query.end_date = dayjs(query.end_date).subtract(1, 'week').format('YYYY-MM-DD')
+        get(route('doctor.appointments'))
     }
 
     const handleNext = () => { 
-        setDayObj(dayObj.add(1, 'week'))
+        query.start_date = dayjs(query.start_date).add(1, 'week').format('YYYY-MM-DD')
+        query.end_date = dayjs(query.end_date).add(1, 'week').format('YYYY-MM-DD')
+        get(route('doctor.appointments'))
     }
 
     return (
@@ -97,7 +85,11 @@ export default function Appointments({appointments}) {
                                 color: 'white',
                             }}
 
-                            onClick={() => setDayObj(today.weekday(1))}
+                            onClick={() => {
+                                query.start_date = ''
+                                query.end_date = ''
+                                get(route('doctor.appointments'))
+                            }}
                             color={'#1366DE'}
                         >
                             Today

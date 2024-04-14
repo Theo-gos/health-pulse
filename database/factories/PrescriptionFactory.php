@@ -23,7 +23,7 @@ class PrescriptionFactory extends Factory
             'date' => '2020-03-22',
             'medication_name' => 'Atenolol',
             'dose' => '200 mg oral',
-            'pill_per_day' => '1 tablet',
+            'amount' => '1 tablet',
             'recommendation' => '1 tablet every morning for 10 days',
         ];
     }

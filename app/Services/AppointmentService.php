@@ -51,8 +51,9 @@ class AppointmentService extends BaseService
         $query_info = $this->roleCheck($doctor_id, $patient_id);
 
         $appointments = $this->model->where($query_info['query_string'], $query_info['query_param'])
-            ->select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
+            ->select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time', 'status')
             ->havingBetween('date', [$date_start, $date_end])
+            ->where('status', '!=', 'canceled')
             ->orderBy('date', 'asc')
             ->orderBy('start_time', 'asc')
             ->with('patient')
@@ -73,8 +74,9 @@ class AppointmentService extends BaseService
         $query_info = $this->roleCheck($doctor_id, $patient_id);
 
         $appointments = $this->model->where($query_info['query_string'], $query_info['query_param'])
-            ->select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
+            ->select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time', 'status')
             ->where('date', $date)
+            ->where('status', '!=', 'canceled')
             ->orderBy('start_time', 'asc')
             ->with('patient')
             ->get();
@@ -88,8 +90,9 @@ class AppointmentService extends BaseService
         $query_info = $this->roleCheck($doctor_id, $patient_id);
 
         $appointment = $this->model->where($query_info['query_string'], $query_info['query_param'])
-            ->select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
+            ->select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time', 'status')
             ->where('date', $date)
+            ->where('status', '!=', 'canceled')
             ->where('start_time', '<', $hour)
             ->where('end_time', '>', $hour)
             ->with('patient')
@@ -113,9 +116,10 @@ class AppointmentService extends BaseService
         $query_info = $this->roleCheck($doctor_id, $patient_id);
 
         $appointment = $this->model->where($query_info['query_string'], $query_info['query_param'])
-            ->select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time')
+            ->select('id', 'doctor_id', 'date', 'patient_id', 'start_time', 'end_time', 'status')
             ->where('date', $date)
             ->where('start_time', '>=', $hour)
+            ->where('status', '!=', 'canceled')
             ->orderBy('start_time', 'asc')
             ->limit(1)
             ->with('patient')
@@ -129,6 +133,7 @@ class AppointmentService extends BaseService
         return $this->model->where('doctor_id', $doctor_id)
             ->orderBy('date')
             ->orderBy('start_time')
+            ->where('status', '!=', 'canceled')
             ->get();
     }
 
@@ -144,6 +149,7 @@ class AppointmentService extends BaseService
         $appointments = $this->model->where('date', $today)
             ->orderBy('start_time', 'asc')
             ->with(['patient', 'doctor'])
+            ->where('status', '!=', 'canceled')
             ->get();
 
         return $appointments->all();
@@ -190,5 +196,15 @@ class AppointmentService extends BaseService
         }, $data);
 
         return $this->diagnosisService->insert($payload);
+    }
+
+    public function cancel($appointment)
+    {
+        return $appointment->update(['status' => 'canceled']);
+    }
+
+    public function setAppointmentAsDone($appointment)
+    {
+        return $appointment->update(['status' => 'done']);
     }
 }

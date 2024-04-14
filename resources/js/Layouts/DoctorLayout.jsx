@@ -32,8 +32,8 @@ export default function DoctorLayout({ children, state }) {
             cluster: 'ap1'
         });
 
-        const channel = pusher.subscribe(`appointment-booking-channel.${auth.doctor.id}`);
-        channel.bind('appointment-booked-event', function(e) {
+        const channel = pusher.subscribe(`appointment-channel.${auth.doctor.id}`);
+        channel.bind('appointment-event', function(e) {
             toast({
                 title: `Info`,
                 description: e.data.message,
@@ -48,7 +48,7 @@ export default function DoctorLayout({ children, state }) {
 
         return () => {
             channel.unbind();
-            pusher.unsubscribe(`appointment-booking-channel.${auth.doctor.id}`);
+            pusher.unsubscribe(`appointment-channel.${auth.doctor.id}`);
         };
     }, []);
 

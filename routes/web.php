@@ -10,7 +10,6 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientProfileController;
 use App\Http\Controllers\RecordController;
 use App\Http\Controllers\ScheduleController;
-use App\Models\Appointment;
 use App\Models\Patient;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -31,11 +30,6 @@ Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
-Route::get('/pagination', function () {
-    $appointments = Appointment::paginate(5);
-    dd($appointments->links());
-})->name('pagination');
-
 // Patient
 Route::get('/patient/redirect', [PatientAuthenticateController::class, 'redirect'])->name('patient.google.redirect');
 Route::get('/patient/callback', [PatientAuthenticateController::class, 'callback'])->name('patient.google.callback');
@@ -44,6 +38,7 @@ Route::post('/patient/login', [PatientAuthenticateController::class, 'login'])->
 Route::post('/patient/register', [PatientAuthenticateController::class, 'register'])->name('patient.register');
 
 Route::get('/patient/booking', [PatientBookingController::class, 'booking'])->name('patient.booking');
+Route::get('/patient/booking/cancel/{appointment}', [PatientBookingController::class, 'cancel'])->name('patient.booking.cancel');
 Route::post('/patient/booking', [PatientBookingController::class, 'store'])->name('patient.booking.store');
 
 Route::get('patient/lists/{state}', [PatientController::class, 'show'])->name('patient.lists.show');
@@ -82,6 +77,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('doctor/notifications', [DoctorController::class, 'showNotifications'])->name('doctor.notifications');
     Route::get('doctor/notifications/read', [DoctorController::class, 'markAllNotificationsAsRead'])->name('doctor.notifications.all-read');
     Route::get('doctor/notification/{notification}', [DoctorController::class, 'markNotificationAsRead'])->name('doctor.notification.read');
+
+    // Booking
+    Route::get('doctor/recurring', [AppointmentController::class, 'showRecurringOption'])->name('doctor.recurring');
 });
 
 // Show doctor login page

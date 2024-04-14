@@ -4,11 +4,10 @@ namespace App\Notifications;
 
 use App\Models\Appointment;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class DailyNotificationForDoctor extends Notification implements ShouldQueue
+class AppointmentCanceledForDoctor extends Notification
 {
     use Queueable;
 
@@ -25,6 +24,7 @@ class DailyNotificationForDoctor extends Notification implements ShouldQueue
     {
         //
         $this->appointment = $appointment;
+        $this->doctor = $appointment->doctor;
         $this->patient = $appointment->patient;
     }
 
@@ -35,7 +35,7 @@ class DailyNotificationForDoctor extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -44,13 +44,9 @@ class DailyNotificationForDoctor extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->greeting('Hello from Health Pulse!')
-            ->lineIf(
-                $this->appointment,
-                "Today, you have an appointment with the patient named {$this->patient->name}."
-            )
-            ->lineIf($this->appointment, "The appointment starts at {$this->appointment->start_time}.")
-            ->line('Thank you for your good work!');
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -62,6 +58,9 @@ class DailyNotificationForDoctor extends Notification implements ShouldQueue
     {
         return [
             //
+            'patient' => $this->patient,
+            'appointment' => $this->appointment,
+            'status' => 'canceled',
         ];
     }
 }

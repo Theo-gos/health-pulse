@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\DoctorService;
 use App\Services\IcdService;
+use App\Services\MedicationService;
 use App\Services\PatientService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,14 +20,18 @@ class RecordController extends Controller
 
     private $doctorService;
 
+    private $medicationService;
+
     public function __construct(
         IcdService $icdService,
         DoctorService $doctorService,
-        PatientService $patientService
+        PatientService $patientService,
+        MedicationService $medicationService,
     ) {
         $this->icdService = $icdService;
         $this->doctorService = $doctorService;
         $this->patientService = $patientService;
+        $this->medicationService = $medicationService;
     }
 
     public function index(Request $request)
@@ -34,7 +39,7 @@ class RecordController extends Controller
         $doctor_id = Auth::user()->id;
         $medicalInfosAndPaginator = [];
 
-        $patients = $this->doctorService->getAllAppointedPatientsIdForTodayByDoctorId($doctor_id);
+        $patients = $this->doctorService->getAllTodayAppointedPatientsIdByDoctorId($doctor_id);
         if ($request->query('name') || $request->query('age')) {
             $medicalInfosAndPaginator = $this->patientService->getMedicalInformationById($patients, $request);
         } else {
@@ -45,10 +50,12 @@ class RecordController extends Controller
         $paginator = $medicalInfosAndPaginator['paginator'];
 
         $icd = $this->icdService->getAll();
+        $medications = $this->medicationService->getAll();
 
         return Inertia::render('Auth/Doctor/Records', [
             'medical_info' => $medicalInfos,
             'icd' => $icd,
+            'medications' => $medications,
             'paginator' => $paginator,
         ]);
     }

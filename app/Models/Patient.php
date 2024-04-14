@@ -58,18 +58,18 @@ class Patient extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Allergy::class);
     }
 
-    public function appointed_doctors(): BelongsToMany
+    public function appointedDoctors(): BelongsToMany
     {
         return $this->belongsToMany(Doctor::class, 'appointments')
             ->using(Appointment::class)
             ->as('appointments')
-            ->withPivot('id', 'doctor_id', 'patient_id', 'date', 'start_time', 'end_time')
+            ->withPivot('id', 'doctor_id', 'patient_id', 'date', 'start_time', 'end_time', 'status')
             ->orderByPivot('date', 'desc')
             ->orderByPivot('start_time', 'asc')
             ->limit(20);
     }
 
-    public function diagnose_doctors(): BelongsToMany
+    public function diagnoseDoctors(): BelongsToMany
     {
         return $this->belongsToMany(Doctor::class, 'diagnoses')
             ->using(Diagnosis::class)
@@ -78,16 +78,16 @@ class Patient extends Authenticatable implements MustVerifyEmail
             ->orderByPivot('date', 'desc');
     }
 
-    public function prescribe_doctors(): BelongsToMany
+    public function prescribeDoctors(): BelongsToMany
     {
         return $this->belongsToMany(Doctor::class, 'prescriptions')
             ->using(Prescription::class)
             ->as('prescriptions')
-            ->withPivot('id', 'doctor_id', 'patient_id', 'date', 'medication_name', 'dose', 'pill_per_day', 'recommendation')
+            ->withPivot('id', 'doctor_id', 'patient_id', 'date', 'medication_id', 'amount', 'recommendation')
             ->orderByPivot('date', 'desc');
     }
 
-    public function test_doctors(): BelongsToMany
+    public function testDoctors(): BelongsToMany
     {
         return $this->belongsToMany(Doctor::class, 'tests')
             ->using(Test::class)
